@@ -34,7 +34,7 @@ class UserPagesControllerTest extends TestCase
         $this->signIn();
         $response = $this->get('/home');
         $response->assertStatus(200);
-        $response->assertSee(e(Auth::user()->name));
+        $response->assertSee(Auth::user()->name);
     }
 
     /**
