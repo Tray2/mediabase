@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0dcbdc80776ca79d6311b8f92c5a4b5",
+    "content-hash": "d181fc5a221e638a8d267c96233984ff",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3888,6 +3888,49 @@
                 "test"
             ],
             "time": "2016-01-20T08:20:44+00:00"
+        },
+        {
+            "name": "laravel-frontend-presets/tailwindcss",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-frontend-presets/tailwindcss.git",
+                "reference": "2f227909a93cdbbb024cc90a707b3ddf05498aad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-frontend-presets/tailwindcss/zipball/2f227909a93cdbbb024cc90a707b3ddf05498aad",
+                "reference": "2f227909a93cdbbb024cc90a707b3ddf05498aad",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^7.0",
+                "laravel/ui": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaravelFrontendPresets\\TailwindCssPreset\\TailwindCssPresetServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaravelFrontendPresets\\TailwindCssPreset\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Laravel frontend preset for Tailwind CSS",
+            "keywords": [
+                "laravel",
+                "preset",
+                "tailwindcss"
+            ],
+            "time": "2020-03-07T11:48:21+00:00"
         },
         {
             "name": "mockery/mockery",
