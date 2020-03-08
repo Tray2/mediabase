@@ -21,8 +21,10 @@ class ArtistValidationTest extends TestCase
     */
     public function a_valid_artist_can_be_stored()
     {
+        $this->withoutExceptionHandling();
         $artist = factory(Artist::class)->make([
-            'name' => 'Run Dmc'
+            'name' => 'Run Dmc',
+            'slug' => 'run-dmc'
         ]);
 
         $this->post('/artists', $artist->toArray());

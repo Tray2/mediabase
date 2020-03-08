@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Artist;
+use App\Record;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ArtistsController extends Controller
 {
@@ -18,9 +20,16 @@ class ArtistsController extends Controller
         return view('artists.index')->with(['artists' => $artists]);
     }
 
-    public function show(Artist $artist)
+    public function show($id)
     {
-        return view('artists.show')->with(['artist' => $artist]);
+        $artist = '';
+        if(is_numeric($id)) {
+            $artist = Artist::findOrFail($id);
+        } else {
+            $artist = Artist::where('slug', $id)->firstOrFail();
+        }
+        $records = Record::where('artist_id', $artist->id)->get();
+        return view('artists.show')->with(['artist' => $artist, 'records' => $records]);
     }
 
     public function create()
@@ -30,7 +39,11 @@ class ArtistsController extends Controller
 
     public function store(Request $request)
     {
-        $artist = $request->validate(['name' => 'required|unique:artists,name' ]);
+        $artist = $request->validate([
+            'name' => 'required|unique:artists,name',
+            'slug' => 'nullable'
+        ]);
+        $artist['slug'] = Str::slug($artist['name']);
         Artist::create($artist);
     }
 

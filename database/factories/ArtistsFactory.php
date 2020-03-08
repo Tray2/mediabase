@@ -6,7 +6,9 @@ use App\Model;
 use Faker\Generator as Faker;
 
 $factory->define(App\Artist::class, function (Faker $faker) {
+    $name = $faker->name();
     return [
-        'name' => $faker->name()
+        'name' => $name,
+        'slug' => Str::slug($name)
     ];
 });
