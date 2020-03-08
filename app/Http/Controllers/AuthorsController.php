@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Author;
 use App\BookView;
+use Illuminate\Support\Str;
 
 class AuthorsController extends Controller
 {
@@ -78,7 +79,7 @@ class AuthorsController extends Controller
         $author = new Author();
         $author->first_name = $request->first_name;
         $author->last_name = $request->last_name;
-        $author->slug = $request->slug;
+        $author->slug = Str::slug($request->lastname . ' ' . $request->first_name);
         $author->save();
         return redirect(route(self::AUTHOR_INDEX))->withStatus($author->name . ' successfully added.');
     }
