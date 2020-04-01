@@ -14,6 +14,6 @@
         <ul class="bg-gray-300 py-1 text-lg px-2 rounded-b-lg">
             <li class="py-1 flex justify-between border-b-2 border-gray-400">Books Read: {{ $readCount }}</a></li>
         </ul>
-    </div>    
+    </div>
 </div>
 @endsection
