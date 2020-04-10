@@ -39,14 +39,10 @@ class BookCollectionsController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $bookCollection = BookCollection::create($request->validate([
             'user_id' => 'exists:users,id',
             'book_id' => 'exists:books,id'
-        ]);
-        $bookCollection = new BookCollection();
-        $bookCollection->book_id = $request->book_id;
-        $bookCollection->user_id = $request->user_id;
-        $bookCollection->save();
+        ]));
         return redirect('/books')->withStatus($bookCollection->book->title . ' successfully added to collection.');
     }
 
