@@ -26,8 +26,8 @@ class AuthorsControllerTest extends TestCase
         $author2 = factory(Author::class)->create();
 
         $response = $this->get('/authors');
-        $response->assertSee(e($author1->name));
-        $response->assertSee(e($author2->name));
+        $response->assertSee($author1->name);
+        $response->assertSee($author2->name);
     }
 
     /**
@@ -61,7 +61,7 @@ class AuthorsControllerTest extends TestCase
 
         $response = $this->get('/authors/' . $author1->id);
 
-        $response->assertSee(e($author1->name));
+        $response->assertSee($author1->name);
         $response->assertSee($book1Author1->title);
         $response->assertSee($book2Author1->title);
         $response->assertDontSee($book3Author2->title);
@@ -120,7 +120,7 @@ class AuthorsControllerTest extends TestCase
         $response->assertLocation('/authors');
 
         $response = $this->get('/authors');
-        $response->assertSee(e($author->name) . ' successfully added.');
+        $response->assertSee($author->name . ' successfully added.');
     }
 
     /**
@@ -138,7 +138,7 @@ class AuthorsControllerTest extends TestCase
         $response->assertLocation('/authors');
 
         $response = $this->get('/authors');
-        $response->assertSee(e($author->name) . ' successfully updated.');
+        $response->assertSee($author->name . ' successfully updated.');
     }
 
     /**

@@ -22,9 +22,11 @@ class AuthorValidationTest extends TestCase
     */
     public function a_valid_author_can_be_stored()
     {
+        $this->withoutExceptionHandling();
         $author = factory(Author::class)->make([
             'first_name' => 'Robert',
             'last_name' => 'Jordan',
+            'slug' => 'jordan_robert'
         ]);
 
         $this->post('/authors', $author->toArray());

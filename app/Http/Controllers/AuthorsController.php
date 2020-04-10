@@ -28,7 +28,7 @@ class AuthorsController extends Controller
             'last_name' => 'required',
         ], $validationRules);
 
-        $request->validate($rules, $this->messages);
+        return $request->validate($rules, $this->messages);
     }
 
     public function index()
@@ -74,13 +74,14 @@ class AuthorsController extends Controller
 
     public function store(Request $request)
     {
-        $this->validateAuthor($request);
-
-        $author = new Author();
-        $author->first_name = $request->first_name;
-        $author->last_name = $request->last_name;
-        $author->slug = Str::slug($request->lastname . ' ' . $request->first_name);
-        $author->save();
+        $validAuthor = $this->validateAuthor($request);
+        $validAuthor['slug'] = Str::slug($validAuthor['last_name'] . ' ' . $validAuthor['first_name']);
+        //$author = new Author();
+        //$author->first_name = $request->first_name;
+        //$author->last_name = $request->last_name;
+        //$author->slug = Str::slug($request->lastname . ' ' . $request->first_name);
+        //$author->save();
+        $author = Author::create($validAuthor);
         return redirect(route(self::AUTHOR_INDEX))->withStatus($author->name . ' successfully added.');
     }
 
