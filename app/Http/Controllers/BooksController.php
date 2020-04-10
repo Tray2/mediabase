@@ -111,11 +111,28 @@ class BooksController extends Controller
 
     public function store(Request $request)
     {
-        if (!$request->has(self::SERIES)) {
-            $request->merge([self::SERIES => 'Standalone']);
-        }
+        $this->setSeriesAttribute($request);
         $bookData = $this->validateBook($request);
         $book = Book::create($bookData);
+        $this->AddAditionalAuthors($request, $book);
+        $this->AddBookToUserCollection($book);
+        $this->MarkBookAsRead($request, $book);
+
+        return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully added.');
+    }
+
+    public function destroy(Book $book)
+    {
+        $book->delete();
+        return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully deleted.');
+    }
+
+    /**
+     * @param Request $request
+     * @param $book
+     */
+    protected function AddAditionalAuthors(Request $request, $book): void
+    {
         if (isset($request->additional_authors)) {
             $authors = array_merge([$request->author_id], $request->additional_authors);
         } else {
@@ -127,26 +144,41 @@ class BooksController extends Controller
                 self::BOOKID => $book->id
             ]);
         }
+    }
 
+    /**
+     * @param $book
+     */
+    protected function AddBookToUserCollection($book): void
+    {
         BookCollection::create([
             self::BOOKID => $book->id,
             'user_id' => Auth::user()->id
         ]);
+    }
 
+    /**
+     * @param Request $request
+     * @param $book
+     */
+    protected function MarkBookAsRead(Request $request, $book): void
+    {
         if (isset($request->read)) {
             BookRead::create([
                 self::BOOKID => $book->id,
                 'user_id' => Auth::user()->id
             ]);
         }
-
-        return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully added.');
     }
 
-    public function destroy(Book $book)
+    /**
+     * @param Request $request
+     */
+    protected function setSeriesAttribute(Request $request): void
     {
-        $book->delete();
-        return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully deleted.');
+        if (!$request->has(self::SERIES)) {
+            $request->merge([self::SERIES => 'Standalone']);
+        }
     }
 }
 

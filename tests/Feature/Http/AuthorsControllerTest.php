@@ -156,7 +156,7 @@ class AuthorsControllerTest extends TestCase
         $response->assertLocation('/authors');
 
         $response = $this->get('/authors');
-        $response->assertSee(e($author->name) . ' successfully deleted.');
+        $response->assertSee($author->name . ' successfully deleted.');
     }
 
     /**
@@ -223,7 +223,7 @@ class AuthorsControllerTest extends TestCase
     {
         $author = factory(Author::class)->create();
         $response = $this->get('/authors/' . $author->slug);
-        $response->assertSee(e($author->name));
+        $response->assertSee($author->name);
     }
 
     /**
