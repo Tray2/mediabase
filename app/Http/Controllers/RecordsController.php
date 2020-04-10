@@ -33,7 +33,7 @@ class RecordsController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        Record::create($request->validate([
             'artist_id' => 'required|exists:artists,id',
             'title' => 'required',
             'released' => ['required', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
@@ -41,8 +41,7 @@ class RecordsController extends Controller
             'format_id' => 'required|exists:formats,id',
             'release_code' => 'required',
             'barcode' => 'sometimes'
-        ]);
-        Record::create($request->all());
+        ]));
     }
 
     public function edit(Record $record)

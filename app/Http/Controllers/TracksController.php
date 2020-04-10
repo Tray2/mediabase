@@ -24,13 +24,12 @@ class TracksController extends Controller
 
     public function store(Request $request)
     {
-        $track = $request->validate([
+        Track::create($request->validate([
             'track_no' => 'required',
             'title' => 'required',
             'mix' => 'required',
             'record_id' => 'required|exists:records,id'
-        ]);
-        Track::create($track);
+        ]));
     }
 
     public function update(Track $track, Request $request)
