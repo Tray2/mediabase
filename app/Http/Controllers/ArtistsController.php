@@ -16,8 +16,7 @@ class ArtistsController extends Controller
 
     public function index()
     {
-        $artists = Artist::all();
-        return view('artists.index')->with(['artists' => $artists]);
+        return view('artists.index')->with(['artists' => Artist::all()]);
     }
 
     public function show($id)
@@ -28,8 +27,13 @@ class ArtistsController extends Controller
         } else {
             $artist = Artist::where('slug', $id)->firstOrFail();
         }
-        $records = Record::where('artist_id', $artist->id)->get();
-        return view('artists.show')->with(['artist' => $artist, 'records' => $records]);
+
+        return view('artists.show')->with(
+            [
+                'artist' => $artist,
+                'records' => Record::where('artist_id', $artist->id)->get()
+            ]
+        );
     }
 
     public function create()
@@ -54,9 +58,12 @@ class ArtistsController extends Controller
 
     public function update(Artist $artist, Request $request)
     {
-        $request->validate(['name' => 'required|unique:artists,name', 'id' => 'required|exists:artists,id' ]);
-        $artist->name = $request->name;
-        $artist->save();
+        $artist->update($request->validate(
+            [
+                'name' => 'required|unique:artists,name',
+                'id' => 'required|exists:artists,id'
+            ]
+        ));
     }
 
     public function destroy(Artist $artist)
