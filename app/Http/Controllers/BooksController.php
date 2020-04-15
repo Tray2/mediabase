@@ -63,19 +63,21 @@ class BooksController extends Controller
         return view(self::BOOKS_INDEX)->with('books', $books);
     }
 
-    public function show($id)
+    public function show(Book $book)
     {
-        $book = Book::findOrFail($id);
         return view('books.show')->with('book', $book);
     }
 
-    public function edit($id)
+    public function edit(Book $book)
     {
-        $book = Book::findOrFail($id);
-        $additionalAuthors = Author::where('id', '!=', $book->author[0]->id)->get();
-        $genres = Genre::orderBy('genre')->get();
-        $formats = Format::orderBy('format')->get();
-        return view('books.edit')->with(['book' => $book, 'genres' => $genres, 'formats' => $formats, 'additional_authors' => $additionalAuthors]);
+        return view('books.edit')->with(
+            [
+             'book' => $book,
+             'genres' => Genre::orderBy('genre')->get(),
+             'formats' => Format::orderBy('format')->get(),
+             'additional_authors' => Author::where('id', '!=', $book->author[0]->id)->get()
+            ]
+        );
     }
 
     public function create(Request $request)
@@ -114,9 +116,9 @@ class BooksController extends Controller
         $this->setSeriesAttribute($request);
         $bookData = $this->validateBook($request);
         $book = Book::create($bookData);
-        $this->AddAditionalAuthors($request, $book);
-        $this->AddBookToUserCollection($book);
-        $this->MarkBookAsRead($request, $book);
+        $this->addAditionalAuthors($request, $book);
+        $this->addBookToUserCollection($book);
+        $this->markBookAsRead($request, $book);
 
         return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully added.');
     }
@@ -131,7 +133,7 @@ class BooksController extends Controller
      * @param Request $request
      * @param $book
      */
-    protected function AddAditionalAuthors(Request $request, $book): void
+    protected function addAditionalAuthors(Request $request, $book): void
     {
         if (isset($request->additional_authors)) {
             $authors = array_merge([$request->author_id], $request->additional_authors);
@@ -149,7 +151,7 @@ class BooksController extends Controller
     /**
      * @param $book
      */
-    protected function AddBookToUserCollection($book): void
+    protected function addBookToUserCollection($book): void
     {
         BookCollection::create([
             self::BOOKID => $book->id,
@@ -161,7 +163,7 @@ class BooksController extends Controller
      * @param Request $request
      * @param $book
      */
-    protected function MarkBookAsRead(Request $request, $book): void
+    protected function markBookAsRead(Request $request, $book): void
     {
         if (isset($request->read)) {
             BookRead::create([
