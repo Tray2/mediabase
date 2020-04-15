@@ -94,20 +94,7 @@ class BooksController extends Controller
 
     public function update(Book $book, Request $request)
     {
-        $this->validateBook($request, ['id' => 'required|exists:books,id']);
-
-        $book->title = $request->title;
-        $book->series = $request->series;
-        $book->part = $request->part;
-        $book->format_id = $request->format_id;
-        $book->genre_id = $request->genre_id;
-        $book->isbn = $request->isbn;
-        $book->released = $request->released;
-        $book->reprinted = $request->reprinted;
-        $book->pages = $request->pages;
-        $book->blurb = $request->blurb;
-
-        $book->save();
+        $book->update($this->validateBook($request, ['id' => 'required|exists:books,id']));
         return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully updated.');
     }
 
