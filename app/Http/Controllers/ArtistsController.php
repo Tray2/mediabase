@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Artist;
+use App\Http\Requests\ArtistRequest;
 use App\Record;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
