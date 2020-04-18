@@ -46,6 +46,60 @@ class BooksController extends Controller
         return $request->validate($rules);
     }
 
+    /**
+     * @param Request $request
+     * @param $book
+     */
+    protected function addAditionalAuthors(Request $request, $book): void
+    {
+        if (isset($request->additional_authors)) {
+            $authors = array_merge([$request->author_id], $request->additional_authors);
+        } else {
+            $authors = [$request->author_id];
+        }
+        foreach ($authors as $author) {
+            AuthorBook::create([
+                'author_id' => $author,
+                'book_id' => $book->id
+            ]);
+        }
+    }
+
+    /**
+     * @param $book
+     */
+    protected function addBookToUserCollection($book): void
+    {
+        BookCollection::create([
+            'book_id' => $book->id,
+            'user_id' => Auth::user()->id
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $book
+     */
+    protected function markBookAsRead(Request $request, $book): void
+    {
+        if (isset($request->read)) {
+            BookRead::create([
+                'book_id' => $book->id,
+                'user_id' => Auth::user()->id
+            ]);
+        }
+    }
+
+    /**
+     * @param Request $request
+     */
+    protected function setSeriesAttribute(Request $request): void
+    {
+        if (!$request->has('series')) {
+            $request->merge(['series' => 'Standalone']);
+        }
+    }
+
     public function index()
     {
         $books = BookView::orderBy('author_name')
@@ -112,59 +166,6 @@ class BooksController extends Controller
         return redirect(route('books.index'))->withStatus($book->title . ' successfully deleted.');
     }
 
-    /**
-     * @param Request $request
-     * @param $book
-     */
-    protected function addAditionalAuthors(Request $request, $book): void
-    {
-        if (isset($request->additional_authors)) {
-            $authors = array_merge([$request->author_id], $request->additional_authors);
-        } else {
-            $authors = [$request->author_id];
-        }
-        foreach ($authors as $author) {
-            AuthorBook::create([
-                'author_id' => $author,
-                'book_id' => $book->id
-            ]);
-        }
-    }
-
-    /**
-     * @param $book
-     */
-    protected function addBookToUserCollection($book): void
-    {
-        BookCollection::create([
-            'book_id' => $book->id,
-            'user_id' => Auth::user()->id
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param $book
-     */
-    protected function markBookAsRead(Request $request, $book): void
-    {
-        if (isset($request->read)) {
-            BookRead::create([
-                'book_id' => $book->id,
-                'user_id' => Auth::user()->id
-            ]);
-        }
-    }
-
-    /**
-     * @param Request $request
-     */
-    protected function setSeriesAttribute(Request $request): void
-    {
-        if (!$request->has('series')) {
-            $request->merge(['series' => 'Standalone']);
-        }
-    }
 }
 
 
