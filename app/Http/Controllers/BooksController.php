@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller
 {
-    const REQUIRED = 'required';
-    const SERIES = 'series';
-    const AUTHORID = 'author_id';
-    const BOOKS_INDEX = 'books.index';
-    const BOOKID = 'book_id';
-
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
@@ -30,8 +24,8 @@ class BooksController extends Controller
     protected function validateBook(Request $request, $validationRules = [])
     {
         $rules = array_merge([
-            'title' => self::REQUIRED,
-            self::SERIES => self::REQUIRED,
+            'title' => 'required',
+            'series' => 'required',
             'part' => [
                 'required_unless:series,Standalone',
                 'numeric',
@@ -40,13 +34,13 @@ class BooksController extends Controller
             'format_id' => 'required|exists:formats,id',
             'genre_id' => 'required|exists:genres,id',
             'isbn' => [
-                self::REQUIRED,
+                'required',
                 'regex:/^(97(8|9))?\d{9}(\d|X)$/'
             ],
-            'released' => [self::REQUIRED, 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
+            'released' => ['required', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
             'reprinted' => ['nullable', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
             'pages' => 'required|integer',
-            'blurb' => self::REQUIRED
+            'blurb' => 'required'
         ], $validationRules);
 
         return $request->validate($rules);
@@ -60,7 +54,7 @@ class BooksController extends Controller
                          ->orderBy('released')
                          ->orderBy('title')
                          ->get();
-        return view(self::BOOKS_INDEX)->with('books', $books);
+        return view('books.index')->with('books', $books);
     }
 
     public function show(Book $book)
@@ -82,20 +76,22 @@ class BooksController extends Controller
 
     public function create(Request $request)
     {
-        if ($request->query(self::AUTHORID) == null) {
+        if ($request->query('author_id') == null) {
             return redirect('/authors')->with('error', 'You must specify an author.');
         }
-        $author = Author::findOrFail($request->query(self::AUTHORID));
-        $additionalAuthors = Author::where('id', '!=', $author->id)->get();
-        $genres = Genre::where('type', 'book')->orderBy('genre')->get();
-        $formats = Format::orderBy('format')->get();
-        return view('books.create')->with(['genres' => $genres, 'formats' => $formats, 'author' => $author, 'additional_authors' => $additionalAuthors]);
+        $author = Author::findOrFail($request->query('author_id'));
+        return view('books.create')->with([
+            'genres' => Genre::where('type', 'book')->orderBy('genre')->get(),
+            'formats' => Format::orderBy('format')->get(),
+            'author' => $author,
+            'additional_authors' => Author::where('id', '!=', $author->id)->get()
+        ]);
     }
 
     public function update(Book $book, Request $request)
     {
         $book->update($this->validateBook($request, ['id' => 'required|exists:books,id']));
-        return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully updated.');
+        return redirect(route('books.index'))->withStatus($book->title . ' successfully updated.');
     }
 
     public function store(Request $request)
@@ -107,13 +103,13 @@ class BooksController extends Controller
         $this->addBookToUserCollection($book);
         $this->markBookAsRead($request, $book);
 
-        return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully added.');
+        return redirect(route('books.index'))->withStatus($book->title . ' successfully added.');
     }
 
     public function destroy(Book $book)
     {
         $book->delete();
-        return redirect(route(self::BOOKS_INDEX))->withStatus($book->title . ' successfully deleted.');
+        return redirect(route('books.index'))->withStatus($book->title . ' successfully deleted.');
     }
 
     /**
@@ -130,7 +126,7 @@ class BooksController extends Controller
         foreach ($authors as $author) {
             AuthorBook::create([
                 'author_id' => $author,
-                self::BOOKID => $book->id
+                'book_id' => $book->id
             ]);
         }
     }
@@ -141,7 +137,7 @@ class BooksController extends Controller
     protected function addBookToUserCollection($book): void
     {
         BookCollection::create([
-            self::BOOKID => $book->id,
+            'book_id' => $book->id,
             'user_id' => Auth::user()->id
         ]);
     }
@@ -154,7 +150,7 @@ class BooksController extends Controller
     {
         if (isset($request->read)) {
             BookRead::create([
-                self::BOOKID => $book->id,
+                'book_id' => $book->id,
                 'user_id' => Auth::user()->id
             ]);
         }
@@ -165,8 +161,8 @@ class BooksController extends Controller
      */
     protected function setSeriesAttribute(Request $request): void
     {
-        if (!$request->has(self::SERIES)) {
-            $request->merge([self::SERIES => 'Standalone']);
+        if (!$request->has('series')) {
+            $request->merge(['series' => 'Standalone']);
         }
     }
 }

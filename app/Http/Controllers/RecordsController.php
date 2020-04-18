@@ -14,10 +14,25 @@ class RecordsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
+    protected function validateRecord(Request $request, $validationRules = [])
+    {
+        $rules = array_merge([
+            'artist_id' => 'required|exists:artists,id',
+            'title' => 'required',
+            'released' => ['required', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
+            'genre_id' => 'required|exists:genres,id',
+            'format_id' => 'required|exists:formats,id',
+            'release_code' => 'required',
+            'barcode' => 'sometimes'
+        ], $validationRules);
+
+        return $request->validate($rules);
+    }
+
+
     public function index()
     {
-        $records = Record::all();
-        return view('records.index')->with(['records' => $records]);
+        return view('records.index')->with(['records' => Record::all()]);
     }
 
     public function show(Record $record)
@@ -27,21 +42,12 @@ class RecordsController extends Controller
 
     public function create()
     {
-        $genres = Genre::where('type', 'record')->get();
-        return view('records.create')->with(['genres' => $genres]);
+        return view('records.create')->with(['genres' => Genre::where('type', 'record')->get()]);
     }
 
     public function store(Request $request)
     {
-        Record::create($request->validate([
-            'artist_id' => 'required|exists:artists,id',
-            'title' => 'required',
-            'released' => ['required', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
-            'genre_id' => 'required|exists:genres,id',
-            'format_id' => 'required|exists:formats,id',
-            'release_code' => 'required',
-            'barcode' => 'sometimes'
-        ]));
+        Record::create($this->validateRecord($request));
     }
 
     public function edit(Record $record)
@@ -51,24 +57,7 @@ class RecordsController extends Controller
 
     public function update(Record $record, Request $request)
     {
-        $request->validate([
-            'artist_id' => 'required|exists:artists,id',
-            'title' => 'required',
-            'released' => ['required', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
-            'genre_id' => 'required|exists:genres,id',
-            'format_id' => 'required|exists:formats,id',
-            'release_code' => 'required',
-            'barcode' => 'sometimes',
-            'id' => 'required|exists:records,id'
-        ]);
-        $record->artist_id = $request->artist_id;
-        $record->title = $request->title;
-        $record->released = $request->released;
-        $record->genre_id = $request->genre_id;
-        $record->format_id = $request->format_id;
-        $record->release_code = $request->release_code;
-        $record->barcode = $request->barcode;
-        $record->save();
+        $record->update($this->validateRecord($request,['id' => 'required|exists:records,id']));
     }
 
     public function destroy(Record $record)

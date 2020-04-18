@@ -22,7 +22,6 @@ class ArtistsController extends Controller
 
     public function show($id)
     {
-        $artist = '';
         if(is_numeric($id)) {
             $artist = Artist::findOrFail($id);
         } else {

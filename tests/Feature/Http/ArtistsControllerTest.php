@@ -155,7 +155,7 @@ class ArtistsControllerTest extends TestCase
     {
         $artist = factory(Artist::class)->create();
         $response = $this->get('/artists/' . $artist->slug);
-        $response->assertSee(e($artist->name));
+        $response->assertSee($artist->name);
     }
 
     /**
