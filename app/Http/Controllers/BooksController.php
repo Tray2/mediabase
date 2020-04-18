@@ -21,7 +21,7 @@ class BooksController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    protected function validateBook(Request $request, $validationRules = [])
+    protected function validation(Request $request, $validationRules = [])
     {
         $rules = array_merge([
             'title' => 'required',
@@ -144,14 +144,14 @@ class BooksController extends Controller
 
     public function update(Book $book, Request $request)
     {
-        $book->update($this->validateBook($request, ['id' => 'required|exists:books,id']));
+        $book->update($this->validation($request, ['id' => 'required|exists:books,id']));
         return redirect(route('books.index'))->withStatus($book->title . ' successfully updated.');
     }
 
     public function store(Request $request)
     {
         $this->setSeriesAttribute($request);
-        $bookData = $this->validateBook($request);
+        $bookData = $this->validation($request);
         $book = Book::create($bookData);
         $this->addAditionalAuthors($request, $book);
         $this->addBookToUserCollection($book);
