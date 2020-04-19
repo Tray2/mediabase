@@ -7,9 +7,6 @@ use App\Genre;
 
 class GenresController extends Controller
 {
-    const GENRE = 'genre';
-    const GENRE_INDEX = 'genres.index';
-
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
@@ -18,7 +15,7 @@ class GenresController extends Controller
     protected function validateGenre(Request $request, $validationRules = [])
     {
         $rules = array_merge([
-            self::GENRE => 'required|unique:genres,genre',
+            'genre' => 'required|unique:genres,genre',
             'type' => 'required'
         ], $validationRules);
 
@@ -27,20 +24,17 @@ class GenresController extends Controller
 
     public function index()
     {
-        $genres = Genre::orderBy(self::GENRE)->get();
-        return view(self::GENRE_INDEX, compact('genres'));
+        return view('genres.index')->with(['genres' => Genre::orderBy('genre')->get()]);
     }
 
     public function show($id)
     {
-        $genre = Genre::findOrFail($id);
-        return view('genres.show', compact(self::GENRE));
+        return view('genres.show')->with(['genre' => Genre::findOrFail($id)]);
     }
 
     public function edit($id)
     {
-        $genre = Genre::findOrFail($id);
-        return view('genres.edit')->with([self::GENRE => $genre]);
+        return view('genres.edit')->with(['genre' => Genre::findOrFail($id)]);
     }
 
     public function create()
@@ -51,20 +45,18 @@ class GenresController extends Controller
     public function store(Request $request)
     {
         $genre = Genre::create($this->validateGenre($request));
-        return redirect(route(self::GENRE_INDEX))->withStatus($genre->genre . ' successfully added.');
+        return redirect(route('genres.index'))->withStatus($genre->genre . ' successfully added.');
     }
 
     public function update(Genre $genre, Request $request)
     {
-        $this->validateGenre($request, ['id' => 'required|exists:genres']);
-        $genre->genre = $request->genre;
-        $genre->update();
-        return redirect(route(self::GENRE_INDEX))->withStatus($genre->genre . ' successfully updated.');
+        $genre->update($this->validateGenre($request, ['id' => 'required|exists:genres']));
+        return redirect(route('genres.index'))->withStatus($genre->genre . ' successfully updated.');
     }
 
     public function destroy(Genre $genre)
     {
         $genre->delete();
-        return redirect(route(self::GENRE_INDEX))->withStatus($genre->genre . ' successfully deleted.');
+        return redirect(route('genres.index'))->withStatus($genre->genre . ' successfully deleted.');
     }
 }

@@ -18,8 +18,13 @@ class BookReadsController extends Controller
 
     public function index(User $user)
     {
-        $books = BookView::whereIn('book_id', BookRead::whereUserId($user->id)->pluck('id'))->get();
-        return view('book_read.index')->with(['user' => $user, 'books' => $books]);
+        return view('book_read.index')
+            ->with(
+                [
+                    'user' => $user,
+                    'books' => BookView::whereIn('book_id', BookRead::whereUserId($user->id)->pluck('id'))->get()
+                ]
+            );
     }
 
     public function store(Request $request)

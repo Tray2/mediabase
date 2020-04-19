@@ -63,7 +63,7 @@ class BooksControllerTest extends TestCase
 
         $response = $this->get('/books');
 
-        $response->assertSee(e($author1->name));
+        $response->assertSee($author1->name);
         $response->assertSee($book1->title);
         $response->assertSee($book1->series);
         $response->assertSee($book1->part);
@@ -71,7 +71,7 @@ class BooksControllerTest extends TestCase
         $response->assertSee($book1->genre->genre);
         $response->assertSee($book1->format->format);
 
-        $response->assertSee(e($author2->name));
+        $response->assertSee($author2->name);
         $response->assertSee($book2->title);
         $response->assertSee($book2->series);
         $response->assertSee($book2->part);

@@ -19,22 +19,20 @@ class BookCollectionsController extends Controller
 
     public function index($id)
     {
-        $user = '';
         if (is_numeric($id)) {
             $user = User::findOrFail($id);
         } else {
             $user = User::where('slug', $id)->firstOrFail();
         }
 
-        $books = BookCollectionView::whereUserId($user->id)
-        ->orderBy('author_name')
-        ->orderBy('series_started')
-        ->orderBy('part')
-        ->orderBy('released')
-        ->orderBy('title')
-        ->get();
-
-        return view('book_collection.index')->with(['books' => $books, 'user' => $user]);
+        return view('book_collection.index')->with(['books' => BookCollectionView::whereUserId($user->id)
+            ->orderBy('author_name')
+            ->orderBy('series_started')
+            ->orderBy('part')
+            ->orderBy('released')
+            ->orderBy('title')
+            ->get(),
+            'user' => $user]);
     }
 
     public function store(Request $request)

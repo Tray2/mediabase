@@ -24,28 +24,22 @@ class FormatsController extends Controller
 
     public function index()
     {
-        $formats = Format::orderBy('format')->get();
-        return view('formats.index', compact('formats'));
+        return view('formats.index')->with(['formats' => Format::orderBy('format')->get()]);
     }
 
     public function show($id)
     {
-        $format = Format::findOrFail($id);
-        return view('formats.show', compact('format'));
+        return view('formats.show')->with(['format' => Format::findOrFail($id)]);
     }
 
     public function edit($id)
     {
-        $format = Format::findOrFail($id);
-        return view('formats.edit', compact('format'));
+        return view('formats.edit')->with(['format' => Format::findOrFail($id)]);
     }
 
     public function update(Format $format, Request $request)
     {
-        $this->validateFormat($request, ['id' => 'required|exists:formats,id']);
-
-        $format->format = $request->format;
-        $format->save();
+        $format->update($this->validateFormat($request, ['id' => 'required|exists:formats,id']));
         return redirect(route('formats.index'))->withStatus($format->format . ' successfully updated.');
     }
 

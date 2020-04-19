@@ -34,17 +34,12 @@ class TracksController extends Controller
 
     public function update(Track $track, Request $request)
     {
-        $request->validate([
+        $track->update($request->validate([
             'track_no' => 'required',
             'title' => 'required',
             'mix' => 'required',
             'record_id' => 'required|exists:records,id',
             'id' => 'required|exists:tracks,id'
-        ]);
-
-        $track->track_no = $request->track_no;
-        $track->title = $request->title;
-        $track->mix = $request->mix;
-        $track->save();
+        ]));
     }
 }

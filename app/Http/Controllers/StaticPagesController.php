@@ -22,7 +22,6 @@ class StaticPagesController extends Controller
         if (Auth::check()) {
             return redirect(route('home'));
         }
-        $bookCounter = Book::count();
-        return view('static_pages.start')->with('bookCounter', $bookCounter);
+        return view('static_pages.start')->with('bookCounter', Book::count());
     }
 }
