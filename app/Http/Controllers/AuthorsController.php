@@ -9,8 +9,6 @@ use Illuminate\Support\Str;
 
 class AuthorsController extends Controller
 {
-    const AUTHOR_INDEX = 'authors.index';
-
     protected $messages = [
         'first_name.unique' => 'Author name not unique',
         'slug' => null
@@ -36,35 +34,37 @@ class AuthorsController extends Controller
         $authors = Author::orderBy('last_name', 'asc')
             ->orderBy('first_name', 'asc')
             ->get();
-        return view(self::AUTHOR_INDEX)->with(['authors' => $authors]);
+        return view('authors.index')->with(['authors' => $authors]);
     }
 
     public function show($id)
     {
-        $author = '';
         if (is_numeric($id)) {
             $author = Author::findOrFail($id);
         } else {
             $author = Author::where('slug', $id)->firstOrFail();
         }
 
-        $books = BookView::where('author_name', 'like', '%' . $author->name . '%')->get();
-        return view('authors.show')->with(['author' => $author, 'books' => $books]);
+        return view('authors.show')->with(
+            [
+                'author' => $author,
+                'books' => BookView::where('author_name', 'like', '%' . $author->name . '%')
+                    ->get()
+            ]
+        );
     }
 
-    public function edit($id)
+    public function edit(Author $author)
     {
-        $author = Author::findOrFail($id);
         return view('authors.edit')->with(['author' => $author]);
     }
 
     public function update(Author $author, Request $request)
     {
-        $this->validateAuthor($request, ['id' => 'required|exists:authors,id']);
-        $author->first_name = $request->first_name;
-        $author->last_name= $request->last_name;
-        $author->update();
-        return redirect(route(self::AUTHOR_INDEX))->withStatus($author->name . ' successfully updated.');
+        $authorData = $this->validateAuthor($request, ['id' => 'required|exists:authors,id']);
+        $authorData['slug'] = Str::slug($authorData['last_name'] . ' ' .$authorData['first_name']);
+        $author->update($authorData);
+        return redirect(route('authors.index'))->withStatus($author->name . ' successfully updated.');
     }
 
     public function create()
@@ -74,15 +74,15 @@ class AuthorsController extends Controller
 
     public function store(Request $request)
     {
-        $validAuthor = $this->validateAuthor($request);
-        $validAuthor['slug'] = Str::slug($validAuthor['last_name'] . ' ' . $validAuthor['first_name']);
-        $author = Author::create($validAuthor);
-        return redirect(route(self::AUTHOR_INDEX))->withStatus($author->name . ' successfully added.');
+        $authorData = $this->validateAuthor($request);
+        $authorData['slug'] = Str::slug($authorData['last_name'] . ' ' . $authorData['first_name']);
+        $author = Author::create($authorData);
+        return redirect(route('authors.index'))->withStatus($author->name . ' successfully added.');
     }
 
     public function destroy(Author $author)
     {
         $author->delete();
-        return redirect(route(self::AUTHOR_INDEX))->withStatus($author->name . ' successfully deleted.');
+        return redirect(route('authors.index'))->withStatus($author->name . ' successfully deleted.');
     }
 }
