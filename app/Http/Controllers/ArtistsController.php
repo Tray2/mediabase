@@ -58,12 +58,13 @@ class ArtistsController extends Controller
 
     public function update(Artist $artist, Request $request)
     {
-        $artist->update($request->validate(
-            [
+        $artistData = $request->validate([
                 'name' => 'required|unique:artists,name',
                 'id' => 'required|exists:artists,id'
             ]
-        ));
+        );
+        $artistData['slug'] = Str::slug($artistData['name']);
+        $artist->update($artistData);
     }
 
     public function destroy(Artist $artist)

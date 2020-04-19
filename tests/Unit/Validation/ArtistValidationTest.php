@@ -3,6 +3,7 @@
 namespace Tests\Unit\Validation;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use App\Artist;
 
@@ -62,11 +63,13 @@ class ArtistValidationTest extends TestCase
     /** @test */
     public function a_valid_artist_can_be_updated()
     {
+        $this->withoutExceptionHandling();
         $artist = factory(Artist::class)->create();
         $artist->name = 'Erik B & Rakim';
 
         $this->put('/artists/' . $artist->id, $artist->toArray());
         $this->assertEquals(1, Artist::where('name', 'Erik B & Rakim')->count());
+        $this->assertEquals(1, Artist::where('slug', 'erik-b-rakim')->count());
     }
 
     /**
