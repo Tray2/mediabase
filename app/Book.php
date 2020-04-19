@@ -8,10 +8,8 @@ use App\BookCollection;
 
 class Book extends Model
 {
-    const SERIES = 'series';
-
     protected $guarded = [];
-    
+
     public function author()
     {
         return $this->belongsToMany(Author::class, 'author_books');
@@ -45,9 +43,9 @@ class Book extends Model
     public function setSeriesAttribute($value)
     {
         if (!isset($value)) {
-            $this->attributes[self::SERIES] = 'Standalone';
+            $this->attributes['series'] = 'Standalone';
         } else {
-            $this->attributes[self::SERIES] = ucwords(strtolower($value));
+            $this->attributes['series'] = ucwords(strtolower($value));
         }
     }
 
@@ -66,7 +64,7 @@ class Book extends Model
                 ->get();
         }
 
-        return BookView::where('author_id', $author->author_id)->where(self::SERIES, '!=', $this->series)->get();
+        return BookView::where('author_id', $author->author_id)->where('series', '!=', $this->series)->get();
     }
 
     public function inCollection()
