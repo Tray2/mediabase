@@ -173,4 +173,22 @@ class ArtistsControllerTest extends TestCase
         $response = $this->get('/artists');
         $response->assertSee('<td>1</td>', false);
     }
+
+    /**
+     * @test
+     */
+    public function after_creating_an_artist_the_user_is_redirected_to_the_artists_index_view_and_success_message_is_shown()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn();
+        $artist = factory(Artist::class)->make();
+
+        $response = $this->post('/artists', $artist->toArray());
+
+        $response->assertStatus(302);
+        $response->assertLocation('/artists');
+
+        $response = $this->get('/artists');
+        $response->assertSee($artist->name . ' successfully added.');
+    }
 }

@@ -43,12 +43,13 @@ class ArtistsController extends Controller
 
     public function store(Request $request)
     {
-        $artist = $request->validate([
+        $validArtist = $request->validate([
             'name' => 'required|unique:artists,name',
             'slug' => 'nullable'
         ]);
-        $artist['slug'] = Str::slug($artist['name']);
-        Artist::create($artist);
+        $validArtist['slug'] = Str::slug($validArtist['name']);
+        $artist = Artist::create($validArtist);
+        return redirect(route('artists.index'))->withStatus($artist->name . ' successfully added.');
     }
 
     public function edit(Artist $artist)
