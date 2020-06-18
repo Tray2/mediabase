@@ -171,7 +171,7 @@ class GenresControllerTest extends TestCase
     {
         factory(Author::class)->create();
         factory(Format::class)->create();
-        factory(Genre::class)->create(['type' => 'book']);
+        factory(Genre::class)->create(['type' => 'books']);
         factory(Book::class)->create();
         $response = $this->get('genres');
         $response->assertSee('<td>1</td>', false);
