@@ -14,7 +14,7 @@
                 <td class="pl-2 py-2">
                     <a href="{{ route('formats.show', $format->id )}}" class="hover:underline">{{ $format->format }}</a>
                 </td>
-                <td>{{ $format->books->count() }}</td>
+                <td>{{ $format->books_count }}</td>
             </tr>
         @endforeach
     </table>

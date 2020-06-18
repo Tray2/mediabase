@@ -24,7 +24,7 @@ class GenresController extends Controller
 
     public function index()
     {
-        return view('genres.index')->with(['genres' => Genre::orderBy('genre')->get()]);
+        return view('genres.index')->with(['genres' => Genre::orderBy('genre')->withCount('books')->get()]);
     }
 
     public function show($id)

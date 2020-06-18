@@ -14,10 +14,10 @@
                 <td class="pl-2 py-2">
                     <a href="{{ route('genres.show', $genre->id )}}" class="hover:underline">{{ $genre->genre }} - {{ $genre->type }}</a>
                 </td>
-                @if($genre->type === 'book')
-                    <td>{{ $genre->books->count() }}</td>
-                @elseif($genre->type === 'record')
-                    <td>{{ $genre->books->count() }}</td>
+                @if($genre->type === 'books')
+                    <td>{{ $genre->books_count }}</td>
+                @elseif($genre->type === 'records')
+                    <td>{{ $genre->record_count }}</td>
                 @endif
             </tr>
         @endforeach

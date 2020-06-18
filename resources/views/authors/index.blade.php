@@ -20,7 +20,7 @@
     <table class="mt-6 w-1/3">
         <tr class="text-left bg-gray-500 text-xl"><th class="py-2 pl-2">Author</th><th>Books</th></tr>
         @foreach($authors as $author)
-            <tr class="border-b-2 text-lg text-gray-800"><td class="pl-2 py-2"><a href="{{ route('authors.show', $author->id )}}" class="hover:underline">{{ $author->name }}</a></td><td>{{ $author->books->count() }}</td></tr>
+            <tr class="border-b-2 text-lg text-gray-800"><td class="pl-2 py-2"><a href="{{ route('authors.show', $author->id )}}" class="hover:underline">{{ $author->name }}</a></td><td>{{ $author->books_count }}</td></tr>
         @endforeach
     </table>
 @endif

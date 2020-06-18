@@ -33,6 +33,7 @@ class AuthorsController extends Controller
     {
         $authors = Author::orderBy('last_name', 'asc')
             ->orderBy('first_name', 'asc')
+            ->withCount('books')
             ->get();
         return view('authors.index')->with(['authors' => $authors]);
     }
