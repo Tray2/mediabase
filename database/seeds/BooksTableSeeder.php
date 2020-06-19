@@ -12,8 +12,12 @@ class BooksTableSeeder extends Seeder
 {
     protected $books = [
         [
-            'author_first' => 'Robert',
-            'author_last' => 'Jordan',
+            'authors' => [
+                [
+                    'first_name' => 'Robert',
+                    'last_name' => 'Jordan',
+                ]
+            ],
             'title' => 'The Eye Of The World',
             'series' => 'The Wheel Of Time',
             'part' => 1,
@@ -26,8 +30,12 @@ class BooksTableSeeder extends Seeder
             'blurb' => 'The Wheel of Time turns and Ages come and go, leaving memories that become legend. Legend fades to myth, and even myth is long forgotten when the Age that gave it birth returns again. In the Third Age, an Age of Prophecy, the World and Time themselves hang in the balance. What was, what will be, and what is, may yet fall under the Shadow.'
         ],
         [
-            'author_first' => 'Robert',
-            'author_last' => 'Jordan',
+            'authors' => [
+                [
+                    'first_name' => 'Robert',
+                    'last_name' => 'Jordan',
+                ]
+            ],
             'title' => 'The Great Hunt',
             'series' => 'The Wheel Of Time',
             'part' => 2,
@@ -39,6 +47,29 @@ class BooksTableSeeder extends Seeder
             'pages' => 70,
             'blurb' => 'The Wheel of Time turns and Ages come and pass. What was, what will be, and what is, may yet fall under the Shadow. Let the Dragon ride again on the winds of time.'
         ],
+        [
+            'authors' => [
+                [
+                    'first_name' => 'Robert',
+                    'last_name' => 'Jordan',
+                ],
+                [
+                    'first_name' => 'Brandon',
+                    'last_name' => 'Sanderson'
+                ]
+            ],
+            'title' => 'A Memory Of Light',
+            'series' => 'The Wheel Of Time',
+            'part' => 14,
+            'format' => 'Hardcover',
+            'genre' => 'Fantasy',
+            'isbn' => '9780765325952',
+            'released' => 2013,
+            'reprinted' => null,
+            'pages' => 700,
+            'blurb' => 'The Wheel of Time turns and Ages come and go, leaving memories that become legend. Legend fades to myth, and even myth is long forgotten when the Age that gave it birth returns again. In the Third Age, an Age of Prophecy, the World and Time themselves hang in the balance. What was, what will be, and what is, may yet fall under the Shadow.'
+        ],
+
     ];
 
     /**
@@ -51,18 +82,25 @@ class BooksTableSeeder extends Seeder
         foreach($this->books as $book) {
             $format = Format::where('format', $book['format'])->where('type', 'books')->first();
             $genre = Genre::where('genre', $book['genre'])->where('type','books')->first();
-            $author = Author::firstOrNew([
-                'first_name' => $book['author_first'],
-                'last_name' => $book['author_last'],
-                'slug' => Str::slug($book['author_last'] . ' ' . $book['author_first'])
-            ]);
             $bookData = array_merge($book, ['format_id' => $format->id, 'genre_id' => $genre->id ]);
-            unset($bookData['author_first']);
-            unset($bookData['author_last']);
+            unset($bookData['authors']);
             unset($bookData['format']);
             unset($bookData['genre']);
-            $bookId = Book::create($bookData);
-            AuthorBook::create(['author_id' => $author->id, 'book_id' => $bookId->id]);
+            $bookRecord = Book::create($bookData);
+
+            foreach($book['authors'] as $author) {
+                $authorRecord = Author::firstOrNew([
+                    'first_name' => $author['first_name'],
+                    'last_name' => $author['last_name'],
+                    'slug' => Str::slug($author['last_name'] . ' ' . $author['first_name'])
+                ]);
+                $authorRecord->save();
+                AuthorBook::create([
+                    'author_id' => $authorRecord->id,
+                    'book_id' => $bookRecord->id
+                ]);
+            }
+
          }
     }
 }
