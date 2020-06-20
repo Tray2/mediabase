@@ -257,10 +257,12 @@ class BooksControllerTest extends TestCase
         $this->signIn();
         $author = factory(Author::class)->create();
         $bookGenre = factory(Genre::class)->create([
-            'type' => 'books˛'
+            'type' => 'books'
         ]);
 
-        $otherGenre = factory(Genre::class)->create();
+        $otherGenre = factory(Genre::class)->create([
+            'type' => 'games'
+        ]);
 
         $response = $this->get('books/create?author_id=' . $author->id);
         $response->assertSee($bookGenre->genre, false);
