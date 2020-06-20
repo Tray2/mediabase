@@ -135,10 +135,10 @@ class BooksController extends Controller
         }
         $author = Author::findOrFail($request->query('author_id'));
         return view('books.create')->with([
-            'genres' => Genre::where('type', 'book')->orderBy('genre')->get(),
-            'formats' => Format::orderBy('format')->get(),
+            'genres' => Genre::where('type', 'books')->orderBy('genre')->get(),
+            'formats' => Format::where('type', 'books')->orderBy('format')->get(),
             'author' => $author,
-            'additional_authors' => Author::where('id', '!=', $author->id)->get()
+            'additional_authors' => Author::where('id', '!=', $author->id)->orderBy('last_name')->orderBy('first_name')->get()
         ]);
     }
 

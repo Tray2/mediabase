@@ -257,7 +257,7 @@ class BooksControllerTest extends TestCase
         $this->signIn();
         $author = factory(Author::class)->create();
         $bookGenre = factory(Genre::class)->create([
-            'type' => 'book'
+            'type' => 'books˛'
         ]);
 
         $otherGenre = factory(Genre::class)->create();
@@ -282,6 +282,45 @@ class BooksControllerTest extends TestCase
         $response->assertSee(e($this->author[2]->name), false);
         $response->assertSee(e($this->author[3]->name), false);
         $response->assertSee(e($this->author[4]->name), false);
+    }
+
+    /**
+    * @test
+    */
+    public function additional_authors_are_ordered_by_their_last_name_and_their_first_name()
+    {
+        $this->signIn();
+        Author::create([
+            'first_name' => 'Robert',
+            'last_name' => 'Jordan',
+            'slug' => 'jordan-robert'
+        ]);
+
+        Author::create([
+            'first_name' => 'Sarah',
+            'last_name' => 'Ash',
+            'slug' => 'ash-sarah'
+        ]);
+
+        Author::create([
+            'first_name' => 'Elizabeth',
+            'last_name' => 'Moon',
+            'slug' => 'moon-elizabeth'
+        ]);
+
+        Author::create([
+            'first_name' => 'Patricia',
+            'last_name' => 'Briggs',
+            'slug' => 'briggs-patricia'
+        ]);
+
+        $response = $this->get('books/create?author_id=1');
+
+        $response->assertSeeInOrder([
+            'Ash, Sarah',
+            'Briggs, Patricia',
+            'Moon, Elizabeth'
+        ]);
     }
 
     /**
