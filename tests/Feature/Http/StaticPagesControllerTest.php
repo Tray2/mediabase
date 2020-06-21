@@ -64,8 +64,8 @@ class StaticPagesControllerTest extends TestCase
         $responseNoBooks->assertSee('Over 0 books');
 
         factory(Author::class)->create();
-        factory(Genre::class)->create();
         factory(Format::class)->create();
+        factory(Genre::class)->create();
         factory(Book::class)->create();
 
         $responseOneBook = $this->get('/');

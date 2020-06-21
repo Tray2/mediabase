@@ -82,8 +82,8 @@ class BookReadsControllerTest extends TestCase
     public function a_user_can_mark_a_book_as_unread()
     {
         $this->signIn();
-        factory(Genre::class)->create();
         factory(Format::class)->create();
+        factory(Genre::class)->create();
         $book = factory(Book::class)->create();
         factory(AuthorBook::class)->create([
             'author_id' => $this->author->id,

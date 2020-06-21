@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Format;
 use App\Genre;
 use App\Record;
 use Carbon\Carbon;
@@ -42,7 +43,12 @@ class RecordsController extends Controller
 
     public function create()
     {
-        return view('records.create')->with(['genres' => Genre::where('type', 'record')->get()]);
+        return view('records.create')
+            ->with([
+                'genres' => Genre::where('type', 'records')->get(),
+                'formats' => Format::where('type', 'records')->get()
+            ]
+        );
     }
 
     public function store(Request $request)

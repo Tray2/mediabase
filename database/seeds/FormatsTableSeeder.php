@@ -22,6 +22,10 @@ class FormatsTableSeeder extends Seeder
         'format' => 'E-book',
         'type' => 'books'
       ],
+      [
+          'format' => 'LP',
+          'type' => 'records'
+      ]
     ];
     /**
      * Run the database seeds.

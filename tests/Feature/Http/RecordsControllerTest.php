@@ -230,14 +230,14 @@ class RecordsControllerTest extends TestCase
     */
     public function the_create_records_page_contains_all_genres()
     {
+        $this->withoutExceptionHandling();
         $this->signIn();
-        $genre1 = factory(Genre::class)->create(['type' => 'record']);
-        $genre2 = factory(Genre::class)->create(['type' => 'record']);
-        $genre3 = factory(Genre::class)->create(['type' => 'record']);
-        $genre4 = factory(Genre::class)->create(['type' => 'record']);
+        $genre1 = factory(Genre::class)->create(['type' => 'records']);
+        $genre2 = factory(Genre::class)->create(['type' => 'records']);
+        $genre3 = factory(Genre::class)->create(['type' => 'records']);
+        $genre4 = factory(Genre::class)->create(['type' => 'records']);
 
         $response = $this->get('/records/create');
-
         $response->assertSee($genre1->genre);
         $response->assertSee($genre2->genre);
         $response->assertSee($genre3->genre);
@@ -252,11 +252,11 @@ class RecordsControllerTest extends TestCase
         $this->signIn();
         $genreToSee = factory(Genre::class)->create([
             'genre' => 'Rap',
-            'type' => 'record'
+            'type' => 'records'
         ]);
         $genreNotToSee = factory(Genre::class)->create([
             'genre' => 'Fantasy',
-            'type' => 'book'
+            'type' => 'books'
         ]);
 
         $response = $this->get('/records/create');
@@ -264,4 +264,45 @@ class RecordsControllerTest extends TestCase
         $response->assertSee($genreToSee->genre);
         $response->assertDontSee($genreNotToSee->genre);
     }
+
+    /**
+     * @test
+     */
+    public function the_create_records_page_contains_all_formats()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn();
+        $format1 = factory(Format::class)->create(['type' => 'records']);
+        $format2 = factory(Format::class)->create(['type' => 'records']);
+        $format3 = factory(Format::class)->create(['type' => 'records']);
+        $format4 = factory(Format::class)->create(['type' => 'records']);
+
+        $response = $this->get('/records/create');
+        $response->assertSee($format1->format);
+        $response->assertSee($format2->format);
+        $response->assertSee($format3->format);
+        $response->assertSee($format4->format);
+    }
+
+    /**
+     * @test
+     */
+    public function the_create_records_page_does_only_contain_record_formats()
+    {
+        $this->signIn();
+        $formatToSee = factory(Format::class)->create([
+            'format' => 'Lp',
+            'type' => 'records'
+        ]);
+        $formatNotToSee = factory(Format::class)->create([
+            'format' => 'Paperback',
+            'type' => 'books'
+        ]);
+
+        $response = $this->get('/records/create');
+
+        $response->assertSee($formatToSee->format);
+        $response->assertDontSee($formatNotToSee->format);
+    }
+
 }

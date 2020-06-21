@@ -257,10 +257,12 @@ class BooksControllerTest extends TestCase
         $this->signIn();
         $author = factory(Author::class)->create();
         $bookGenre = factory(Genre::class)->create([
+            'genre' => 'Fantasy',
             'type' => 'books'
         ]);
 
         $otherGenre = factory(Genre::class)->create([
+            'genre' => 'Rpg',
             'type' => 'games'
         ]);
 

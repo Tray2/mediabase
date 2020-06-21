@@ -2,10 +2,11 @@
 
 namespace Tests\Unit\Validation;
 
+use App\Genre;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Genre;
+use App\Format;
 
 class GenreValidationTest extends TestCase
 {

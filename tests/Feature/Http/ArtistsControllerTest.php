@@ -165,8 +165,8 @@ class ArtistsControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
         factory(Artist::class)->create();
-        factory(Format::class)->create();
         factory(Genre::class)->create();
+        factory(Format::class)->create();
         $response = $this->get('/artists');
         $response->assertSee('<td>0</td>', false);
         factory(Record::class)->create();

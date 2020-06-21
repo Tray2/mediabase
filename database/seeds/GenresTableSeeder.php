@@ -27,6 +27,10 @@ class GenresTableSeeder extends Seeder
             'genre' => 'Medical Thriller',
             'type' => 'books'
         ],
+        [
+            'genre' => 'Hip Hop',
+            'type' => 'records'
+        ]
     ];
 
     /**

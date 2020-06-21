@@ -5,8 +5,8 @@ namespace Tests\Unit\Validation;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Author;
-use App\Genre;
 use App\Format;
+use App\Genre;
 use App\Book;
 use Carbon\Carbon;
 
@@ -100,8 +100,8 @@ class BookValidationTest extends TestCase
     public function part_is_required_only_if_book_is_part_of_a_series()
     {
         factory(Author::class)->create();
-        factory(Format::class)->create(['type' => 'book']);
-        factory(Genre::class)->create(['type' => 'book']);
+        factory(Genre::class)->create(['type' => 'books']);
+        factory(Format::class)->create(['type' => 'books']);
 
         $standalone = factory(Book::class)->make([
             'series' => null,

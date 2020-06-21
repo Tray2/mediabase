@@ -5,9 +5,9 @@ namespace Tests\Feature\Http;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Genre;
-use App\Author;
 use App\Format;
+use App\Author;
+use App\Genre;
 use App\Book;
 
 class GenresControllerTest extends TestCase

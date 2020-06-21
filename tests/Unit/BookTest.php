@@ -21,8 +21,8 @@ class BookTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        factory(Genre::class)->create(['type' => 'book']);
-        factory(Format::class)->create(['type' => 'book']);
+        factory(Format::class)->create(['type' => 'books']);
+        factory(Genre::class)->create(['type' => 'books']);
     }
 
     /**

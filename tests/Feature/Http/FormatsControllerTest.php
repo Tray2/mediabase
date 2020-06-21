@@ -122,7 +122,7 @@ class FormatsControllerTest extends TestCase
     {
         $this->signIn();
 
-        $format = factory(format::class)->create();
+        $format = factory(Format::class)->create();
 
         $response = $this->delete('/formats/' . $format->id);
 

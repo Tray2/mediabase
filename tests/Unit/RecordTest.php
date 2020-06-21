@@ -38,7 +38,7 @@ class RecordTest extends TestCase
         factory(Artist::class)->create();
         $format = factory(Format::class)->create([
             'format' => 'Cd Single',
-            'type' => 'record'
+            'type' => 'records'
         ]);
 
         $record = factory(Record::class)->create([
@@ -54,7 +54,7 @@ class RecordTest extends TestCase
     public function it_can_get_the_record_genre()
     {
         factory(Artist::class)->create();
-        factory(Format::class)->create(['type' => 'record']);
+        factory(Genre::class)->create(['type' => 'record']);
         $genre = factory(Genre::class)->create([
             'genre' => 'Rap',
             'type' => 'record'

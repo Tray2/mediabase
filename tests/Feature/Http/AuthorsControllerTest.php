@@ -9,8 +9,8 @@ use App\Author;
 use App\AuthorBook;
 use App\Book;
 use App\BookCollection;
-use App\Genre;
 use App\Format;
+use App\Genre;
 
 class AuthorsControllerTest extends TestCase
 {
@@ -232,8 +232,8 @@ class AuthorsControllerTest extends TestCase
     public function when_visiting_the_index_page_the_amount_of_books_by_the_author_is_shown()
     {
         factory(Author::class)->create();
-        factory(Format::class)->create();
         factory(Genre::class)->create();
+        factory(Format::class)->create();
         factory(Book::class)->create();
         $response = $this->get('authors');
         $response->assertSee('<td>0</td>', false);
