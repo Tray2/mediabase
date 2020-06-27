@@ -20,7 +20,7 @@ class FormatTest extends TestCase
 
         $format = factory(Format::class)->make([
             'format' => 'paPerBack',
-            'type' => 'book'
+            'type' => 'books'
         ]);
 
         $this->post('/formats', $format->toArray());
@@ -34,21 +34,50 @@ class FormatTest extends TestCase
     {
         factory(Format::class)->create([
             'format' => 'Hardcover',
-            'type' => 'book'
+            'type' => 'books'
         ]);
 
         factory(Format::class)->create([
             'format' => 'Paperback',
-            'type' => 'book'
+            'type' => 'books'
         ]);
 
         factory(Format::class)->create([
             'format' => 'Big Pocket',
-            'type' => 'book'
+            'type' => 'books'
         ]);
 
         $response = $this->get('/formats');
         $response->assertSeeInOrder(['Big Pocket', 'Hardcover', 'Paperback']);
+    }
+
+    /**
+    * @test
+    */
+    public function formats_are_ordered_by_type_then_the_format()
+    {
+        factory(Format::class)->create([
+            'format' => 'Hardcover',
+            'type' => 'books'
+        ]);
+
+        factory(Format::class)->create([
+            'format' => 'Cd',
+            'type' => 'records'
+        ]);
+
+        factory(Format::class)->create([
+            'format' => 'Lp',
+            'type' => 'records'
+        ]);
+
+        factory(Format::class)->create([
+            'format' => 'Big Pocket',
+            'type' => 'books'
+        ]);
+
+        $response = $this->get('/formats');
+        $response->assertSeeInOrder(['Big Pocket', 'Hardcover', 'Cd', 'Lp']);
     }
 
 }

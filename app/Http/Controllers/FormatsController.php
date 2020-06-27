@@ -24,7 +24,11 @@ class FormatsController extends Controller
 
     public function index()
     {
-        return view('formats.index')->with(['formats' => Format::orderBy('format')->withCount('books')->get()]);
+        return view('formats.index')
+            ->with(['formats' => Format::orderBy('type')
+                ->orderBy('format')
+                ->withCount('books')
+                ->get()]);
     }
 
     public function show($id)
