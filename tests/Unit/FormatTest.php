@@ -80,4 +80,22 @@ class FormatTest extends TestCase
         $response->assertSeeInOrder(['Big Pocket', 'Hardcover', 'Cd', 'Lp']);
     }
 
+    /**
+    * @test
+    */
+    public function the_format_type_is_shown_on_the_index_page()
+    {
+        factory(Format::class)->create([
+            'format' => 'Hardcover',
+            'type' => 'books'
+        ]);
+
+        factory(Format::class)->create([
+            'format' => 'Cd',
+            'type' => 'records'
+        ]);
+        $response = $this->get('/formats');
+        $response->assertSeeInOrder(['<td>Books</td>', '<td>Records</td>'], false);
+    }
+
 }

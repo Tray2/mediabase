@@ -8,12 +8,13 @@
     <h3>No formats found</h3>
 @else
     <table class="mt-6 w-1/3">
-        <tr class="text-left bg-gray-500 text-xl"><th class="py-2 pl-2">Format</th><th>Books</th></tr>
+        <tr class="text-left bg-gray-500 text-xl"><th class="py-2 pl-2">Format</th><th>Type</th><th>Items</th></tr>
         @foreach($formats as $format)
             <tr class="border-b-2 text-lg text-gray-800">
                 <td class="pl-2 py-2">
                     <a href="{{ route('formats.show', $format->id )}}" class="hover:underline">{{ $format->format }}</a>
                 </td>
+                <td>{{ucfirst($format->type)}}</td>
                 <td>{{ $format->books_count }}</td>
             </tr>
         @endforeach
