@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Artist;
 use App\Format;
 use App\Genre;
 use App\Record;
@@ -41,12 +42,16 @@ class RecordsController extends Controller
         return view('records.show')->with(['record' => $record]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->query('artist_id') == null) {
+            return redirect('/artists')->with('error', 'You must specify an artist.');
+        }
         return view('records.create')
             ->with([
                 'genres' => Genre::where('type', 'records')->get(),
-                'formats' => Format::where('type', 'records')->get()
+                'formats' => Format::where('type', 'records')->get(),
+                'artist' => Artist::findOrFail($request->query('artist_id'))
             ]
         );
     }

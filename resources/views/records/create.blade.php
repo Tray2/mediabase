@@ -2,7 +2,7 @@
 @section('content')
     <form action="/records" method="POST">
         @csrf
-        <input type="hidden" name="artist_id">
+        <input type="hidden" name="artist_id" value="{{ isset($artist) ? old('artist_id', $artist->id): old('artist_id') }}">
         <label for="title">Title</label>
         <input type="text" name="title" id="title">
         <label for="genre_id">Genre</label>
