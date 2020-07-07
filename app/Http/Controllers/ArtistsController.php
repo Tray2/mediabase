@@ -17,7 +17,7 @@ class ArtistsController extends Controller
 
     public function index()
     {
-        return view('artists.index')->with(['artists' => Artist::all()]);
+        return view('artists.index')->with(['artists' => Artist::orderBy('name')->get()]);
     }
 
     public function show($id)
