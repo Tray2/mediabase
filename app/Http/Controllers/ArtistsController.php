@@ -43,12 +43,12 @@ class ArtistsController extends Controller
 
     public function store(Request $request)
     {
-        $validArtist = $request->validate([
+        $artistRecord = $request->validate([
             'name' => 'required|unique:artists,name',
             'slug' => 'nullable'
         ]);
-        $validArtist['slug'] = Str::slug($validArtist['name']);
-        $artist = Artist::create($validArtist);
+        $artistRecord['slug'] = Str::slug($artistRecord['name']);
+        $artist = Artist::create($artistRecord);
         return redirect(route('artists.index'))->withStatus($artist->name . ' successfully added.');
     }
 
@@ -59,13 +59,13 @@ class ArtistsController extends Controller
 
     public function update(Artist $artist, Request $request)
     {
-        $artistData = $request->validate([
+        $artistRecord = $request->validate([
                 'name' => 'required|unique:artists,name',
                 'id' => 'required|exists:artists,id'
             ]
         );
-        $artistData['slug'] = Str::slug($artistData['name']);
-        $artist->update($artistData);
+        $artistRecord['slug'] = Str::slug($artistRecord['name']);
+        $artist->update($artistRecord);
     }
 
     public function destroy(Artist $artist)
