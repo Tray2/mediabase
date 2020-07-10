@@ -66,6 +66,7 @@ class ArtistsController extends Controller
         );
         $artistRecord['slug'] = Str::slug($artistRecord['name']);
         $artist->update($artistRecord);
+        return redirect(route('artists.index'))->withStatus($artist->name . ' successfully updated.');
     }
 
     public function destroy(Artist $artist)
