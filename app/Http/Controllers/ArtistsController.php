@@ -72,5 +72,6 @@ class ArtistsController extends Controller
     public function destroy(Artist $artist)
     {
         $artist->delete();
+        return redirect(route('artists.index'))->withStatus($artist->name . ' successfully deleted.');
     }
 }
