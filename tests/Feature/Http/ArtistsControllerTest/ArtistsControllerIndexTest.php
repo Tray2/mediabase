@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http;
+namespace Tests\Feature\Http\ArtistsControllerTest;
 
 use App\Artist;
 use App\Format;

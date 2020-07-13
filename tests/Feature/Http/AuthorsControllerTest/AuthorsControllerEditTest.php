@@ -1,0 +1,36 @@
+<?php
+
+namespace Tests\Feature\Http\AuthorsControllerTest;
+
+use App\Author;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class AuthorsControllerEditTest extends TestCase
+{
+    use RefreshDatabase;
+    /**
+     * @test
+     */
+    public function an_user_can_edit_an_author()
+    {
+        $this->signIn();
+
+        $author = factory(Author::class)->create([
+            'last_name' => 'Jordan',
+            'first_name' => 'Robert'
+        ]);
+
+        $response = $this->get('/authors/' . $author->id . '/edit');
+
+        $response->assertSee('name="first_name"', false);
+        $response->assertSee('name="last_name"', false);
+        $response->assertSee('name="id"', false);
+        $response->assertSee('name="_token"', false);
+        $response->assertSee('name="_method"', false);
+        $response->assertSee('value="Robert"', false);
+        $response->assertSee('value="Jordan"', false);
+        $response->assertSee('value="' . $author->id . '"', false);
+    }
+
+}
