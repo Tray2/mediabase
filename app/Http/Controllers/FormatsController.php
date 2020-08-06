@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormatFormRequest;
-use Illuminate\Http\Request;
 use App\Format;
 
 class FormatsController extends Controller

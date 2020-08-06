@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\GenreFormRequest;
 use App\Genre;
 
 class GenresController extends Controller
@@ -12,15 +12,6 @@ class GenresController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    protected function validateGenre(Request $request, $validationRules = [])
-    {
-        $rules = array_merge([
-            'genre' => 'required|unique:genres,genre',
-            'type' => 'required'
-        ], $validationRules);
-
-        return $request->validate($rules);
-    }
 
     public function index()
     {
@@ -42,15 +33,15 @@ class GenresController extends Controller
         return view('genres.create');
     }
 
-    public function store(Request $request)
+    public function store(GenreFormRequest $request)
     {
-        $genre = Genre::create($this->validateGenre($request));
+        $genre = Genre::create($request->validated());
         return redirect(route('genres.index'))->withStatus($genre->genre . ' successfully added.');
     }
 
-    public function update(Genre $genre, Request $request)
+    public function update(Genre $genre, GenreFormRequest $request)
     {
-        $genre->update($this->validateGenre($request, ['id' => 'required|exists:genres']));
+        $genre->update($request->validated());
         return redirect(route('genres.index'))->withStatus($genre->genre . ' successfully updated.');
     }
 
