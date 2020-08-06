@@ -22,7 +22,6 @@ class ArtistValidationTest extends TestCase
     */
     public function a_valid_artist_can_be_stored()
     {
-        $this->withoutExceptionHandling();
         $artist = factory(Artist::class)->make([
             'name' => 'Run Dmc',
             'slug' => 'run-dmc'
@@ -63,10 +62,8 @@ class ArtistValidationTest extends TestCase
     /** @test */
     public function a_valid_artist_can_be_updated()
     {
-        $this->withoutExceptionHandling();
         $artist = factory(Artist::class)->create();
         $artist->name = 'Erik B & Rakim';
-
         $this->put('/artists/' . $artist->id, $artist->toArray());
         $this->assertEquals(1, Artist::where('name', 'Erik B & Rakim')->count());
         $this->assertEquals(1, Artist::where('slug', 'erik-b-rakim')->count());

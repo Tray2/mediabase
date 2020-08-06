@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Artist;
+use App\Http\Requests\ArtistFormRequest;
 use App\Http\Requests\ArtistRequest;
 use App\Record;
 use Illuminate\Http\Request;
@@ -41,12 +42,9 @@ class ArtistsController extends Controller
         return view('artists.create');
     }
 
-    public function store(Request $request)
+    public function store(ArtistFormRequest $request)
     {
-        $artistRecord = $request->validate([
-            'name' => 'required|unique:artists,name',
-            'slug' => 'nullable'
-        ]);
+        $artistRecord = $request->validated();
         $artistRecord['slug'] = Str::slug($artistRecord['name']);
         $artist = Artist::create($artistRecord);
         return redirect(route('artists.index'))->withStatus($artist->name . ' successfully added.');
@@ -57,15 +55,11 @@ class ArtistsController extends Controller
         return view('artists.edit')->with(['artist' => $artist]);
     }
 
-    public function update(Artist $artist, Request $request)
+    public function update(Artist $artist, ArtistFormRequest $request)
     {
-        $artistRecord = $request->validate([
-                'name' => 'required|unique:artists,name',
-                'id' => 'required|exists:artists,id'
-            ]
-        );
-        $artistRecord['slug'] = Str::slug($artistRecord['name']);
-        $artist->update($artistRecord);
+        $validArtist = $request->validated();
+        $validArtist['slug'] = Str::slug($validArtist['name']);
+        $artist->update($validArtist);
         return redirect(route('artists.index'))->withStatus($artist->name . ' successfully updated.');
     }
 
