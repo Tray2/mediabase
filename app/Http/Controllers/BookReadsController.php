@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookReadFormRequest;
 use App\User;
-use Illuminate\Http\Request;
 use App\BookView;
 use App\BookRead;
 use App\Book;
@@ -27,11 +27,12 @@ class BookReadsController extends Controller
             );
     }
 
-    public function store(Request $request)
+    public function store(BookReadFormRequest $request)
     {
-        BookRead::create(['book_id' => $request->book_id, 'user_id' => Auth::user()->id]);
-        $book = Book::findOrFail($request->book_id);
-        return redirect('/books/' . $book->id)->withStatus($book->title . ' marked as read.');
+        $bookData = $request->validated();
+        $bookData['user_id'] = $request->user()->id;
+        $bookRead = BookRead::create($bookData);
+        return redirect('/books/' . $bookRead->book_id)->withStatus($bookRead->book->title . ' marked as read.');
     }
 
     public function destroy(Book $book)

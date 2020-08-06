@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BookCollection;
 use App\BookCollectionView;
 use App\Book;
+use App\Http\Requests\BookCollectionFormRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,12 +36,9 @@ class BookCollectionsController extends Controller
             'user' => $user]);
     }
 
-    public function store(Request $request)
+    public function store(BookCollectionFormRequest $request)
     {
-        $bookCollection = BookCollection::create($request->validate([
-            'user_id' => 'exists:users,id',
-            'book_id' => 'exists:books,id'
-        ]));
+        $bookCollection = BookCollection::create($request->validated());
         return redirect('/books')->withStatus($bookCollection->book->title . ' successfully added to collection.');
     }
 

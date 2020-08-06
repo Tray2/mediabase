@@ -2,40 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\AuthorFormRequest;
 use App\Author;
 use App\BookView;
 use Illuminate\Support\Str;
 
 class AuthorsController extends Controller
 {
-    protected $messages = [
-        'first_name.unique' => 'Author name not unique',
-        'slug' => null
-    ];
-
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    protected function validateAuthor(Request $request, $validationRules = [])
-    {
-        $rules = array_merge([
-            'first_name' => 'required|unique:authors,first_name,' . null . ',id,last_name,'. $request->last_name,
-            'last_name' => 'required',
-        ], $validationRules);
-
-        return $request->validate($rules, $this->messages);
-    }
-
     public function index()
     {
-        $authors = Author::orderBy('last_name', 'asc')
+        return view('authors.index')->with(['authors' => Author::orderBy('last_name', 'asc')
             ->orderBy('first_name', 'asc')
             ->withCount('books')
-            ->get();
-        return view('authors.index')->with(['authors' => $authors]);
+            ->get()]);
     }
 
     public function show($id)
@@ -60,9 +44,9 @@ class AuthorsController extends Controller
         return view('authors.edit')->with(['author' => $author]);
     }
 
-    public function update(Author $author, Request $request)
+    public function update(Author $author, AuthorFormRequest $request)
     {
-        $authorData = $this->validateAuthor($request, ['id' => 'required|exists:authors,id']);
+        $authorData = $request->validated();
         $authorData['slug'] = Str::slug($authorData['last_name'] . ' ' .$authorData['first_name']);
         $author->update($authorData);
         return redirect(route('authors.index'))->withStatus($author->name . ' successfully updated.');
@@ -73,9 +57,9 @@ class AuthorsController extends Controller
         return view('authors.create');
     }
 
-    public function store(Request $request)
+    public function store(AuthorFormRequest $request)
     {
-        $authorData = $this->validateAuthor($request);
+        $authorData = $request->validated();
         $authorData['slug'] = Str::slug($authorData['last_name'] . ' ' . $authorData['first_name']);
         $author = Author::create($authorData);
         return redirect(route('authors.index'))->withStatus($author->name . ' successfully added.');
