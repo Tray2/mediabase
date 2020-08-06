@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FormatFormRequest;
 use Illuminate\Http\Request;
 use App\Format;
 
@@ -10,16 +11,6 @@ class FormatsController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
-    }
-
-    protected function validateFormat(Request $request, $validationRules = [])
-    {
-        $rules = array_merge([
-            'format' => 'required|unique:formats,format',
-            'type' => 'required'
-        ], $validationRules);
-
-        return $request->validate($rules);
     }
 
     public function index()
@@ -41,9 +32,9 @@ class FormatsController extends Controller
         return view('formats.edit')->with(['format' => Format::findOrFail($id)]);
     }
 
-    public function update(Format $format, Request $request)
+    public function update(Format $format, FormatFormRequest $request)
     {
-        $format->update($this->validateFormat($request, ['id' => 'required|exists:formats,id']));
+        $format->update($request->validated());
         return redirect(route('formats.index'))->withStatus($format->format . ' successfully updated.');
     }
 
@@ -52,9 +43,9 @@ class FormatsController extends Controller
         return view('formats.create');
     }
 
-    public function store(Request $request)
+    public function store(FormatFormRequest $request)
     {
-        $format = Format::create($this->validateFormat($request));
+        $format = Format::create($request->validated());
         return redirect(route('formats.index'))->withStatus($format->format . ' successfully added.');
     }
 
