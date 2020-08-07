@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BookCollection;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\BookRead;
 
 class UserPagesController extends Controller
@@ -13,14 +13,14 @@ class UserPagesController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+        ;
         return view('user_pages.index')->with(
             [
-                'user' => $user,
-                'bookCount' => BookCollection::where('user_id', $user->id)->count(),
-                'readCount' => BookRead::where('user_id', $user->id)->count()
+                'user' => $request->user(),
+                'bookCount' => BookCollection::where('user_id', $request->user()->id)->count(),
+                'readCount' => BookRead::where('user_id', $request->user()->id)->count()
             ]
         );
     }

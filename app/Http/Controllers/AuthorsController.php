@@ -39,19 +39,6 @@ class AuthorsController extends Controller
         );
     }
 
-    public function edit(Author $author)
-    {
-        return view('authors.edit')->with(['author' => $author]);
-    }
-
-    public function update(Author $author, AuthorFormRequest $request)
-    {
-        $authorData = $request->validated();
-        $authorData['slug'] = Str::slug($authorData['last_name'] . ' ' .$authorData['first_name']);
-        $author->update($authorData);
-        return redirect(route('authors.index'))->withStatus($author->name . ' successfully updated.');
-    }
-
     public function create()
     {
         return view('authors.create');
@@ -63,6 +50,19 @@ class AuthorsController extends Controller
         $authorData['slug'] = Str::slug($authorData['last_name'] . ' ' . $authorData['first_name']);
         $author = Author::create($authorData);
         return redirect(route('authors.index'))->withStatus($author->name . ' successfully added.');
+    }
+
+    public function edit(Author $author)
+    {
+        return view('authors.edit')->with(['author' => $author]);
+    }
+
+    public function update(Author $author, AuthorFormRequest $request)
+    {
+        $authorData = $request->validated();
+        $authorData['slug'] = Str::slug($authorData['last_name'] . ' ' .$authorData['first_name']);
+        $author->update($authorData);
+        return redirect(route('authors.index'))->withStatus($author->name . ' successfully updated.');
     }
 
     public function destroy(Author $author)

@@ -22,11 +22,6 @@ class GenresController extends Controller
         return view('genres.show')->with(['genre' => Genre::findOrFail($id)]);
     }
 
-    public function edit($id)
-    {
-        return view('genres.edit')->with(['genre' => Genre::findOrFail($id)]);
-    }
-
     public function create()
     {
         return view('genres.create');
@@ -36,6 +31,10 @@ class GenresController extends Controller
     {
         $genre = Genre::create($request->validated());
         return redirect(route('genres.index'))->withStatus($genre->genre . ' successfully added.');
+    }
+    public function edit($id)
+    {
+        return view('genres.edit')->with(['genre' => Genre::findOrFail($id)]);
     }
 
     public function update(Genre $genre, GenreFormRequest $request)

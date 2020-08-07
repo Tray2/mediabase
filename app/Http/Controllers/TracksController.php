@@ -18,14 +18,14 @@ class TracksController extends Controller
         return view('tracks.create');
     }
 
-    public function edit(Track $track)
-    {
-        return view('tracks.edit')->with(['track' => $track]);
-    }
-
     public function store(TrackFormRequest $request)
     {
         Track::create($request->validated());
+    }
+
+    public function edit(Track $track)
+    {
+        return view('tracks.edit')->with(['track' => $track]);
     }
 
     public function update(Track $track, TrackFormRequest $request)

@@ -41,6 +41,4 @@ class BookReadsController extends Controller
         $bookRead->delete();
         return redirect('/books/' . $book->id)->withStatus($book->title . ' marked as unread.');
     }
-
-
 }

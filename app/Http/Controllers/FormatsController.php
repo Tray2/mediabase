@@ -26,17 +26,6 @@ class FormatsController extends Controller
         return view('formats.show')->with(['format' => Format::findOrFail($id)]);
     }
 
-    public function edit($id)
-    {
-        return view('formats.edit')->with(['format' => Format::findOrFail($id)]);
-    }
-
-    public function update(Format $format, FormatFormRequest $request)
-    {
-        $format->update($request->validated());
-        return redirect(route('formats.index'))->withStatus($format->format . ' successfully updated.');
-    }
-
     public function create()
     {
         return view('formats.create');
@@ -46,6 +35,17 @@ class FormatsController extends Controller
     {
         $format = Format::create($request->validated());
         return redirect(route('formats.index'))->withStatus($format->format . ' successfully added.');
+    }
+
+    public function edit($id)
+    {
+        return view('formats.edit')->with(['format' => Format::findOrFail($id)]);
+    }
+
+    public function update(Format $format, FormatFormRequest $request)
+    {
+        $format->update($request->validated());
+        return redirect(route('formats.index'))->withStatus($format->format . ' successfully updated.');
     }
 
     public function destroy(Format $format)

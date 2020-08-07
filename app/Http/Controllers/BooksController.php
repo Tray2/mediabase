@@ -9,10 +9,6 @@ use App\Format;
 use App\Genre;
 use App\Author;
 use App\BookView;
-use App\AuthorBook;
-use App\BookCollection;
-use App\BookRead;
-use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller
 {
@@ -37,18 +33,6 @@ class BooksController extends Controller
         return view('books.show')->with('book', $book);
     }
 
-    public function edit(Book $book)
-    {
-        return view('books.edit')->with(
-            [
-             'book' => $book,
-             'genres' => Genre::orderBy('genre')->get(),
-             'formats' => Format::orderBy('format')->get(),
-             'additional_authors' => Author::where('id', '!=', $book->author[0]->id)->get()
-            ]
-        );
-    }
-
     public function create(Request $request)
     {
         if ($request->query('author_id') == null) {
@@ -63,12 +47,6 @@ class BooksController extends Controller
         ]);
     }
 
-    public function update(Book $book, BookFormRequest $request)
-    {
-        $book->update($request->validated());
-        return redirect(route('books.index'))->withStatus($book->title . ' successfully updated.');
-    }
-
     public function store(BookFormRequest $request)
     {
         $bookData = $request->validated();
@@ -80,13 +58,27 @@ class BooksController extends Controller
         return redirect(route('books.index'))->withStatus($book->title . ' successfully added.');
     }
 
+    public function edit(Book $book)
+    {
+        return view('books.edit')->with(
+            [
+             'book' => $book,
+             'genres' => Genre::orderBy('genre')->get(),
+             'formats' => Format::orderBy('format')->get(),
+             'additional_authors' => Author::where('id', '!=', $book->author[0]->id)->get()
+            ]
+        );
+    }
+
+    public function update(Book $book, BookFormRequest $request)
+    {
+        $book->update($request->validated());
+        return redirect(route('books.index'))->withStatus($book->title . ' successfully updated.');
+    }
+
     public function destroy(Book $book)
     {
         $book->delete();
         return redirect(route('books.index'))->withStatus($book->title . ' successfully deleted.');
     }
-
 }
-
-
-
