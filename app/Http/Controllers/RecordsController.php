@@ -7,7 +7,6 @@ use App\Format;
 use App\Genre;
 use App\Http\Requests\RecordFormRequest;
 use App\Record;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RecordsController extends Controller
@@ -16,22 +15,6 @@ class RecordsController extends Controller
     {
         $this->middleware('auth')->except(['index', 'show']);
     }
-
-    protected function validateRecord(Request $request, $validationRules = [])
-    {
-        $rules = array_merge([
-            'artist_id' => 'required|exists:artists,id',
-            'title' => 'required',
-            'released' => ['required', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
-            'genre_id' => 'required|exists:genres,id',
-            'format_id' => 'required|exists:formats,id',
-            'release_code' => 'required',
-            'barcode' => 'sometimes'
-        ], $validationRules);
-
-        return $request->validate($rules);
-    }
-
 
     public function index()
     {

@@ -6,7 +6,6 @@ use App\Artist;
 use App\Http\Requests\ArtistFormRequest;
 use App\Http\Requests\ArtistRequest;
 use App\Record;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ArtistsController extends Controller

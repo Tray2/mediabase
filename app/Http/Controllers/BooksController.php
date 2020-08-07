@@ -21,50 +21,6 @@ class BooksController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    /**
-     * @param BookFormRequest $request
-     * @param $book
-     */
-    protected function addAditionalAuthors(BookFormRequest $request, $book): void
-    {
-        if (isset($request->additional_authors)) {
-            $authors = array_merge([$request->author_id], $request->additional_authors);
-        } else {
-            $authors = [$request->author_id];
-        }
-        foreach ($authors as $author) {
-            AuthorBook::create([
-                'author_id' => $author,
-                'book_id' => $book->id
-            ]);
-        }
-    }
-
-    /**
-     * @param $book
-     */
-    protected function addBookToUserCollection($book): void
-    {
-        BookCollection::create([
-            'book_id' => $book->id,
-            'user_id' => Auth::user()->id
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param $book
-     */
-    protected function markBookAsRead(Request $request, $book): void
-    {
-        if (isset($request->read)) {
-            BookRead::create([
-                'book_id' => $book->id,
-                'user_id' => Auth::user()->id
-            ]);
-        }
-    }
-
     public function index()
     {
         $books = BookView::orderBy('author_name')
@@ -117,9 +73,9 @@ class BooksController extends Controller
     {
         $bookData = $request->validated();
         $book = Book::create($bookData);
-        $this->addAditionalAuthors($request, $book);
-        $this->addBookToUserCollection($book);
-        $this->markBookAsRead($request, $book);
+        $book->addAuthors($request, $book);
+        $book->addToCollection($book);
+        $book->markAsRead($request, $book);
 
         return redirect(route('books.index'))->withStatus($book->title . ' successfully added.');
     }

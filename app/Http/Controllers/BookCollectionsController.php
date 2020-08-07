@@ -7,9 +7,7 @@ use App\BookCollectionView;
 use App\Book;
 use App\Http\Requests\BookCollectionFormRequest;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class BookCollectionsController extends Controller
 {

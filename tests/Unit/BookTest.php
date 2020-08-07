@@ -53,7 +53,6 @@ class BookTest extends TestCase
     */
     public function the_title_must_start_every_word_with_an_upper_case_letter()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         $author = factory(Author::class)->create();
@@ -72,7 +71,6 @@ class BookTest extends TestCase
     */
     public function no_series_given_results_in_standalone_value_is_required()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         $author = factory(Author::class)->create();
@@ -93,7 +91,6 @@ class BookTest extends TestCase
     public function the_series_must_start_every_word_with_an_upper_case_letter()
     {
         $this->signIn();
-        $this->withExceptionHandling();
 
         factory(Author::class)->create();
 
@@ -225,7 +222,6 @@ class BookTest extends TestCase
     /** @test */
     public function no_series_given_results_in_standalone_value_when_updating()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         factory(Author::class)->create();
@@ -465,6 +461,4 @@ class BookTest extends TestCase
 
         $this->assertEquals(1, $book->isRead());
     }
-
-
 }

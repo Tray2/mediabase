@@ -12,7 +12,6 @@ class GenresController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-
     public function index()
     {
         return view('genres.index')->with(['genres' => Genre::orderBy('genre')->withCount('books')->get()]);

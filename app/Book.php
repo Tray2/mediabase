@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Http\Requests\BookFormRequest;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\BookCollection;
 
@@ -76,4 +78,42 @@ class Book extends Model
     {
         return BookRead::whereBookId($this->id)->where('user_id', Auth::user()->id)->count();
     }
+
+    /**
+     * @param BookFormRequest $request
+     */
+    public function addAuthors(BookFormRequest $request): void
+    {
+        if (isset($request->additional_authors)) {
+            $authors = array_merge([$request->author_id], $request->additional_authors);
+        } else {
+            $authors = [$request->author_id];
+        }
+        foreach ($authors as $author) {
+            AuthorBook::create([
+                'author_id' => $author,
+                'book_id' => $this->id
+            ]);
+        }
+    }
+
+    public function addToCollection(): void
+    {
+        BookCollection::create([
+            'book_id' => $this->id,
+            'user_id' => Auth::user()->id
+        ]);
+    }
+
+    public function markAsRead(Request $request): void
+    {
+        if (isset($request->read)) {
+            BookRead::create([
+                'book_id' => $this->id,
+                'user_id' => Auth::user()->id
+            ]);
+        }
+    }
+
+
 }
