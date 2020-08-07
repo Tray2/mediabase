@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TrackFormRequest;
 use App\Track;
 use Illuminate\Http\Request;
 
@@ -22,17 +23,12 @@ class TracksController extends Controller
         return view('tracks.edit')->with(['track' => $track]);
     }
 
-    public function store(Request $request)
+    public function store(TrackFormRequest $request)
     {
-        Track::create($request->validate([
-            'track_no' => 'required',
-            'title' => 'required',
-            'mix' => 'required',
-            'record_id' => 'required|exists:records,id'
-        ]));
+        Track::create($request->validated());
     }
 
-    public function update(Track $track, Request $request)
+    public function update(Track $track, TrackFormRequest $request)
     {
         $track->update($request->validate([
             'track_no' => 'required',
