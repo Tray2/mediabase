@@ -86,6 +86,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
      */
     public function when_users_create_books_they_are_redirected_to_the_book_index_and_are_shown_a_success_message()
     {
+        $this->withoutExceptionHandling();
         $this->createForeignKeys();
         $this->signIn();
         $book = factory(Book::class)->make();

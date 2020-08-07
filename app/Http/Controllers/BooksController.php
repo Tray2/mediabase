@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookFormRequest;
 use Illuminate\Http\Request;
 use App\Book;
-use Carbon\Carbon;
 use App\Format;
 use App\Genre;
 use App\Author;
@@ -21,36 +21,11 @@ class BooksController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    protected function validation(Request $request, $validationRules = [])
-    {
-        $rules = array_merge([
-            'title' => 'required',
-            'series' => 'required',
-            'part' => [
-                'required_unless:series,Standalone',
-                'numeric',
-                'nullable'
-            ],
-            'format_id' => 'required|exists:formats,id',
-            'genre_id' => 'required|exists:genres,id',
-            'isbn' => [
-                'required',
-                'regex:/^(97(8|9))?\d{9}(\d|X)$/'
-            ],
-            'released' => ['required', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
-            'reprinted' => ['nullable', 'integer', 'between:1800,' . Carbon::now()->addYear(1)->year],
-            'pages' => 'required|integer',
-            'blurb' => 'required'
-        ], $validationRules);
-
-        return $request->validate($rules);
-    }
-
     /**
-     * @param Request $request
+     * @param BookFormRequest $request
      * @param $book
      */
-    protected function addAditionalAuthors(Request $request, $book): void
+    protected function addAditionalAuthors(BookFormRequest $request, $book): void
     {
         if (isset($request->additional_authors)) {
             $authors = array_merge([$request->author_id], $request->additional_authors);
@@ -87,16 +62,6 @@ class BooksController extends Controller
                 'book_id' => $book->id,
                 'user_id' => Auth::user()->id
             ]);
-        }
-    }
-
-    /**
-     * @param Request $request
-     */
-    protected function setSeriesAttribute(Request $request): void
-    {
-        if (!$request->has('series')) {
-            $request->merge(['series' => 'Standalone']);
         }
     }
 
@@ -142,16 +107,15 @@ class BooksController extends Controller
         ]);
     }
 
-    public function update(Book $book, Request $request)
+    public function update(Book $book, BookFormRequest $request)
     {
-        $book->update($this->validation($request, ['id' => 'required|exists:books,id']));
+        $book->update($request->validated());
         return redirect(route('books.index'))->withStatus($book->title . ' successfully updated.');
     }
 
-    public function store(Request $request)
+    public function store(BookFormRequest $request)
     {
-        $this->setSeriesAttribute($request);
-        $bookData = $this->validation($request);
+        $bookData = $request->validated();
         $book = Book::create($bookData);
         $this->addAditionalAuthors($request, $book);
         $this->addBookToUserCollection($book);
