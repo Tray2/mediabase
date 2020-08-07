@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Artist;
 use App\Format;
 use App\Genre;
+use App\Http\Requests\RecordFormRequest;
 use App\Record;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -56,9 +57,9 @@ class RecordsController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(RecordFormRequest $request)
     {
-        Record::create($this->validateRecord($request));
+        Record::create($request->validated());
     }
 
     public function edit(Record $record)
@@ -66,9 +67,9 @@ class RecordsController extends Controller
         return view('records.edit')->with(['record' => $record]);
     }
 
-    public function update(Record $record, Request $request)
+    public function update(Record $record, RecordFormRequest $request)
     {
-        $record->update($this->validateRecord($request,['id' => 'required|exists:records,id']));
+        $record->update($request->validated());
     }
 
     public function destroy(Record $record)
