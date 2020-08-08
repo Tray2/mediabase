@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\FormatsControllerTest;
 
 use App\Format;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use MediaTypeSeeder;
 use Tests\TestCase;
 
 class FormatsControllerCreateTest extends TestCase
@@ -37,6 +38,23 @@ class FormatsControllerCreateTest extends TestCase
 
         $response = $this->get('/formats');
         $response->assertSee($format->format . ' successfully added.');
+    }
+
+    /**
+    * @test
+    */
+    public function the_create_view_contains_a_list_of_available_media_types()
+    {
+        $this->seed(MediaTypeSeeder::class);
+        $this->signIn();
+        $this->get('/formats/create')->assertSeeInOrder(
+            [
+                '<option value="1">Books</option>',
+                '<option value="2">Games</option>',
+                '<option value="3">Movies</option>',
+                '<option value="4">Records</option>',
+            ],
+        false);
     }
 
 }

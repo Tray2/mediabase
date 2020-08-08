@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FormatFormRequest;
 use App\Format;
+use App\MediaType;
 
 class FormatsController extends Controller
 {
@@ -28,7 +29,7 @@ class FormatsController extends Controller
 
     public function create()
     {
-        return view('formats.create');
+        return view('formats.create')->with(['mediaTypes' => MediaType::all()]);
     }
 
     public function store(FormatFormRequest $request)
@@ -39,7 +40,10 @@ class FormatsController extends Controller
 
     public function edit($id)
     {
-        return view('formats.edit')->with(['format' => Format::findOrFail($id)]);
+        return view('formats.edit')->with([
+            'format' => Format::findOrFail($id),
+            'mediaTypes' => MediaType::all()
+        ]);
     }
 
     public function update(Format $format, FormatFormRequest $request)

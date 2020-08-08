@@ -7,6 +7,8 @@ use Tests\TestCase;
 
 class TracksControllerCreateTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @test
      */
