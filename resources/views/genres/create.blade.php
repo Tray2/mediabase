@@ -10,10 +10,11 @@
             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
             required
             >
-            <label for="type">Genre Type</label>
-            <select name="type">
-                <option value="Book">Books</option>
-                <option value="Record">Record</option>
+            <label for="media">Genre Type</label>
+            <select name="media">
+                @foreach($mediaTypes as $media)Genr
+                    <option value="{{ $media->id }}">{{ $media->media }}</option>
+                @endforeach
             </select>
         </div>
         <div class="flex w-1/2 justify-end">

@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\GenresControllerTest;
 
 use App\Genre;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use MediaTypeSeeder;
 use Tests\TestCase;
 
 class GenresControllerCreateTest extends TestCase
@@ -39,4 +40,22 @@ class GenresControllerCreateTest extends TestCase
         $response = $this->get('/genres');
         $response->assertSee(e($genre->genre) . ' successfully added.');
     }
+
+    /**
+     * @test
+     */
+    public function the_view_contains_a_list_of_available_media_types()
+    {
+        $this->seed(MediaTypeSeeder::class);
+        $this->signIn();
+        $this->get('/genres/create')->assertSeeInOrder(
+            [
+                '<option value="1">Books</option>',
+                '<option value="2">Games</option>',
+                '<option value="3">Movies</option>',
+                '<option value="4">Records</option>',
+            ],
+            false);
+    }
+
 }

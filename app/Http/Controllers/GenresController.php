@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GenreFormRequest;
 use App\Genre;
+use App\MediaType;
 
 class GenresController extends Controller
 {
@@ -24,7 +25,7 @@ class GenresController extends Controller
 
     public function create()
     {
-        return view('genres.create');
+        return view('genres.create')->with(['mediaTypes' => MediaType::all()]);
     }
 
     public function store(GenreFormRequest $request)
@@ -34,7 +35,10 @@ class GenresController extends Controller
     }
     public function edit($id)
     {
-        return view('genres.edit')->with(['genre' => Genre::findOrFail($id)]);
+        return view('genres.edit')->with([
+            'genre' => Genre::findOrFail($id),
+            'mediaTypes' => MediaType::all()
+        ]);
     }
 
     public function update(Genre $genre, GenreFormRequest $request)
