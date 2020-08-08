@@ -1,13 +1,12 @@
 <?php
 
-namespace Tests\Feature\http;
+namespace Tests\Feature\Http;
 
 use App\Author;
 use App\Book;
 use App\Format;
 use App\Genre;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StaticPagesControllerTest extends TestCase

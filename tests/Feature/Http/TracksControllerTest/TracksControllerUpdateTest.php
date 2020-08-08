@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http;
+namespace Tests\Feature\Http\TracksControllerTest;
 
 use App\Record;
 use App\Track;
@@ -8,28 +8,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class TracksControllerTest extends TestCase
+class TracksControllerUpdateTest extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-    * @test
-    */
-    public function index_and_show_routes_gives_http_error_405()
-    {
-        $this->get('/tracks')->assertStatus(405);
-        $this->get('/tracks/1')->assertStatus(405);
-    }
-
-    /**
-     * @test
-     */
-    public function users_can_visit_the_create_tracks_page()
-    {
-        $this->signIn();
-        $response = $this->get('/tracks/create');
-        $response->assertSee('name="title"', false);
-    }
 
     /**
      * @test
