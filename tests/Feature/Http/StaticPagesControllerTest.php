@@ -37,7 +37,7 @@ class StaticPagesControllerTest extends TestCase
     /**
     * @test
     */
-    public function guests_can_visit_the_start_page()
+    public function anyone_can_visit_the_start_page()
     {
         $response =$this->get('/');
         $response->assertStatus(200);
@@ -47,7 +47,7 @@ class StaticPagesControllerTest extends TestCase
     /**
     * @test
     */
-    public function users_trying_to_visit_the_start_page_gets_redirected_to_their_dashboard()
+    public function loged_in_users_trying_to_visit_the_start_page_gets_redirected_to_their_dashboard()
     {
         $this->signIn();
         $response = $this->get('/');

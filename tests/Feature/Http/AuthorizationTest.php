@@ -57,6 +57,8 @@ class AuthorizationTest extends TestCase
           'BookRead: a guest is not authorized to visit the store page' => ['post', '/books/read'],
           'BookRead: a guest is not authorized to visit the delete page' => ['delete', '/books/read/1'],
 
+          'UserPages: a guest is not authorized to visit the dashboard (home) page' => ['get', '/home']
+
 
         ];
     }

@@ -40,15 +40,6 @@ class UserPagesControllerTest extends TestCase
     /**
     * @test
     */
-    public function guests_are_redirected_to_the_login_page()
-    {
-        $response = $this->get('/home');
-        $response->assertLocation('/login');
-    }
-
-    /**
-    * @test
-    */
     public function users_see_how_many_books_they_have_in_their_collection()
     {
         $this->signIn();
