@@ -14,9 +14,9 @@
                 <td class="pl-2 py-2">
                     <a href="{{ route('genres.show', $genre->id )}}" class="hover:underline">{{ $genre->genre }}</a>
                 </td>
-                @if($genre->media_type_id == 1)
+                @if($genre->media_type_id == env('BOOKS'))
                     <td>{{ $genre->books_count }}</td>
-                @elseif($genre->media_type_id == 4)
+                @elseif($genre->media_type_id == env('RECORDS'))
                     <td>{{ $genre->record_count }}</td>
                 @endif
             </tr>

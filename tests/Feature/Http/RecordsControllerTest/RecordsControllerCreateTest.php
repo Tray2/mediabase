@@ -50,10 +50,10 @@ class RecordsControllerCreateTest extends TestCase
     {
         factory(Artist::class)->create();
         $this->signIn();
-        $genre1 = factory(Genre::class)->create(['media_type_id' => 4]);
-        $genre2 = factory(Genre::class)->create(['media_type_id' => 4]);
-        $genre3 = factory(Genre::class)->create(['media_type_id' => 4]);
-        $genre4 = factory(Genre::class)->create(['media_type_id' => 4]);
+        $genre1 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
+        $genre2 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
+        $genre3 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
+        $genre4 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
 
         $response = $this->get('/records/create?artist_id=1');
         $response->assertSee($genre1->genre);
@@ -71,11 +71,11 @@ class RecordsControllerCreateTest extends TestCase
         $this->signIn();
         $genreToSee = factory(Genre::class)->create([
             'genre' => 'Rap',
-            'media_type_id' => 4
+            'media_type_id' => env('RECORDS')
         ]);
         $genreNotToSee = factory(Genre::class)->create([
             'genre' => 'Fantasy',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         $response = $this->get('/records/create?artist_id=1');
@@ -91,10 +91,10 @@ class RecordsControllerCreateTest extends TestCase
     {
         factory(Artist::class)->create();
         $this->signIn();
-        $format1 = factory(Format::class)->create(['media_type_id' => 4]);
-        $format2 = factory(Format::class)->create(['media_type_id' => 4]);
-        $format3 = factory(Format::class)->create(['media_type_id' => 4]);
-        $format4 = factory(Format::class)->create(['media_type_id' => 4]);
+        $format1 = factory(Format::class)->create(['media_type_id' => env('RECORDS')]);
+        $format2 = factory(Format::class)->create(['media_type_id' => env('RECORDS')]);
+        $format3 = factory(Format::class)->create(['media_type_id' => env('RECORDS')]);
+        $format4 = factory(Format::class)->create(['media_type_id' => env('RECORDS')]);
 
         $response = $this->get('/records/create?artist_id=1');
         $response->assertSee($format1->format);
@@ -112,11 +112,11 @@ class RecordsControllerCreateTest extends TestCase
         $this->signIn();
         $formatToSee = factory(Format::class)->create([
             'format' => 'Lp',
-            'media_type_id' => 4
+            'media_type_id' => env('RECORDS')
         ]);
         $formatNotToSee = factory(Format::class)->create([
             'format' => 'Paperback',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         $response = $this->get('/records/create?artist_id=1');

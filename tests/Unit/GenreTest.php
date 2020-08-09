@@ -16,7 +16,7 @@ class GenreTest extends TestCase
 
         $genre = factory(Genre::class)->make([
             'genre' => 'fanTasy',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         $this->post('/genres', $genre->toArray());
@@ -30,17 +30,17 @@ class GenreTest extends TestCase
     {
         factory(Genre::class)->create([
             'genre' => 'Fiction',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         factory(Genre::class)->create([
             'genre' => 'Fantasy',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         factory(Genre::class)->create([
             'genre' => 'Crime',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         $response = $this->get('/genres');

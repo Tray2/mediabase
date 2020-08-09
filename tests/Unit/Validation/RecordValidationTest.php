@@ -23,7 +23,7 @@ class RecordValidationTest extends TestCase
         ]);
         $this->genre = factory(Genre::class)->create([
             'genre' => 'Rap',
-            'media_type_id' => 4
+            'media_type_id' => env('RECORDS')
         ]);
 
         $this->artist = factory(Artist::class)->create([

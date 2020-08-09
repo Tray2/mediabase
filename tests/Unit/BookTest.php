@@ -17,8 +17,8 @@ class BookTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        factory(Format::class)->create(['media_type_id' => 1]);
-        factory(Genre::class)->create(['media_type_id' => 1]);
+        factory(Format::class)->create(['media_type_id' => env('BOOKS')]);
+        factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
     }
 
     /**

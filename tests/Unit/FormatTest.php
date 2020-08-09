@@ -16,7 +16,7 @@ class FormatTest extends TestCase
 
         $format = factory(Format::class)->make([
             'format' => 'paPerBack',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         $this->post('/formats', $format->toArray());
@@ -30,17 +30,17 @@ class FormatTest extends TestCase
     {
         factory(Format::class)->create([
             'format' => 'Hardcover',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         factory(Format::class)->create([
             'format' => 'Paperback',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         factory(Format::class)->create([
             'format' => 'Big Pocket',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         $response = $this->get('/formats');
@@ -54,22 +54,22 @@ class FormatTest extends TestCase
     {
         factory(Format::class)->create([
             'format' => 'Hardcover',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         factory(Format::class)->create([
             'format' => 'Cd',
-            'media_type_id' => 4
+            'media_type_id' => env('RECORDS')
         ]);
 
         factory(Format::class)->create([
             'format' => 'Lp',
-            'media_type_id' => 4
+            'media_type_id' => env('RECORDS')
         ]);
 
         factory(Format::class)->create([
             'format' => 'Big Pocket',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         $response = $this->get('/formats');
@@ -83,12 +83,12 @@ class FormatTest extends TestCase
     {
         factory(Format::class)->create([
             'format' => 'Hardcover',
-            'media_type_id' => 1
+            'media_type_id' => env('BOOKS')
         ]);
 
         factory(Format::class)->create([
             'format' => 'Cd',
-            'media_type_id' => 4
+            'media_type_id' => env('RECORDS')
         ]);
         $response = $this->get('/formats');
         $response->assertSeeInOrder(['<td>Books</td>', '<td>Records</td>'], false);

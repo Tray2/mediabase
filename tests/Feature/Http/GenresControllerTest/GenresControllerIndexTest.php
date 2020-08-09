@@ -15,8 +15,8 @@ class GenresControllerIndexTest extends TestCase
      */
     public function a_guest_can_list_all_genres()
     {
-        $genre1 = factory(Genre::class)->create(['media_type_id' => 1]);
-        $genre2 = factory(Genre::class)->create(['media_type_id' => 4]);
+        $genre1 = factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
+        $genre2 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
 
         $response = $this->get('/genres');
         $response->assertSee(e($genre1->genre));
@@ -55,7 +55,7 @@ class GenresControllerIndexTest extends TestCase
     {
         factory(Author::class)->create();
         factory(Format::class)->create();
-        factory(Genre::class)->create(['media_type_id' => 1]);
+        factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
         factory(Book::class)->create();
         $response = $this->get('genres');
         $response->assertSee('<td>1</td>', false);
