@@ -8,13 +8,12 @@ use App\Book;
 use App\BookCollection;
 use App\BookRead;
 use App\Genre;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BooksControllerCreateTest extends BooksControllerTestHelper
 {
-    use RefreshDatabase;
-
-    /** @test */
+    /**
+     * @test
+     */
     public function users_can_visit_books_create()
     {
         $this->signIn();

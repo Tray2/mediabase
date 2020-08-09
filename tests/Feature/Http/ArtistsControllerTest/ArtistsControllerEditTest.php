@@ -3,13 +3,10 @@
 namespace Tests\Feature\Http\ArtistsControllerTest;
 
 use App\Artist;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ArtistsControllerEditTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

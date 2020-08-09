@@ -2,10 +2,7 @@
 
 namespace Tests\Unit;
 
-use MediaTypeSeeder;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Format;
 
 class FormatTest extends TestCase

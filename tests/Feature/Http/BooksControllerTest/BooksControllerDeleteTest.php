@@ -3,12 +3,9 @@
 namespace Tests\Feature\Http\BooksControllerTest;
 
 use App\Book;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BooksControllerDeleteTest extends BooksControllerTestHelper
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

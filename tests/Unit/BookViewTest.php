@@ -8,13 +8,9 @@ use App\Genre;
 use App\AuthorBook;
 use App\BookView;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BookViewTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
     * @test
     */

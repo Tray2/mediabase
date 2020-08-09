@@ -3,13 +3,10 @@
 namespace Tests\Feature\Http\FormatsControllerTest;
 
 use App\Format;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use MediaTypeSeeder;
 use Tests\TestCase;
 
 class FormatsControllerUpdateTest extends TestCase
 {
-    use RefreshDatabase;
     /**
      * @test
      */

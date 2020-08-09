@@ -2,15 +2,11 @@
 
 namespace Tests\Unit\Validation;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 use App\Artist;
 
 class ArtistValidationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp():void
     {
         parent::setUp();

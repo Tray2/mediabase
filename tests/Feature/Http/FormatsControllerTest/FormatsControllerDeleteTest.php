@@ -3,12 +3,10 @@
 namespace Tests\Feature\Http\FormatsControllerTest;
 
 use App\Format;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class FormatsControllerDeleteTest extends TestCase
 {
-    use RefreshDatabase;
     /**
      * @test
      */

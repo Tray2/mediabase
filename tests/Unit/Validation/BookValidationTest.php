@@ -3,7 +3,6 @@
 namespace Tests\Unit\Validation;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Author;
 use App\Format;
 use App\Genre;
@@ -12,8 +11,6 @@ use Carbon\Carbon;
 
 class BookValidationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected $author;
     protected $genre;
     protected $format;

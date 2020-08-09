@@ -3,13 +3,10 @@
 namespace Tests\Feature\Http\GenresControllerTest;
 
 use App\Genre;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GenresControllerDeleteTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

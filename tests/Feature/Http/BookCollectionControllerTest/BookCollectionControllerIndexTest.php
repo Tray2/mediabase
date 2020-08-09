@@ -5,13 +5,10 @@ namespace Tests\Feature\Http\BookCollectionControllerTest;
 use App\Book;
 use App\BookCollection;
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 
 class BookCollectionControllerIndexTest extends BookCollectionControllerTestHelper
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

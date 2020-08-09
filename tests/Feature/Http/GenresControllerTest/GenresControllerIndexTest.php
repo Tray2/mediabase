@@ -6,13 +6,10 @@ use App\Author;
 use App\Book;
 use App\Format;
 use App\Genre;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GenresControllerIndexTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

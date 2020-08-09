@@ -4,14 +4,10 @@ namespace Tests\Feature\Http\TracksControllerTest;
 
 use App\Record;
 use App\Track;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class TracksControllerUpdateTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

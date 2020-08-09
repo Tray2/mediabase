@@ -8,11 +8,9 @@ use App\Book;
 use App\BookCollection;
 use App\BookRead;
 use App\Score;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BooksControllerIndexTest extends BooksControllerTestHelper
 {
-    use RefreshDatabase;
     /**
      * @test
      */

@@ -6,14 +6,10 @@ use App\Artist;
 use App\Format;
 use App\Genre;
 use App\Record;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class RecordTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

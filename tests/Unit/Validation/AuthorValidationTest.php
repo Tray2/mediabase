@@ -3,13 +3,10 @@
 namespace Tests\Unit\Validation;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Author;
 
 class AuthorValidationTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function setUp():void
     {
         parent::setUp();

@@ -3,13 +3,10 @@
 namespace Tests\Feature\Http\BookCollectionControllerTest;
 
 use App\Book;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 
 class BookCollectionControllerCreateTest extends BookCollectionControllerTestHelper
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

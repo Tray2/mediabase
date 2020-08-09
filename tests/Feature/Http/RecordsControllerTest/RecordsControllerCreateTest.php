@@ -5,13 +5,10 @@ namespace Tests\Feature\Http\RecordsControllerTest;
 use App\Artist;
 use App\Format;
 use App\Genre;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RecordsControllerCreateTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

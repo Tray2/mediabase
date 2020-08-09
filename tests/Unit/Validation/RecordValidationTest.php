@@ -7,13 +7,10 @@ use App\Format;
 use App\Genre;
 use App\Record;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RecordValidationTest extends TestCase
 {
-    use RefreshDatabase;
-
     private $format;
     private $genre;
     private $artist;

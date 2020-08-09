@@ -3,15 +3,13 @@
 namespace Tests\Feature\Http\FormatsControllerTest;
 
 use App\Format;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use MediaTypeSeeder;
 use Tests\TestCase;
 
 class FormatsControllerCreateTest extends TestCase
 {
-    use RefreshDatabase;
-
-    /** @test */
+    /**
+     * @test
+     */
     public function a_user_can_create_a_format()
     {
         $this->signIn();

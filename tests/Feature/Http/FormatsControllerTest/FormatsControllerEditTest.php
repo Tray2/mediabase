@@ -3,13 +3,10 @@
 namespace Tests\Feature\Http\FormatsControllerTest;
 
 use App\Format;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class FormatsControllerEditTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function a_user_can_edit_a_format()
     {

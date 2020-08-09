@@ -7,13 +7,10 @@ use App\AuthorBook;
 use App\Book;
 use App\Format;
 use App\Genre;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AuthorsControllerShowTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

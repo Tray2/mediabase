@@ -7,13 +7,10 @@ use App\Format;
 use App\Genre;
 use App\Record;
 use App\Track;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RecordsControllerShowTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

@@ -2,13 +2,10 @@
 
 namespace Tests\Feature\Http\TracksControllerTest;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TracksControllerCreateTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

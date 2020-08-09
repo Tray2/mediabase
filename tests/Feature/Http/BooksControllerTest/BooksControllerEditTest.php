@@ -4,12 +4,9 @@ namespace Tests\Feature\Http\BooksControllerTest;
 
 use App\AuthorBook;
 use App\Book;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BooksControllerEditTest extends BooksControllerTestHelper
 {
-    use RefreshDatabase;
-
     /**
      *  @test
      */

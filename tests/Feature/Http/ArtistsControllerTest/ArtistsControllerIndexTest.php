@@ -6,13 +6,10 @@ use App\Artist;
 use App\Format;
 use App\Genre;
 use App\Record;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ArtistsControllerIndexTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

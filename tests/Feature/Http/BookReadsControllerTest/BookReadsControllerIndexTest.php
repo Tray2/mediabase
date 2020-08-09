@@ -10,13 +10,10 @@ use App\BookRead;
 use App\Format;
 use App\Genre;
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BookReadsControllerIndexTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected $author;
 
     protected function setUp(): void

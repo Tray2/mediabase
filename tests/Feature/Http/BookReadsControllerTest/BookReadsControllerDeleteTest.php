@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http\BookReadsControllerTest;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Author;
 use App\AuthorBook;
@@ -14,8 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class BookReadsControllerDeleteTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected $author;
 
     protected function setUp(): void

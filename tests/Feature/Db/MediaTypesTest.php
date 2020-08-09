@@ -4,13 +4,10 @@ namespace Tests\Feature\Db;
 
 use App\MediaType;
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class MediaTypesTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
     * @test
     */

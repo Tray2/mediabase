@@ -2,16 +2,11 @@
 
 namespace Tests\Unit\Validation;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Author;
 
 class DisplayValidationErrorsTest extends TestCase
 {
-    use DatabaseMigrations;
-    
     /**
     * @test
     */

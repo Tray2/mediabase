@@ -3,12 +3,10 @@
 namespace Tests\Feature\Http\AuthorsControllerTest;
 
 use App\Author;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AuthorsControllerEditTest extends TestCase
 {
-    use RefreshDatabase;
     /**
      * @test
      */

@@ -3,13 +3,10 @@
 namespace Tests\Feature\Http\RecordsControllerTest;
 
 use App\Record;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RecordsControllerDeleteTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

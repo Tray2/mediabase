@@ -4,13 +4,10 @@ namespace Tests\Unit\Validation;
 
 use App\Record;
 use App\Track;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TrackValidationTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

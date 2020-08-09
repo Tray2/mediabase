@@ -7,12 +7,9 @@ use App\Book;
 use App\Format;
 use App\Genre;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StaticPagesControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
     * @test
     */

@@ -3,13 +3,10 @@
 namespace Tests\Feature\Http\GenresControllerTest;
 
 use App\Genre;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use MediaTypeSeeder;
 use Tests\TestCase;
 
 class GenresControllerCreateTest extends TestCase
 {
-    use RefreshDatabase;
     /**
      * @test
      * */

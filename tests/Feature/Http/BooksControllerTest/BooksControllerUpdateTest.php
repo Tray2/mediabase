@@ -3,12 +3,9 @@
 namespace Tests\Feature\Http\BooksControllerTest;
 
 use App\Book;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BooksControllerUpdateTest extends BooksControllerTestHelper
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -27,5 +24,4 @@ class BooksControllerUpdateTest extends BooksControllerTestHelper
         $response = $this->get('/books');
         $response->assertSee(e($book->title) . ' successfully updated.');
     }
-
 }

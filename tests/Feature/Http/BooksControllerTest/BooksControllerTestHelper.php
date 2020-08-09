@@ -3,15 +3,12 @@
 namespace Tests\Feature\Http\BooksControllerTest;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Author;
 use App\Format;
 use App\Genre;
 
 class BooksControllerTestHelper extends TestCase
 {
-    use RefreshDatabase;
-
     protected $genre = '';
     protected $format = '';
     protected $author = '';

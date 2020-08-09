@@ -9,14 +9,11 @@ use App\BookCollection;
 use App\BookRead;
 use App\Format;
 use App\Genre;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class BookReadsControllerCreateTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected $author;
 
     protected function setUp(): void

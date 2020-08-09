@@ -6,14 +6,13 @@ use App\Author;
 use App\Book;
 use App\Format;
 use App\Genre;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class FormatsControllerShowTest extends TestCase
 {
-    use RefreshDatabase;
-
-    /** @test */
+    /**
+     * @test
+     */
     public function a_guest_can_visit_a_format_and_see_all_the_books_belonging_to_it()
     {
         $this->withoutExceptionHandling();
