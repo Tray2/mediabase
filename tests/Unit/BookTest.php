@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Book;
 use App\Score;
@@ -21,8 +20,8 @@ class BookTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        factory(Format::class)->create(['type' => 'books']);
-        factory(Genre::class)->create(['type' => 'books']);
+        factory(Format::class)->create(['media_type_id' => 1]);
+        factory(Genre::class)->create(['media_type_id' => 1]);
     }
 
     /**

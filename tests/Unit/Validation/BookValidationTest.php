@@ -23,8 +23,8 @@ class BookValidationTest extends TestCase
         parent::setUp();
         $this->signIn();
         $this->author = factory(Author::class)->create();
-        $this->genre = factory(Genre::class)->create(['type' => 'book']);
-        $this->format = factory(Format::class)->create(['type' => 'book']);
+        $this->genre = factory(Genre::class)->create(['media_type_id' => 1]);
+        $this->format = factory(Format::class)->create(['media_type_id' => 1]);
         factory(Book::class)->create();
     }
 
@@ -100,8 +100,8 @@ class BookValidationTest extends TestCase
     public function part_is_required_only_if_book_is_part_of_a_series()
     {
         factory(Author::class)->create();
-        factory(Genre::class)->create(['type' => 'books']);
-        factory(Format::class)->create(['type' => 'books']);
+        factory(Genre::class)->create(['media_type_id' => 1]);
+        factory(Format::class)->create(['media_type_id' => 1]);
 
         $standalone = factory(Book::class)->make([
             'series' => null,

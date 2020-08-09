@@ -10,7 +10,7 @@ class GenreFormRequest extends FormRequest
     {
         $rules =  [
             'genre' => 'required|unique:genres,genre',
-            'type' => 'required'
+            'media_type_id' => 'required|exists:media_types,id'
         ];
 
         if ($this->getMethod() == 'PUT') {

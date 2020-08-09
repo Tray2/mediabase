@@ -16,7 +16,7 @@ class CreateFormatsTable extends Migration
         Schema::create('formats', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('format');
-            $table->string('type');
+            $table->foreignId('media_type_id');
             $table->timestamps();
         });
     }

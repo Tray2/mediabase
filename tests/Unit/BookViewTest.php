@@ -23,8 +23,8 @@ class BookViewTest extends TestCase
         $this->withExceptionHandling();
 
         $author = factory(Author::class)->create();
-        factory(Format::class)->create(['type' => 'books']);
-        factory(Genre::class)->create(['type' => 'books']);
+        factory(Format::class)->create(['media_type_id' => 1]);
+        factory(Genre::class)->create(['media_type_id' => 1]);
         factory(Book::class)->create();
         factory(AuthorBook::class)->create([
             'author_id' => 1,

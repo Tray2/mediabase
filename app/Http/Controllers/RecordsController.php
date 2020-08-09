@@ -33,8 +33,8 @@ class RecordsController extends Controller
         }
         return view('records.create')
             ->with([
-                'genres' => Genre::where('type', 'records')->get(),
-                'formats' => Format::where('type', 'records')->get(),
+                'genres' => Genre::where('media_type_id', 4)->get(),
+                'formats' => Format::where('media_type_id', 4)->get(),
                 'artist' => Artist::findOrFail($request->query('artist_id'))
             ]
         );

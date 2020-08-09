@@ -25,11 +25,11 @@ class FormatValidationTest extends TestCase
         $this->withoutExceptionHandling();
         $format = factory(Format::class)->make([
             'format' => 'Paperback',
-            'type' => 'book'
+            'media_type_id' => 1
         ]);
 
         $this->post('/formats', $format->toArray());
-        $this->assertEquals(1, Format::where('type', 'book')->count());
+        $this->assertEquals(1, Format::where('media_type_id', 1)->count());
     }
 
     /**
@@ -42,7 +42,7 @@ class FormatValidationTest extends TestCase
     {
         factory(Format::class)->create([
             'format' => 'Paperback',
-            'type' => 'book'
+            'media_type_id' => 1
         ]);
 
         $format = factory(Format::class)->make([

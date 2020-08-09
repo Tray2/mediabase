@@ -10,7 +10,7 @@ class FormatFormRequest extends FormRequest
     {
         $rules =  [
             'format' => 'required|unique:formats,format',
-            'type' => 'required'
+            'media_type_id' => 'required|exists:media_types,id'
         ];
 
         if ($this->getMethod() == 'PUT') {

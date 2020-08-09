@@ -17,12 +17,11 @@ class GenreTest extends TestCase
     */
     public function the_genre_must_start_every_word_with_an_upper_case_letter()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         $genre = factory(Genre::class)->make([
             'genre' => 'fanTasy',
-            'type' => 'book'
+            'media_type_id' => 1
         ]);
 
         $this->post('/genres', $genre->toArray());
@@ -36,17 +35,17 @@ class GenreTest extends TestCase
     {
         factory(Genre::class)->create([
             'genre' => 'Fiction',
-            'type' => 'book'
+            'media_type_id' => 1
         ]);
 
         factory(Genre::class)->create([
             'genre' => 'Fantasy',
-            'type' => 'book'
+            'media_type_id' => 1
         ]);
 
         factory(Genre::class)->create([
             'genre' => 'Crime',
-            'type' => 'book'
+            'media_type_id' => 1
         ]);
 
         $response = $this->get('/genres');

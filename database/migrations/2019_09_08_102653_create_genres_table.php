@@ -16,7 +16,7 @@ class CreateGenresTable extends Migration
         Schema::create('genres', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('genre');
-            $table->string('type');
+            $table->foreignId('media_type_id');
             $table->timestamps();
         });
     }

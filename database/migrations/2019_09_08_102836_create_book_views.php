@@ -18,18 +18,18 @@ class CreateBookViews extends Migration
                 "CREATE OR REPLACE VIEW book_views AS
                  SELECT
                     (SELECT GROUP_CONCAT(a.id ORDER BY a.id SEPARATOR ',')
-                     FROM authors a, author_books ab 
-                     WHERE a.id = ab.author_id 
+                     FROM authors a, author_books ab
+                     WHERE a.id = ab.author_id
                      AND ab.book_id = b.id) author_id,
                     (SELECT GROUP_CONCAT(concat(a.last_name, ', ', a.first_name)
-                     ORDER BY a.last_name, a.first_name SEPARATOR ' & ') 
-                     FROM authors a, author_books ab 
-                     WHERE ab.author_id = a.id 
+                     ORDER BY a.last_name, a.first_name SEPARATOR ' & ')
+                     FROM authors a, author_books ab
+                     WHERE ab.author_id = a.id
                      AND ab.book_id = b.id) author_name,
                      b.id book_id,
                      b.title,
-                    (SELECT ROUND(AVG(s.score), 1) 
-                    FROM scores s 
+                    (SELECT ROUND(AVG(s.score), 1)
+                    FROM scores s
                     WHERE s.book_id = b.id) rating,
                     b.series,
                     b.part,
@@ -39,11 +39,11 @@ class CreateBookViews extends Migration
                     f.id format_id,
                     f.format,
                     CASE series
-                        WHEN 'Standalone' 
+                        WHEN 'Standalone'
                         THEN b.released
                         ELSE (SELECT MIN(bi.released)
-                              FROM books bi 
-                              WHERE bi.series = b.series) 
+                              FROM books bi
+                              WHERE bi.series = b.series)
                         END series_started
                 FROM books b,
                      genres g,
@@ -53,21 +53,21 @@ class CreateBookViews extends Migration
             );
         } else {
             DB::statement(
-                "CREATE VIEW book_views AS
-                 SELECT (SELECT GROUP_CONCAT(a.id) 
-                        FROM authors a, author_books ab 
-                        WHERE a.id = ab.author_id 
+                "CREATE VIEW IF NOT EXISTS book_views AS
+                 SELECT (SELECT GROUP_CONCAT(a.id)
+                        FROM authors a, author_books ab
+                        WHERE a.id = ab.author_id
                         AND ab.book_id = b.id) author_id,
                         (SELECT GROUP_CONCAT(author_name, ' & ')
                          FROM (SELECT a.last_name || ', ' || a.first_name author_name
-                               FROM authors a, author_books ab 
-                               WHERE ab.author_id = a.id 
-                               AND ab.book_id = b.id 
+                               FROM authors a, author_books ab
+                               WHERE ab.author_id = a.id
+                               AND ab.book_id = b.id
                                ORDER BY a.last_name, a.first_name)) author_name,
                         b.id book_id,
                         b.title,
-                        (SELECT ROUND(AVG(s.score), 1) 
-                        FROM scores s 
+                        (SELECT ROUND(AVG(s.score), 1)
+                        FROM scores s
                         WHERE s.book_id = b.id) rating,
                         b.series,
                         b.part,
@@ -77,11 +77,11 @@ class CreateBookViews extends Migration
                         f.id format_id,
                         f.format,
                         CASE series
-                    	    WHEN 'Standalone' 
+                    	    WHEN 'Standalone'
                             THEN b.released
-                    	    ELSE (SELECT MIN(bi.released) 
-                            FROM books bi 
-                            WHERE bi.series = b.series) 
+                    	    ELSE (SELECT MIN(bi.released)
+                            FROM books bi
+                            WHERE bi.series = b.series)
                        	END series_started
                 FROM books  b,
                      genres  g,

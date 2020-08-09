@@ -45,7 +45,6 @@ class FormatsControllerCreateTest extends TestCase
     */
     public function the_view_contains_a_list_of_available_media_types()
     {
-        $this->seed(MediaTypeSeeder::class);
         $this->signIn();
         $this->get('/formats/create')->assertSeeInOrder(
             [

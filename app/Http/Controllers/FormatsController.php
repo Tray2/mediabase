@@ -16,7 +16,7 @@ class FormatsController extends Controller
     public function index()
     {
         return view('formats.index')
-            ->with(['formats' => Format::orderBy('type')
+            ->with(['formats' => Format::orderBy('media_type_id')
                 ->orderBy('format')
                 ->withCount('books')
                 ->get()]);

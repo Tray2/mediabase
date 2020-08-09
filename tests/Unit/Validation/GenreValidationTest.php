@@ -72,7 +72,7 @@ class GenreValidationTest extends TestCase
         return [
             'genre is required' => ['genre', ''],
             'genre must be unique' => ['genre', 'Fantasy'],
-            'type is required' => ['type', '']
+            'media_type_id is required' => ['media_type_id', '']
         ];
     }
 

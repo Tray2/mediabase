@@ -14,29 +14,10 @@ class MediaTypesTest extends TestCase
     /**
     * @test
     */
-    public function the_media_types_table_has_an_id()
-    {
-        $mediaType = MediaType::create(['media' => 'Book']);
-        $this->assertEquals(1, $mediaType->id);
-    }
-
-    /**
-    * @test
-    */
-    public function the_media_types_table_has_a_media_type()
-    {
-        $mediaType = MediaType::create(['media' => 'Book']);
-        $this->assertEquals('Book', $mediaType->media);
-    }
-
-    /**
-    * @test
-    */
     public function the_media_must_be_unique()
     {
         $this->expectException(QueryException::class);
-        MediaType::create(['media' => 'Book']);
-        MediaType::create(['media' => 'Book']);
-        $this->assertDatabaseCount('media_types',1);
+        MediaType::create(['media' => 'Books']);
+        $this->assertDatabaseCount('media_types',5);
     }
 }

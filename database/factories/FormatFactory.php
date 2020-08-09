@@ -6,6 +6,6 @@ use Faker\Generator as Faker;
 $factory->define(Format::class, function (Faker $faker) {
     return [
         'format' => $faker->word(2),
-        'type' => 'some fake type'
+        'media_type_id' => 1
     ];
 });

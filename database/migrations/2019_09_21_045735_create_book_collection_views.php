@@ -18,13 +18,13 @@ class CreateBookCollectionViews extends Migration
             DB::statement(
                 "CREATE OR REPLACE VIEW book_collection_views AS
                 SELECT DISTINCT (SELECT GROUP_CONCAT(a.id ORDER BY a.id SEPARATOR ',')
-                     FROM authors a, author_books ab 
-                     WHERE a.id = ab.author_id 
+                     FROM authors a, author_books ab
+                     WHERE a.id = ab.author_id
                      AND ab.book_id = b.id) author_id,
                     (SELECT GROUP_CONCAT(concat(a.last_name, ', ', a.first_name)
-                     ORDER BY a.last_name, a.first_name SEPARATOR ' & ') 
-                     FROM authors a, author_books ab 
-                     WHERE ab.author_id = a.id 
+                     ORDER BY a.last_name, a.first_name SEPARATOR ' & ')
+                     FROM authors a, author_books ab
+                     WHERE ab.author_id = a.id
                      AND ab.book_id = b.id) author_name,
                      b.id book_id,
                      b.title,
@@ -38,7 +38,7 @@ class CreateBookCollectionViews extends Migration
                     f.format,
                     CASE series
                     	WHEN 'Standalone' THEN b.released
-                    	ELSE (SELECT MIN(bi.released) FROM books bi WHERE bi.series = b.series) 
+                    	ELSE (SELECT MIN(bi.released) FROM books bi WHERE bi.series = b.series)
                    	END series_started,
                     bc.user_id
                 FROM authors a,
@@ -52,16 +52,16 @@ class CreateBookCollectionViews extends Migration
             );
         } else {
             DB::statement(
-                "CREATE VIEW book_collection_views AS
-                SELECT  DISTINCT (SELECT GROUP_CONCAT(a.id) 
-                        FROM authors a, author_books ab 
-                        WHERE a.id = ab.author_id 
+                "CREATE VIEW IF NOT EXISTS book_collection_views AS
+                SELECT  DISTINCT (SELECT GROUP_CONCAT(a.id)
+                        FROM authors a, author_books ab
+                        WHERE a.id = ab.author_id
                         AND ab.book_id = b.id) author_id,
                         (SELECT GROUP_CONCAT(author_name, ' & ')
                          FROM (SELECT a.last_name || ', ' || a.first_name author_name
-                               FROM authors a, author_books ab 
-                               WHERE ab.author_id = a.id 
-                               AND ab.book_id = b.id 
+                               FROM authors a, author_books ab
+                               WHERE ab.author_id = a.id
+                               AND ab.book_id = b.id
                                ORDER BY a.last_name, a.first_name)) author_name,
                     b.id book_id,
                     b.title,
@@ -75,7 +75,7 @@ class CreateBookCollectionViews extends Migration
                     f.format,
                     CASE series
                     	WHEN 'Standalone' THEN b.released
-                    	ELSE (SELECT MIN(bi.released) FROM books bi WHERE bi.series = b.series) 
+                    	ELSE (SELECT MIN(bi.released) FROM books bi WHERE bi.series = b.series)
                    	END series_started,
                     bc.user_id
                 FROM authors  a,

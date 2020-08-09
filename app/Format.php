@@ -17,4 +17,9 @@ class Format extends Model
     {
         return $this->hasMany(BookView::class);
     }
+
+    public function media_types()
+    {
+        return $this->belongsTo(MediaType::class, 'media_type_id');
+    }
 }

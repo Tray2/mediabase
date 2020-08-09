@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use MediaTypeSeeder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,8 +10,6 @@ use App\Format;
 
 class FormatTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
     * @test
     */
@@ -20,7 +19,7 @@ class FormatTest extends TestCase
 
         $format = factory(Format::class)->make([
             'format' => 'paPerBack',
-            'type' => 'books'
+            'media_type_id' => 1
         ]);
 
         $this->post('/formats', $format->toArray());
@@ -34,17 +33,17 @@ class FormatTest extends TestCase
     {
         factory(Format::class)->create([
             'format' => 'Hardcover',
-            'type' => 'books'
+            'media_type_id' => 1
         ]);
 
         factory(Format::class)->create([
             'format' => 'Paperback',
-            'type' => 'books'
+            'media_type_id' => 1
         ]);
 
         factory(Format::class)->create([
             'format' => 'Big Pocket',
-            'type' => 'books'
+            'media_type_id' => 1
         ]);
 
         $response = $this->get('/formats');
@@ -58,22 +57,22 @@ class FormatTest extends TestCase
     {
         factory(Format::class)->create([
             'format' => 'Hardcover',
-            'type' => 'books'
+            'media_type_id' => 1
         ]);
 
         factory(Format::class)->create([
             'format' => 'Cd',
-            'type' => 'records'
+            'media_type_id' => 4
         ]);
 
         factory(Format::class)->create([
             'format' => 'Lp',
-            'type' => 'records'
+            'media_type_id' => 4
         ]);
 
         factory(Format::class)->create([
             'format' => 'Big Pocket',
-            'type' => 'books'
+            'media_type_id' => 1
         ]);
 
         $response = $this->get('/formats');
@@ -87,12 +86,12 @@ class FormatTest extends TestCase
     {
         factory(Format::class)->create([
             'format' => 'Hardcover',
-            'type' => 'books'
+            'media_type_id' => 1
         ]);
 
         factory(Format::class)->create([
             'format' => 'Cd',
-            'type' => 'records'
+            'media_type_id' => 4
         ]);
         $response = $this->get('/formats');
         $response->assertSeeInOrder(['<td>Books</td>', '<td>Records</td>'], false);

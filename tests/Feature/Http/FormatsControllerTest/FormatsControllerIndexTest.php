@@ -7,6 +7,7 @@ use App\Book;
 use App\Format;
 use App\Genre;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use MediaTypeSeeder;
 use Tests\TestCase;
 
 class FormatsControllerIndexTest extends TestCase

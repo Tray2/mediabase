@@ -51,12 +51,12 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
         $author = factory(Author::class)->create();
         $bookGenre = factory(Genre::class)->create([
             'genre' => 'Fantasy',
-            'type' => 'books'
+            'media_type_id' => 1
         ]);
 
         $otherGenre = factory(Genre::class)->create([
             'genre' => 'Rpg',
-            'type' => 'games'
+            'media_type_id' => 2
         ]);
 
         $response = $this->get('books/create?author_id=' . $author->id);
