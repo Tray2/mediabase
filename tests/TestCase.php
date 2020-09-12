@@ -3,9 +3,9 @@
 namespace Tests;
 
 use App\Models\User;
+use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use MediaTypeSeeder;
 
 
 abstract class TestCase extends BaseTestCase

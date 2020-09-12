@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BookCollection;¢
+use App\Models\BookCollection;
 use Illuminate\Http\Request;
 use App\Models\BookRead;
 
