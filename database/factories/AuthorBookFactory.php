@@ -1,10 +1,18 @@
 <?php
+namespace Database\Factories;
 
-use App\AuthorBook;
+use App\Models\AuthorBook;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(AuthorBook::class, function () {
-    return [
-        'author_id' => 1,
-        'book_id' => 1
-    ];
-});
+class AuthorBookFactory extends Factory
+{
+    protected $model = AuthorBook::class;
+
+    public function definition()
+    {
+        return [
+            'author_id' => 1,
+            'book_id' => 1
+        ];
+    }
+}

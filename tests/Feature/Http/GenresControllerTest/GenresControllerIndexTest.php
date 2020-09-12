@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\GenresControllerTest;
 
-use App\Author;
-use App\Book;
-use App\Format;
-use App\Genre;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class GenresControllerIndexTest extends TestCase
@@ -15,8 +15,8 @@ class GenresControllerIndexTest extends TestCase
      */
     public function a_guest_can_list_all_genres()
     {
-        $genre1 = factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
-        $genre2 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
+        $genre1 = Genre::factory()->create(['media_type_id' => env('BOOKS')]);
+        $genre2 = Genre::factory()->create(['media_type_id' => env('RECORDS')]);
 
         $response = $this->get('/genres');
         $response->assertSee(e($genre1->genre));
@@ -53,10 +53,10 @@ class GenresControllerIndexTest extends TestCase
      */
     public function when_visiting_the_index_page_the_amount_of_books_in_the_genre_is_shown()
     {
-        factory(Author::class)->create();
-        factory(Format::class)->create();
-        factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
-        factory(Book::class)->create();
+        Author::factory()->create();
+        Format::factory()->create();
+        Genre::factory()->create(['media_type_id' => env('BOOKS')]);
+        Book::factory()->create();
         $response = $this->get('genres');
         $response->assertSee('<td>1</td>', false);
     }

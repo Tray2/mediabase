@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TrackFormRequest;
-use App\Track;
-use Illuminate\Http\Request;
+use App\Models\Track;
 
 class TracksController extends Controller
 {

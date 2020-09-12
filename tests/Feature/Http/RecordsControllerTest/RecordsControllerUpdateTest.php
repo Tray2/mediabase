@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\RecordsControllerTest;
 
-use App\Artist;
-use App\Format;
-use App\Genre;
-use App\Record;
+use App\Models\Artist;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Record;
 use Tests\TestCase;
 
 class RecordsControllerUpdateTest extends TestCase
@@ -15,11 +15,11 @@ class RecordsControllerUpdateTest extends TestCase
      */
     public function users_can_update_a_record()
     {
-        factory(Artist::class)->create();
-        factory(Genre::class)->create();
-        factory(Format::class)->create();
+        Artist::factory()->create();
+        Genre::factory()->create();
+        Format::factory()->create();
         $this->signIn();
-        $record = factory(Record::class)->create([
+        $record = Record::factory()->create([
             'title' => 'Original Title'
         ]);
         $record->title = 'Updated Title';
@@ -33,7 +33,7 @@ class RecordsControllerUpdateTest extends TestCase
     public function the_update_view_has_the_necessary_fields()
     {
         $this->signIn();
-        factory(Record::class)->create();
+        Record::factory()->create();
         $response = $this->get('/records/1/edit');
         $fields =[
             'name="_method" value="patch"',

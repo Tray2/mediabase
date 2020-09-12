@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Validation;
 
-use App\BookCollection;
+use App\Models\BookCollection;
 use Tests\TestCase;
 
 class BookCollectionValidationTest extends TestCase
@@ -18,7 +18,7 @@ class BookCollectionValidationTest extends TestCase
     */
     public function the_user_id_must_exist_in_users()
     {
-        $bookCollection = factory(BookCollection::class)->make([
+        $bookCollection = BookCollection::factory()->make([
             'book_id' => 1,
             'user_id' => 10
         ]);
@@ -32,7 +32,7 @@ class BookCollectionValidationTest extends TestCase
     */
     public function the_book_id_must_exist_in_books()
     {
-        $bookCollection = factory(BookCollection::class)->make([
+        $bookCollection = BookCollection::factory()->make([
             'book_id' => 1,
             'user_id' => 1
         ]);

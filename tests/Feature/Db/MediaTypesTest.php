@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Db;
 
-use App\MediaType;
+use App\Models\MediaType;
 use Illuminate\Database\QueryException;
 use Tests\TestCase;
 

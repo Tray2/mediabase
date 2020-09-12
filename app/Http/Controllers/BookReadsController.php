@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookReadFormRequest;
-use App\User;
-use App\BookView;
-use App\BookRead;
-use App\Book;
+use App\Models\User;
+use App\Models\BookView;
+use App\Models\BookRead;
+use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 
 class BookReadsController extends Controller

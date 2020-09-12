@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\GenresControllerTest;
 
-use App\Author;
-use App\Book;
-use App\Format;
-use App\Genre;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class GenresControllerShowTest extends TestCase
@@ -15,13 +15,13 @@ class GenresControllerShowTest extends TestCase
      */
     public function a_guest_can_visit_a_genre_and_see_all_the_books_belonging_to_it()
     {
-        $genre1 = factory(Genre::class)->create();
-        $genre2 = factory(Genre::class)->create();
-        factory(Author::class)->create();
-        factory(Format::class)->create();
-        $book1Genre1 = factory(Book::class)->create(['title' => 'The Eye Of The World', 'genre_id' => $genre1->id]);
-        $book2Genre1 = factory(Book::class)->create(['title' => 'The Great Hunt', 'genre_id' => $genre1->id]);
-        $book3Genre2 = factory(Book::class)->create(['title' => 'Laravel Up & Running', 'genre_id' => $genre2->id]);
+        $genre1 = Genre::factory()->create();
+        $genre2 = Genre::factory()->create();
+        Author::factory()->create();
+        Format::factory()->create();
+        $book1Genre1 = Book::factory()->create(['title' => 'The Eye Of The World', 'genre_id' => $genre1->id]);
+        $book2Genre1 = Book::factory()->create(['title' => 'The Great Hunt', 'genre_id' => $genre1->id]);
+        $book3Genre2 = Book::factory()->create(['title' => 'Laravel Up & Running', 'genre_id' => $genre2->id]);
 
         $response = $this->get('/genres/' . $genre1->id);
 

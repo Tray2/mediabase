@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Http\BookReadsControllerTest;
 
-use App\Author;
-use App\AuthorBook;
-use App\Book;
-use App\BookCollection;
-use App\BookRead;
-use App\Format;
-use App\Genre;
+use App\Models\Author;
+use App\Models\AuthorBook;
+use App\Models\Book;
+use App\Models\BookCollection;
+use App\Models\BookRead;
+use App\Models\Format;
+use App\Models\Genre;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -19,9 +19,9 @@ class BookReadsControllerCreateTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->author = factory(Author::class)->create();
-        factory(Genre::class)->create();
-        factory(Format::class)->create();
+        $this->author = Author::factory()->create();
+        Genre::factory()->create();
+        Format::factory()->create();
     }
 
     /**
@@ -30,12 +30,12 @@ class BookReadsControllerCreateTest extends TestCase
     public function a_user_can_mark_a_book_as_read()
     {
         $this->signIn();
-        $book = factory(Book::class)->create();
-        factory(AuthorBook::class)->create([
+        $book = Book::factory()->create();
+        AuthorBook::factory()->create([
             'author_id' => $this->author->id,
             'book_id' => $book->id
         ]);
-        factory(BookCollection::class)->create([
+        BookCollection::factory()->create([
             'book_id' => $book->id,
             'user_id' => Auth::user()->id
         ]);

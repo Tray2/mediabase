@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\BooksControllerTest;
 
-use App\AuthorBook;
-use App\Book;
+use App\Models\AuthorBook;
+use App\Models\Book;
 
 class BooksControllerEditTest extends BooksControllerTestHelper
 {
@@ -15,7 +15,7 @@ class BooksControllerEditTest extends BooksControllerTestHelper
         $this->signIn();
 
         $this->createForeignKeys(5);
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
         AuthorBook::create([
             'author_id' => 1,
             'book_id' => 1

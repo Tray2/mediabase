@@ -3,7 +3,7 @@
 namespace Tests\Unit\Validation;
 
 use Tests\TestCase;
-use App\Author;
+use App\Models\Author;
 
 class AuthorValidationTest extends TestCase
 {
@@ -18,8 +18,7 @@ class AuthorValidationTest extends TestCase
     */
     public function a_valid_author_can_be_stored()
     {
-        $this->withoutExceptionHandling();
-        $author = factory(Author::class)->make([
+        $author = Author::factory()->make([
             'first_name' => 'Robert',
             'last_name' => 'Jordan',
             'slug' => 'jordan_robert'
@@ -37,7 +36,7 @@ class AuthorValidationTest extends TestCase
      */
     public function store_validations($field, $fieldValue)
     {
-        $author = factory(Author::class)->make([
+        $author = Author::factory()->make([
            $field => $fieldValue
         ]);
 
@@ -59,12 +58,12 @@ class AuthorValidationTest extends TestCase
     */
     public function authors_name_must_be_unique_to_store_an_author()
     {
-        factory(Author::class)->create([
+        Author::factory()->create([
             'first_name' => 'Robert',
             'last_name' => 'Jordan'
         ]);
 
-        $author = factory(Author::class)->make([
+        $author = Author::factory()->make([
             'first_name' => 'Robert',
             'last_name' => 'Jordan'
         ]);
@@ -79,7 +78,7 @@ class AuthorValidationTest extends TestCase
     */
     public function a_valid_author_can_be_updated()
     {
-        $author = factory(Author::class)->create([
+        $author = Author::factory()->create([
             'first_name' => 'Steven',
             'last_name' => 'Jordan'
         ]);
@@ -99,7 +98,7 @@ class AuthorValidationTest extends TestCase
      */
     public function update_validation($field, $fieldValue)
     {
-        $author = factory(Author::class)->create();
+        $author = Author::factory()->create();
         $id = $author->id;
         $author[$field] = $fieldValue;
 
@@ -121,12 +120,12 @@ class AuthorValidationTest extends TestCase
     */
     public function author_name_must_be_unique_to_update_an_author()
     {
-        factory(Author::class)->create([
+        Author::factory()->create([
             'first_name' => 'Robert',
             'last_name' => 'Jordan'
         ]);
 
-        $author2 = factory(Author::class)->create([
+        $author2 = Author::factory()->create([
               'first_name' => 'Steven',
               'last_name' => 'Jordan'
           ]);
@@ -142,7 +141,7 @@ class AuthorValidationTest extends TestCase
      */
     public function a_user_can_delete_an_author()
     {
-        $author = factory(Author::class)->create();
+        $author = Author::factory()->create();
         $this->assertEquals(1, Author::count());
 
         $this->delete('/authors/' . $author->id, ['id' => $author->id]);

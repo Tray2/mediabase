@@ -1,11 +1,19 @@
 <?php
+namespace Database\Factories;
 
-use App\Format;
-use Faker\Generator as Faker;
+use App\Models\Format;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-$factory->define(Format::class, function (Faker $faker) {
-    return [
-        'format' => $faker->word(2),
-        'media_type_id' => env('BOOKS')
-    ];
-});
+class FormatFactory extends Factory
+{
+    protected $model = Format::class;
+
+    public function definition()
+    {
+        return [
+            'format' => $this->faker->word(2),
+            'media_type_id' => env('BOOKS')
+        ];
+    }
+}

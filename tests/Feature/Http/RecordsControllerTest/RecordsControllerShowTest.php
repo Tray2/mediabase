@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Http\RecordsControllerTest;
 
-use App\Artist;
-use App\Format;
-use App\Genre;
-use App\Record;
-use App\Track;
+use App\Models\Artist;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Record;
+use App\Models\Track;
 use Tests\TestCase;
 
 class RecordsControllerShowTest extends TestCase
@@ -16,18 +16,18 @@ class RecordsControllerShowTest extends TestCase
      */
     public function anyone_can_view_information_about_a_record()
     {
-        $artist = factory(Artist::class)->create([
+        $artist = Artist::factory()->create([
             'name' => 'De La Soul'
         ]);
-        $format = factory(Format::class)->create([
+        $format = Format::factory()->create([
             'format' => 'Cd Single'
         ]);
 
-        $genre = factory(Genre::class)->create([
+        $genre = Genre::factory()->create([
             'genre' => 'Hip Hop'
         ]);
 
-        $record = factory(Record::class)->create([
+        $record = Record::factory()->create([
             'artist_id' => $artist->id,
             'title' => 'Ring Ring Ring (Ha Ha Hey)',
             'released' => 1991,
@@ -37,25 +37,25 @@ class RecordsControllerShowTest extends TestCase
             'barcode' => '1332251464'
         ]);
 
-        $tracks[] = factory(Track::class)->create([
+        $tracks[] = Track::factory()->create([
             'track_no' => '01',
             'title' => 'Ring Ring Ring (Ha Ha Hey)',
             'mix' => 'Party Line Edit',
             'record_id' => $record->id
         ]);
-        $tracks[] = factory(Track::class)->create([
+        $tracks[] = Track::factory()->create([
             'track_no' => '02',
             'title' => 'Ring Ring Ring (Ha Ha Hey)',
             'mix' => 'Party Line Mix',
             'record_id' => $record->id
         ]);
-        $tracks[] = factory(Track::class)->create([
+        $tracks[] = Track::factory()->create([
             'track_no' => '03',
             'title' => 'Ring Ring Ring (Ha Ha Hey)',
             'mix' => 'Extended Decision U.S. Mix',
             'record_id' => $record->id
         ]);
-        $tracks[] = factory(Track::class)->create([
+        $tracks[] = Track::factory()->create([
             'track_no' => '04',
             'title' => 'Piles And Piles Of Demo Tpesbi-Da Miles',
             'mix' => 'Conely Decision',

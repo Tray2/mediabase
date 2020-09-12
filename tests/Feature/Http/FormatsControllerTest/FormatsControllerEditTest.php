@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\FormatsControllerTest;
 
-use App\Format;
+use App\Models\Format;
 use Tests\TestCase;
 
 class FormatsControllerEditTest extends TestCase
@@ -12,7 +12,7 @@ class FormatsControllerEditTest extends TestCase
     {
         $this->signIn();
 
-        $format = factory(Format::class)->create([
+        $format = Format::factory()->create([
             'Format' => 'Paperback',
         ]);
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\BookCollectionControllerTest;
 
-use App\Book;
+use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 
 class BookCollectionControllerCreateTest extends BookCollectionControllerTestHelper
@@ -12,8 +12,9 @@ class BookCollectionControllerCreateTest extends BookCollectionControllerTestHel
      */
     public function users_can_add_books_to_their_collection()
     {
+        $this->withoutExceptionHandling();
         $this->signIn();
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
         $response = $this->post('/bookcollections', ['book_id' => $book->id, 'user_id' => Auth::user()->id]);
         $response->assertLocation('/books');
         $response = $this->get('/books');

@@ -3,7 +3,7 @@
 namespace Tests\Unit\Validation;
 
 use Tests\TestCase;
-use App\Format;
+use App\Models\Format;
 
 class FormatValidationTest extends TestCase
 {
@@ -19,7 +19,7 @@ class FormatValidationTest extends TestCase
     public function it_can_store_a_valid_format()
     {
         $this->withoutExceptionHandling();
-        $format = factory(Format::class)->make([
+        $format = Format::factory()->make([
             'format' => 'Paperback',
             'media_type_id' => env('BOOKS')
         ]);
@@ -36,12 +36,12 @@ class FormatValidationTest extends TestCase
      */
     public function store_validations($field, $fieldValue)
     {
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Paperback',
             'media_type_id' => env('BOOKS')
         ]);
 
-        $format = factory(Format::class)->make([
+        $format = Format::factory()->make([
             $field => $fieldValue
         ]);
 
@@ -61,7 +61,7 @@ class FormatValidationTest extends TestCase
     /** @test */
     public function a_valid_format_can_be_updated()
     {
-        $format = factory(Format::class)->create();
+        $format = Format::factory()->create();
         $format->format = 'Paperback';
 
         $this->put('/formats/' . $format->id, $format->toArray());
@@ -77,8 +77,8 @@ class FormatValidationTest extends TestCase
      */
     public function update_validations($field, $fieldValue)
     {
-        factory(Format::class)->create(['format' => 'Paperback']);
-        $format = factory(Format::class)->create();
+        Format::factory()->create(['format' => 'Paperback']);
+        $format = Format::factory()->create();
         $id = $format->id;
         $format[$field] = $fieldValue;
         $response = $this->put('/formats/' . $id);
@@ -98,7 +98,7 @@ class FormatValidationTest extends TestCase
     /** @test */
     public function a_user_can_delete_a_format()
     {
-        $format = factory(Format::class)->create();
+        $format = Format::factory()->create();
 
         $this->delete('/formats/' . $format->id, ['id' => $format->id]);
         $this->assertEquals(0, Format::count());

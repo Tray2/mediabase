@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormatFormRequest;
-use App\Format;
-use App\MediaType;
+use App\Models\Format;
+use App\Models\MediaType;
 
 class FormatsController extends Controller
 {

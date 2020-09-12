@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use App\Score;
 use Illuminate\Database\Seeder;

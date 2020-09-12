@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Validation;
 
-use App\Artist;
-use App\Format;
-use App\Genre;
-use App\Record;
+use App\Models\Artist;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Record;
 use Carbon\Carbon;
 use Tests\TestCase;
 
@@ -18,15 +18,15 @@ class RecordValidationTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->format = factory(Format::class)->create([
+        $this->format = Format::factory()->create([
             'format' => 'CD'
         ]);
-        $this->genre = factory(Genre::class)->create([
+        $this->genre = Genre::factory()->create([
             'genre' => 'Rap',
             'media_type_id' => env('RECORDS')
         ]);
 
-        $this->artist = factory(Artist::class)->create([
+        $this->artist = Artist::factory()->create([
             'name' => 'Run Dmc'
         ]);
     }
@@ -40,7 +40,7 @@ class RecordValidationTest extends TestCase
     public function a_valid_record_can_be_stored($field, $fieldValue)
     {
         $this->signIn();
-        $record = factory(Record::class)->make([
+        $record = Record::factory()->make([
             'artist_id' => $this->artist->id,
             'title' => 'King Of Rock',
             'released' => '1986',
@@ -72,7 +72,7 @@ class RecordValidationTest extends TestCase
      */
     public function store_validation($formInput, $formInputValue)
     {
-        $record = factory(Record::class)->make([
+        $record = Record::factory()->make([
             $formInput => $formInputValue
         ]);
         $this->signIn();
@@ -109,7 +109,7 @@ class RecordValidationTest extends TestCase
     public function update_validation($field, $fieldValue)
     {
         $this->signIn();
-        $record = factory(Record::class)->create();
+        $record = Record::factory()->create();
         $id = $record->id;
         $record[$field] = $fieldValue;
         $response = $this->put('/records/' . $id, $record->toArray());
@@ -121,7 +121,7 @@ class RecordValidationTest extends TestCase
     {
         return [
             'id is  required' => ['id', null],
-            'id muste exist in records' => ['id', 100]
+            'id must exist in records' => ['id', 100]
         ];
     }
 }

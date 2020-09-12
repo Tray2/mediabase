@@ -1,6 +1,7 @@
 <?php
+namespace Database\Seeders;
 
-use App\MediaType;
+use App\Models\MediaType;
 use Illuminate\Database\Seeder;
 
 class MediaTypeSeeder extends Seeder

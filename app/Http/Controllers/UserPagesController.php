@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\BookCollection;
+use App\Models\BookCollection;¢
 use Illuminate\Http\Request;
-use App\BookRead;
+use App\Models\BookRead;
 
 class UserPagesController extends Controller
 {

@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookFormRequest;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\BookView;
+use App\Models\Format;
+use App\Models\Genre;
 use Illuminate\Http\Request;
-use App\Book;
-use App\Format;
-use App\Genre;
-use App\Author;
-use App\BookView;
 
 class BooksController extends Controller
 {

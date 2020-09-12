@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\RecordsControllerTest;
 
-use App\Artist;
-use App\Format;
-use App\Genre;
-use App\Record;
+use App\Models\Artist;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Record;
 use Tests\TestCase;
 
 class RecordsControllerIndexTest extends TestCase
@@ -15,16 +15,16 @@ class RecordsControllerIndexTest extends TestCase
      */
     public function anyone_can_visit_the_index_page()
     {
-        $artist = factory(Artist::class)->create();
-        $genre = factory(Genre::class)->create();
-        $format = factory(Format::class)->create();
-        factory(Record::class)->create([
+        $artist = Artist::factory()->create();
+        $genre = Genre::factory()->create();
+        $format = Format::factory()->create();
+        Record::factory()->create([
             'title' => 'Tougher Than Leather',
             'artist_id' => $artist->id,
             'format_id' => $format->id,
             'genre_id' => $genre->id
         ]);
-        factory(Record::class)->create([
+        Record::factory()->create([
             'title' => 'Down With The King',
             'artist_id' => $artist->id,
             'format_id' => $format->id,

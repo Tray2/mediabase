@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\AuthorsControllerTest;
 
-use App\Author;
+use App\Models\Author;
 use Tests\TestCase;
 
 class AuthorsControllerCreateTest extends TestCase
@@ -28,7 +28,7 @@ class AuthorsControllerCreateTest extends TestCase
     public function after_creating_an_author_the_user_is_redirected_to_the_authors_index_view_and_success_message_is_shown()
     {
         $this->signIn();
-        $author = factory(Author::class)->make();
+        $author = Author::factory()->make();
 
         $response = $this->post('/authors', $author->toArray());
 

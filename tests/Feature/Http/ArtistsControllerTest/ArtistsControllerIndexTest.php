@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\ArtistsControllerTest;
 
-use App\Artist;
-use App\Format;
-use App\Genre;
-use App\Record;
+use App\Models\Artist;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Record;
 use Tests\TestCase;
 
 class ArtistsControllerIndexTest extends TestCase
@@ -15,8 +15,8 @@ class ArtistsControllerIndexTest extends TestCase
      */
     public function anyone_can_visit_the_artists_index_page()
     {
-        $artist1 = factory(Artist::class)->create();
-        $artist2 = factory(Artist::class)->create();
+        $artist1 = Artist::factory()->create();
+        $artist2 = Artist::factory()->create();
 
         $response = $this->get('/artists');
         $response->assertSee($artist1->name);
@@ -49,12 +49,12 @@ class ArtistsControllerIndexTest extends TestCase
      */
     public function when_visiting_the_index_page_the_amount_of_records_by_the_artist_is_shown()
     {
-        factory(Artist::class)->create();
-        factory(Genre::class)->create();
-        factory(Format::class)->create();
+        Artist::factory()->create();
+        Genre::factory()->create();
+        Format::factory()->create();
         $response = $this->get('/artists');
         $response->assertSee('<td>0</td>', false);
-        factory(Record::class)->create();
+        Record::factory()->create();
         $response = $this->get('/artists');
         $response->assertSee('<td>1</td>', false);
     }

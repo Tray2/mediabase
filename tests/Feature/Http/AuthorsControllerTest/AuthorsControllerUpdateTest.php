@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\AuthorsControllerTest;
 
-use App\Author;
+use App\Models\Author;
 use Tests\TestCase;
 
 class AuthorsControllerUpdateTest extends TestCase
@@ -13,7 +13,7 @@ class AuthorsControllerUpdateTest extends TestCase
     public function after_updating_an_author_the_user_is_redirected_to_the_authors_index_view_and_success_message_is_shown()
     {
         $this->signIn();
-        $author = factory(Author::class)->create();
+        $author = Author::factory()->create();
         $author->first_name = 'Kalle';
 
         $response = $this->patch('/authors/' . $author->id, $author->toArray());

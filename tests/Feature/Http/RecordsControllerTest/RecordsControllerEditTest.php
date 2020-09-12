@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\RecordsControllerTest;
 
-use App\Record;
+use App\Models\Record;
 use Tests\TestCase;
 
 class RecordsControllerEditTest extends TestCase
@@ -12,7 +12,7 @@ class RecordsControllerEditTest extends TestCase
      */
     public function users_can_visit_records_edit_page()
     {
-        $record = factory(Record::class)->create();
+        $record = Record::factory()->create();
         $this->signIn();
         $response = $this->get('/records/1/edit');
         $response->assertSee('value="' . $record->title . '"', false);

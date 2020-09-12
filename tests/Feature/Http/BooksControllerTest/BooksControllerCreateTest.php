@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\BooksControllerTest;
 
-use App\Author;
-use App\AuthorBook;
-use App\Book;
-use App\BookCollection;
-use App\BookRead;
-use App\Genre;
+use App\Models\Author;
+use App\Models\AuthorBook;
+use App\Models\Book;
+use App\Models\BookCollection;
+use App\Models\BookRead;
+use App\Models\Genre;
 
 class BooksControllerCreateTest extends BooksControllerTestHelper
 {
@@ -47,13 +47,13 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
     public function when_visiting_books_create_a_list_of_all_book_genres_is_loaded()
     {
         $this->signIn();
-        $author = factory(Author::class)->create();
-        $bookGenre = factory(Genre::class)->create([
+        $author = Author::factory()->create();
+        $bookGenre = Genre::factory()->create([
             'genre' => 'Fantasy',
             'media_type_id' => env('BOOKS')
         ]);
 
-        $otherGenre = factory(Genre::class)->create([
+        $otherGenre = Genre::factory()->create([
             'genre' => 'Rpg',
             'media_type_id' => env('GAMES')
         ]);
@@ -87,7 +87,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
     {
         $this->createForeignKeys();
         $this->signIn();
-        $book = factory(Book::class)->make();
+        $book = Book::factory()->make();
         $book->author_id = $this->author[0]->id;
 
         $response = $this->post('/books', $book->toArray());
@@ -117,7 +117,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
     public function books_create_populates_the_author_id_field()
     {
         $this->createForeignKeys();
-        factory(Book::class)->create();
+        Book::factory()->create();
         $this->signIn();
         $response = $this->get('/books/create?author_id=1');
         $response->assertSee('name="author_id" value="1"', false);
@@ -130,7 +130,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
     {
         $this->createForeignKeys();
         $this->signIn();
-        $book = factory(Book::class)->make();
+        $book = Book::factory()->make();
         $book->author_id = $this->author[0]->id;
 
         $this->post('/books', $book->toArray());
@@ -145,7 +145,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
     {
         $this->createForeignKeys(3);
         $this->signIn();
-        $book = factory(Book::class)->make();
+        $book = Book::factory()->make();
         $book->author_id = $this->author[0]->id;
         $book->additional_authors = [2, 3];
         $this->post('/books', $book->toArray());
@@ -160,7 +160,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
     {
         $this->createForeignKeys(3);
         $this->signIn();
-        $book = factory(Book::class)->make();
+        $book = Book::factory()->make();
         $book->author_id = $this->author[0]->id;
         $book->read =  1;
         $this->post('/books', $book->toArray());

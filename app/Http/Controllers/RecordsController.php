@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Artist;
-use App\Format;
-use App\Genre;
+use App\Models\Artist;
+use App\Models\Format;
+use App\Models\Genre;
 use App\Http\Requests\RecordFormRequest;
-use App\Record;
+use App\Models\Record;
 use Illuminate\Http\Request;
 
 class RecordsController extends Controller

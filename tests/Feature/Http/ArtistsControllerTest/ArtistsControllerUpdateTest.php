@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\ArtistsControllerTest;
 
-use App\Artist;
+use App\Models\Artist;
 use Tests\TestCase;
 
 class ArtistsControllerUpdateTest extends TestCase
@@ -13,7 +13,7 @@ class ArtistsControllerUpdateTest extends TestCase
     public function users_can_update_an_artist()
     {
         $this->signIn();
-        $artist = factory(Artist::class)->create();
+        $artist = Artist::factory()->create();
         $artist->name = 'Run Dmc';
         $this->patch('/artists/' . $artist->id, $artist->toArray());
         $this->assertDatabaseHas('artists', ['name' => $artist->name]);
@@ -25,7 +25,7 @@ class ArtistsControllerUpdateTest extends TestCase
     public function after_updating_an_artist_the_user_is_redirected_to_the_artist_index_view_and_success_message_is_shown()
     {
         $this->signIn();
-        $artist = factory(Artist::class)->create();
+        $artist = Artist::factory()->create();
         $artist->name = 'Kalle';
 
         $response = $this->patch('/artists/' . $artist->id, $artist->toArray());

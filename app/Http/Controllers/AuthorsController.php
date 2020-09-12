@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthorFormRequest;
-use App\Author;
-use App\BookView;
+use App\Models\Author;
+use App\Models\BookView;
 use Illuminate\Support\Str;
 
 class AuthorsController extends Controller

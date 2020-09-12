@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\BookCollection;
-use App\BookCollectionView;
-use App\Book;
+use App\Models\BookCollection;
+use App\Models\BookCollectionView;
+use App\Models\Book;
 use App\Http\Requests\BookCollectionFormRequest;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class BookCollectionsController extends Controller

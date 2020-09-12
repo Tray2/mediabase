@@ -3,7 +3,7 @@
 namespace Tests\Unit\Validation;
 
 use Tests\TestCase;
-use App\Artist;
+use App\Models\Artist;
 
 class ArtistValidationTest extends TestCase
 {
@@ -18,7 +18,7 @@ class ArtistValidationTest extends TestCase
     */
     public function a_valid_artist_can_be_stored()
     {
-        $artist = factory(Artist::class)->make([
+        $artist = Artist::factory()->make([
             'name' => 'Run Dmc',
             'slug' => 'run-dmc'
         ]);
@@ -35,10 +35,10 @@ class ArtistValidationTest extends TestCase
      */
     public function artist_validations($field, $fieldValue)
     {
-        factory(Artist::class)->create([
+        Artist::factory()->create([
             'name' => 'Run Dmc'
         ]);
-        $artist = factory(Artist::class)->make([
+        $artist = Artist::factory()->make([
             'name' => $fieldValue
         ]);
 
@@ -58,7 +58,7 @@ class ArtistValidationTest extends TestCase
     /** @test */
     public function a_valid_artist_can_be_updated()
     {
-        $artist = factory(Artist::class)->create();
+        $artist = Artist::factory()->create();
         $artist->name = 'Erik B & Rakim';
         $this->put('/artists/' . $artist->id, $artist->toArray());
         $this->assertEquals(1, Artist::where('name', 'Erik B & Rakim')->count());
@@ -74,11 +74,11 @@ class ArtistValidationTest extends TestCase
      */
     public function update_artist_validations($field, $fieldValue)
     {
-        factory(Artist::class)->create([
+        Artist::factory()->create([
             'name' => 'Run Dmc'
         ]);
 
-        $artist = factory(Artist::class)->create();
+        $artist = Artist::factory()->create();
         $id = $artist->id;
         $artist[$field] = $fieldValue;
 
@@ -98,7 +98,7 @@ class ArtistValidationTest extends TestCase
     /** @test */
     public function a_user_can_delete_a_artist()
     {
-        $artist = factory(Artist::class)->create();
+        $artist = Artist::factory()->create();
         $this->delete('/artists/' . $artist->id, ['id' => $artist->id]);
         $this->assertEquals(0, Artist::count());
     }

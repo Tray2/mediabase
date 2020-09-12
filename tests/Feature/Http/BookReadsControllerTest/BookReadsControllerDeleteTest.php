@@ -3,12 +3,12 @@
 namespace Tests\Feature\Http\BookReadsControllerTest;
 
 use Tests\TestCase;
-use App\Author;
-use App\AuthorBook;
-use App\Book;
-use App\Format;
-use App\Genre;
-use App\BookRead;
+use App\Models\Author;
+use App\Models\AuthorBook;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\BookRead;
 use Illuminate\Support\Facades\Auth;
 
 class BookReadsControllerDeleteTest extends TestCase
@@ -18,9 +18,9 @@ class BookReadsControllerDeleteTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->author = factory(Author::class)->create();
-        factory(Genre::class)->create();
-        factory(Format::class)->create();
+        $this->author = Author::factory()->create();
+        Genre::factory()->create();
+        Format::factory()->create();
     }
 
     /**
@@ -29,10 +29,10 @@ class BookReadsControllerDeleteTest extends TestCase
     public function a_user_can_mark_a_book_as_unread()
     {
         $this->signIn();
-        factory(Format::class)->create();
-        factory(Genre::class)->create();
-        $book = factory(Book::class)->create();
-        factory(AuthorBook::class)->create([
+        Format::factory()->create();
+        Genre::factory()->create();
+        $book = Book::factory()->create();
+        AuthorBook::factory()->create([
             'author_id' => $this->author->id,
             'book_id' => $book->id
         ]);

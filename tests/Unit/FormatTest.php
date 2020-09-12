@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Format;
+use App\Models\Format;
 
 class FormatTest extends TestCase
 {
@@ -12,9 +12,10 @@ class FormatTest extends TestCase
     */
     public function the_format_must_start_every_word_with_an_upper_case_letter()
     {
+        $this->withoutExceptionHandling();
         $this->signIn();
 
-        $format = factory(Format::class)->make([
+        $format = Format::factory()->make([
             'format' => 'paPerBack',
             'media_type_id' => env('BOOKS')
         ]);
@@ -28,17 +29,17 @@ class FormatTest extends TestCase
     */
     public function formats_should_be_sorted_alphabeticaly()
     {
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Hardcover',
             'media_type_id' => env('BOOKS')
         ]);
 
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Paperback',
             'media_type_id' => env('BOOKS')
         ]);
 
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Big Pocket',
             'media_type_id' => env('BOOKS')
         ]);
@@ -52,22 +53,22 @@ class FormatTest extends TestCase
     */
     public function formats_are_ordered_by_type_then_the_format()
     {
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Hardcover',
             'media_type_id' => env('BOOKS')
         ]);
 
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Cd',
             'media_type_id' => env('RECORDS')
         ]);
 
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Lp',
             'media_type_id' => env('RECORDS')
         ]);
 
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Big Pocket',
             'media_type_id' => env('BOOKS')
         ]);
@@ -81,12 +82,12 @@ class FormatTest extends TestCase
     */
     public function the_format_type_is_shown_on_the_index_page()
     {
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Hardcover',
             'media_type_id' => env('BOOKS')
         ]);
 
-        factory(Format::class)->create([
+        Format::factory()->create([
             'format' => 'Cd',
             'media_type_id' => env('RECORDS')
         ]);

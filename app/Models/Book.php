@@ -1,15 +1,18 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Http\Requests\BookFormRequest;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\BookCollection;
+use App\Models\BookCollection;
 
 class Book extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     public function author()

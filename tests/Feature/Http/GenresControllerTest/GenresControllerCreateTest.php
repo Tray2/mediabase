@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\GenresControllerTest;
 
-use App\Genre;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class GenresControllerCreateTest extends TestCase
@@ -27,7 +27,7 @@ class GenresControllerCreateTest extends TestCase
     public function after_creating_an_genre_the_user_is_redirected_to_the_genres_index_view_and_success_message_is_shown()
     {
         $this->signIn();
-        $genre = factory(Genre::class)->make();
+        $genre = Genre::factory()->make();
 
         $response = $this->post('/genres', $genre->toArray());
 

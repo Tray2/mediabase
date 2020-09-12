@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\BooksControllerTest;
 
-use App\Book;
+use App\Models\Book;
 
 class BooksControllerUpdateTest extends BooksControllerTestHelper
 {
@@ -13,7 +13,7 @@ class BooksControllerUpdateTest extends BooksControllerTestHelper
     {
         $this->createForeignKeys();
         $this->signIn();
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
         $book->title = 'Kalle';
 
         $response = $this->patch('/books/' . $book->id, $book->toArray());

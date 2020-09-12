@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\BooksControllerTest;
 
-use App\Author;
-use App\AuthorBook;
-use App\Book;
-use App\BookCollection;
-use App\BookRead;
-use App\Score;
+use App\Models\Author;
+use App\Models\AuthorBook;
+use App\Models\Book;
+use App\Models\BookCollection;
+use App\Models\BookRead;
+use App\Models\Score;
 
 class BooksControllerIndexTest extends BooksControllerTestHelper
 {
@@ -18,27 +18,27 @@ class BooksControllerIndexTest extends BooksControllerTestHelper
     {
         $this->createForeignKeys();
 
-        $author1 = factory(Author::class)->create();
+        $author1 = Author::factory()->create();
 
-        $author2 = factory(Author::class)->create();
+        $author2 = Author::factory()->create();
 
 
-        $book1 = factory(Book::class)->create([
+        $book1 = Book::factory()->create([
             'genre_id' => $this->genre[0]->id,
             'format_id' => $this->format[0]->id
         ]);
 
-        $book2 = factory(Book::class)->create([
+        $book2 = Book::factory()->create([
             'genre_id' => $this->genre[0]->id,
             'format_id' => $this->format[0]->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book1->id,
             'author_id' => $author1->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book2->id,
             'author_id' => $author2->id
         ]);
@@ -101,9 +101,9 @@ class BooksControllerIndexTest extends BooksControllerTestHelper
     public function book_rating_is_shown_in_book_index_view()
     {
         $this->createForeignKeys();
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
 
-        factory(Score::class)->create([
+        Score::factory()->create([
             'book_id' => $book->id,
             'score' => '3'
         ]);
@@ -120,7 +120,7 @@ class BooksControllerIndexTest extends BooksControllerTestHelper
     public function books_without_rating_shows_not_rated()
     {
         $this->createForeignKeys();
-        factory(Book::class)->create();
+        Book::factory()->create();
 
         $response = $this->get('/books');
 
@@ -134,8 +134,8 @@ class BooksControllerIndexTest extends BooksControllerTestHelper
     {
         $this->createForeignKeys();
         $this->signIn();
-        factory(Book::class)->create();
-        factory(BookCollection::class)->create(['user_id' => 1, 'book_id' => 1]);
+        Book::factory()->create();
+        BookCollection::factory()->create(['user_id' => 1, 'book_id' => 1]);
         $response = $this->get('/books');
         $response->assertSee('Collected', false);
     }
@@ -148,8 +148,8 @@ class BooksControllerIndexTest extends BooksControllerTestHelper
     {
         $this->createForeignKeys();
         $this->signIn();
-        factory(Book::class)->create();
-        factory(BookRead::class)->create(['user_id' => 1, 'book_id' => 1]);
+        Book::factory()->create();
+        BookRead::factory()->create(['user_id' => 1, 'book_id' => 1]);
         $response = $this->get('/books');
         $response->assertSee('Read', false);
     }

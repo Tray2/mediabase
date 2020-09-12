@@ -1,12 +1,19 @@
 <?php
+namespace Database\Factories;
 
+use App\Models\Genre;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-use App\Genre;
-use Faker\Generator as Faker;
+class GenreFactory extends Factory
+{
+    protected $model = Genre::class;
 
-$factory->define(Genre::class, function (Faker $faker) {
-    return [
-        'genre' => $faker->word(2),
-        'media_type_id' => env('BOOKS')
-    ];
-});
+    public function definition()
+    {
+        return [
+            'genre' => $this->faker->word(2),
+            'media_type_id' => env('BOOKS')
+        ];
+    }
+}

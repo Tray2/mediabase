@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Http\AuthorsControllerTest;
 
-use App\Author;
-use App\AuthorBook;
-use App\Book;
-use App\Format;
-use App\Genre;
+use App\Models\Author;
+use App\Models\AuthorBook;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class AuthorsControllerIndexTest extends TestCase
@@ -16,9 +16,8 @@ class AuthorsControllerIndexTest extends TestCase
      */
     public function guests_can_browse_the_authors()
     {
-        $this->withoutExceptionHandling();
-        $author1 = factory(Author::class)->create();
-        $author2 = factory(Author::class)->create();
+        $author1 = Author::factory()->create();
+        $author2 = Author::factory()->create();
 
         $response = $this->get('/authors');
         $response->assertSee($author1->name);
@@ -53,10 +52,10 @@ class AuthorsControllerIndexTest extends TestCase
      */
     public function when_visiting_the_index_page_the_amount_of_books_by_the_author_is_shown()
     {
-        factory(Author::class)->create();
-        factory(Genre::class)->create();
-        factory(Format::class)->create();
-        factory(Book::class)->create();
+        Author::factory()->create();
+        Genre::factory()->create();
+        Format::factory()->create();
+        Book::factory()->create();
         $response = $this->get('authors');
         $response->assertSee('<td>0</td>', false);
         AuthorBook::create([

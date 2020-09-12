@@ -3,10 +3,10 @@
 namespace Tests\Unit\Validation;
 
 use Tests\TestCase;
-use App\Author;
-use App\Format;
-use App\Genre;
-use App\Book;
+use App\Models\Author;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Book;
 use Carbon\Carbon;
 
 class BookValidationTest extends TestCase
@@ -19,10 +19,10 @@ class BookValidationTest extends TestCase
     {
         parent::setUp();
         $this->signIn();
-        $this->author = factory(Author::class)->create();
-        $this->genre = factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
-        $this->format = factory(Format::class)->create(['media_type_id' => env('BOOKS')]);
-        factory(Book::class)->create();
+        $this->author = Author::factory()->create();
+        $this->genre = Genre::factory()->create(['media_type_id' => env('BOOKS')]);
+        $this->format = Format::factory()->create(['media_type_id' => env('BOOKS')]);
+        Book::factory()->create();
     }
 
     /**
@@ -30,7 +30,7 @@ class BookValidationTest extends TestCase
     */
     public function a_valid_book_can_be_stored()
     {
-        $book = factory(Book::class)->make([
+        $book = Book::factory()->make([
             'author_id' => $this->author->id,
             'title' => 'The Eye Of The World',
             'series' => 'The Wheel Of Time',
@@ -57,7 +57,7 @@ class BookValidationTest extends TestCase
      */
     public function store_validation_tests($field, $fieldValue)
     {
-        $book = factory(Book::class)->make([
+        $book = Book::factory()->make([
             $field => $fieldValue
         ]);
 
@@ -96,16 +96,16 @@ class BookValidationTest extends TestCase
     */
     public function part_is_required_only_if_book_is_part_of_a_series()
     {
-        factory(Author::class)->create();
-        factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
-        factory(Format::class)->create(['media_type_id' => env('BOOKS')]);
+        Author::factory()->create();
+        Genre::factory()->create(['media_type_id' => env('BOOKS')]);
+        Format::factory()->create(['media_type_id' => env('BOOKS')]);
 
-        $standalone = factory(Book::class)->make([
+        $standalone = Book::factory()->make([
             'series' => null,
             'part' => null
         ]);
 
-        $partOfSeries = factory(Book::class)->make([
+        $partOfSeries = Book::factory()->make([
             'series' => 'The Wheel Of Time',
              'part' => null
          ]);
@@ -121,7 +121,7 @@ class BookValidationTest extends TestCase
      */
     public function a_valid_isbn_is_stored($value)
     {
-        $isbn = factory(Book::class)->make([
+        $isbn = Book::factory()->make([
                 'isbn' => $value
         ]);
 
@@ -143,7 +143,7 @@ class BookValidationTest extends TestCase
     */
     public function reprinted_is_not_required()
     {
-        $book = factory(Book::class)->make([
+        $book = Book::factory()->make([
                 'reprinted' => null
             ]);
 
@@ -154,7 +154,7 @@ class BookValidationTest extends TestCase
     /** @test */
     public function a_valid_book_can_be_updated()
     {
-        $book = factory(Book::class)->create([
+        $book = Book::factory()->create([
           'title' => 'The Eye Of The World',
           'series' => 'The Wheel Of Time',
           'part' => 1,
@@ -185,7 +185,7 @@ class BookValidationTest extends TestCase
      */
     public function updateValidations($field, $fieldValue)
     {
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
         $id = $book->id;
         $book[$field] = $fieldValue;
         $response = $this->put('/books/' . $id, $book->toArray());
@@ -205,7 +205,7 @@ class BookValidationTest extends TestCase
     /** @test */
     public function part_is_required_if_book_is_part_of_series_when_updating()
     {
-        $book = factory(Book::class)->create([
+        $book = Book::factory()->create([
             'series' => 'The Wheel Of Time',
              'part' => 1
          ]);
@@ -222,7 +222,7 @@ class BookValidationTest extends TestCase
      */
     public function a_valid_isbn_is_can_be_used_when_updating($value)
     {
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
         $book->isbn = $value;
         $this->put('/books/' . $book->id, $book->toArray());
         $this->assertEquals(1, Book::where('isbn', $value)->count());
@@ -231,7 +231,7 @@ class BookValidationTest extends TestCase
     /** @test */
     public function reprinted_is_not_required_when_updating()
     {
-        $book = factory(Book::class)->create([
+        $book = Book::factory()->create([
             'reprinted' => '2001'
         ]);
         $book->reprinted = null;
@@ -246,7 +246,7 @@ class BookValidationTest extends TestCase
      **/
     public function a_user_can_delete_a_book()
     {
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
 
         $this->delete('/books/' . $book->id);
         $this->assertEquals(0, Book::where('title', $book->title)->count());

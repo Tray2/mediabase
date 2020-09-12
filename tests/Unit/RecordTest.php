@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Artist;
-use App\Format;
-use App\Genre;
-use App\Record;
+use App\Models\Artist;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Record;
 use Tests\TestCase;
 
 class RecordTest extends TestCase
@@ -15,11 +15,11 @@ class RecordTest extends TestCase
      */
     public function it_can_get_the_records_artist()
     {
-        $artist = factory(Artist::class)->create([
+        $artist = Artist::factory()->create([
             'name' => 'Run Dmc'
         ]);
 
-        $record = factory(Record::class)->create([
+        $record = Record::factory()->create([
             'artist_id' => $artist->id
         ]);
 
@@ -31,13 +31,13 @@ class RecordTest extends TestCase
     */
     public function it_can_get_the_records_format()
     {
-        factory(Artist::class)->create();
-        $format = factory(Format::class)->create([
+        Artist::factory()->create();
+        $format = Format::factory()->create([
             'format' => 'Cd Single',
             'media_type_id' => env('RECORDS')
         ]);
 
-        $record = factory(Record::class)->create([
+        $record = Record::factory()->create([
             'format_id' => $format->id
         ]);
 
@@ -49,14 +49,14 @@ class RecordTest extends TestCase
     */
     public function it_can_get_the_record_genre()
     {
-        factory(Artist::class)->create();
-        factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
-        $genre = factory(Genre::class)->create([
+        Artist::factory()->create();
+        Genre::factory()->create(['media_type_id' => env('RECORDS')]);
+        $genre = Genre::factory()->create([
             'genre' => 'Rap',
             'media_type_id' => env('RECORDS')
         ]);
 
-        $record = factory(Record::class)->create([
+        $record = Record::factory()->create([
             'genre_id' => $genre->id
         ]);
 

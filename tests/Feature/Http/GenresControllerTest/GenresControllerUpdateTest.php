@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\GenresControllerTest;
 
-use App\Genre;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class GenresControllerUpdateTest extends TestCase
@@ -13,7 +13,7 @@ class GenresControllerUpdateTest extends TestCase
     public function after_updating_an_genre_the_user_is_redirected_to_the_genres_index_view_and_success_message_is_shown()
     {
         $this->signIn();
-        $genre = factory(Genre::class)->create();
+        $genre = Genre::factory()->create();
         $genre->genre = 'Kalle';
 
         $response = $this->patch('/genres/' . $genre->id, $genre->toArray());
@@ -30,7 +30,7 @@ class GenresControllerUpdateTest extends TestCase
      */
     public function the_view_contains_a_list_of_available_media_types()
     {
-        factory(Genre::class)->create();
+        Genre::factory()->create();
 
         $this->signIn();
         $this->get('/genres/1/edit')->assertSeeInOrder(

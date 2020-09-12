@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Validation;
 
-use App\Record;
-use App\Track;
+use App\Models\Record;
+use App\Models\Track;
 use Tests\TestCase;
 
 class TrackValidationTest extends TestCase
@@ -11,7 +11,7 @@ class TrackValidationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        factory(Record::class)->create();
+        Record::factory()->create();
         $this->signIn();
     }
 
@@ -20,7 +20,7 @@ class TrackValidationTest extends TestCase
     */
     public function a_valid_track_can_be_stored()
     {
-        $track = factory(Track::class)->make([
+        $track = Track::factory()->make([
             'track_no' => 2,
             'title' => 'King Of Rock',
             'mix' => 'Studio',
@@ -39,7 +39,7 @@ class TrackValidationTest extends TestCase
      */
     public function store_validation_tests($field, $fieldValue)
     {
-        $track = factory(Track::class)->make([
+        $track = Track::factory()->make([
             $field => $fieldValue
         ]);
 
@@ -64,7 +64,7 @@ class TrackValidationTest extends TestCase
     */
     public function a_valid_track_can_be_updatet()
     {
-        $track = factory(Track::class)->create([
+        $track = Track::factory()->create([
             'track_no' => 2,
             'title' => 'King Of Rock',
             'mix' => 'Studio',
@@ -86,7 +86,7 @@ class TrackValidationTest extends TestCase
      */
     public function update_validation_tests($field, $fieldValue)
     {
-        $track = factory(Track::class)->create();
+        $track = Track::factory()->create();
         $id = $track->id;
         $track[$field] = $fieldValue;
 

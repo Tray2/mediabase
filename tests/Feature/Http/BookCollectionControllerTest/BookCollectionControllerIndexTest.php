@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Http\BookCollectionControllerTest;
 
-use App\Book;
-use App\BookCollection;
-use App\User;
+use App\Models\Book;
+use App\Models\BookCollection;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class BookCollectionControllerIndexTest extends BookCollectionControllerTestHelper
@@ -14,9 +14,9 @@ class BookCollectionControllerIndexTest extends BookCollectionControllerTestHelp
      */
     public function anyone_can_list_the_books_in_a_users_collection()
     {
-        $user = factory(User::class)->create();
-        $book = factory(Book::class)->create();
-        factory(BookCollection::class)->create([
+        $user = User::factory()->create();
+        $book = Book::factory()->create();
+        BookCollection::factory()->create([
             'book_id' => $book->id,
             'user_id' => $user->id
         ]);
@@ -31,12 +31,12 @@ class BookCollectionControllerIndexTest extends BookCollectionControllerTestHelp
      */
     public function user_name_slug_can_be_used_instead_of_id_when_listing_a_users_collection()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'name' => 'Kalle Svensson',
             'slug' => Str::slug('Kalle Svensson')
         ]);
-        $book = factory(Book::class)->create();
-        factory(BookCollection::class)->create([
+        $book = Book::factory()->create();
+        BookCollection::factory()->create([
             'book_id' => $book->id,
             'user_id' => $user->id
         ]);

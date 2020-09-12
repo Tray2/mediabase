@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Validation;
 
-use App\Genre;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class GenreValidationTest extends TestCase
@@ -11,7 +11,7 @@ class GenreValidationTest extends TestCase
     {
         parent::setUp();
         $this->signIn();
-        factory(Genre::class)->create([
+        Genre::factory()->create([
             'genre' => 'Fantasy'
         ]);
     }
@@ -21,8 +21,7 @@ class GenreValidationTest extends TestCase
     */
     public function it_can_store_a_valid_genre()
     {
-        $this->withoutExceptionHandling();
-        $genre = factory(Genre::class)->make([
+        $genre = Genre::factory()->make([
             'genre' => 'Crime',
             'type' => 'book'
         ]);
@@ -36,7 +35,7 @@ class GenreValidationTest extends TestCase
     /** @test */
     public function a_valid_genre_can_be_updated()
     {
-        $genre = factory(Genre::class)->create();
+        $genre = Genre::factory()->create();
         $genre->genre = 'Horror';
 
         $this->put('/genres/' . $genre->id, $genre->toArray())
@@ -53,7 +52,7 @@ class GenreValidationTest extends TestCase
      */
     public function genre_validations($field, $fieldValue)
     {
-        $genre = factory(Genre::class)->make([
+        $genre = Genre::factory()->make([
             $field => $fieldValue
         ]);
 
@@ -80,7 +79,7 @@ class GenreValidationTest extends TestCase
      */
     public function update_validations($field, $fieldValue)
     {
-        $genre = factory(Genre::class)->create();
+        $genre = Genre::factory()->create();
         $id = $genre->id;
         $genre[$field] = $fieldValue;
 
@@ -103,7 +102,7 @@ class GenreValidationTest extends TestCase
      **/
     public function a_user_can_delete_a_genre()
     {
-        $genre = factory(Genre::class)->create();
+        $genre = Genre::factory()->create();
 
         $this->delete('/genres/' . $genre->id);
         $this->assertEquals(0, Genre::where('genre', $genre->genre)->count());

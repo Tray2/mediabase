@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http;
 
-use App\Author;
-use App\Book;
-use App\Format;
-use App\Genre;
-use App\BookCollection;
-use App\BookRead;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\BookCollection;
+use App\Models\BookRead;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,10 +16,10 @@ class UserPagesControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        factory(Author::class)->create();
-        factory(Format::class)->create();
-        factory(Genre::class)->create();
-        factory(Book::class)->create();
+        Author::factory()->create();
+        Format::factory()->create();
+        Genre::factory()->create();
+        Book::factory()->create();
     }
 
     /**
@@ -27,6 +27,7 @@ class UserPagesControllerTest extends TestCase
     */
     public function users_can_visit_their_dashboard()
     {
+        $this->withoutExceptionHandling();
         $this->signIn();
         $response = $this->get('/home');
         $response->assertStatus(200);
@@ -42,7 +43,7 @@ class UserPagesControllerTest extends TestCase
         $response = $this->get('/home');
         $response->assertSee('>0</a>', false);
 
-        factory(BookCollection::class)->create(['book_id' => 1, 'user_id' => 1]);
+        BookCollection::factory()->create(['book_id' => 1, 'user_id' => 1]);
         $response = $this->get('/home');
         $response->assertSee('>1</a>', false);
     }

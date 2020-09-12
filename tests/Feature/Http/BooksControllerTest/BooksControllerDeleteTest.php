@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\BooksControllerTest;
 
-use App\Book;
+use App\Models\Book;
 
 class BooksControllerDeleteTest extends BooksControllerTestHelper
 {
@@ -14,7 +14,7 @@ class BooksControllerDeleteTest extends BooksControllerTestHelper
         $this->createForeignKeys();
         $this->signIn();
 
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
 
         $response = $this->delete('/books/' . $book->id);
 

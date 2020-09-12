@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Genre;
+use App\Models\Genre;
 
 class GenreTest extends TestCase
 {
@@ -14,7 +14,7 @@ class GenreTest extends TestCase
     {
         $this->signIn();
 
-        $genre = factory(Genre::class)->make([
+        $genre = Genre::factory()->make([
             'genre' => 'fanTasy',
             'media_type_id' => env('BOOKS')
         ]);
@@ -28,17 +28,17 @@ class GenreTest extends TestCase
     */
     public function when_listing_genres_they_are_sorted_alphabetically()
     {
-        factory(Genre::class)->create([
+        Genre::factory()->create([
             'genre' => 'Fiction',
             'media_type_id' => env('BOOKS')
         ]);
 
-        factory(Genre::class)->create([
+        Genre::factory()->create([
             'genre' => 'Fantasy',
             'media_type_id' => env('BOOKS')
         ]);
 
-        factory(Genre::class)->create([
+        Genre::factory()->create([
             'genre' => 'Crime',
             'media_type_id' => env('BOOKS')
         ]);

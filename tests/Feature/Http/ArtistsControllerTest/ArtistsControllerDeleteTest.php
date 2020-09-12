@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\ArtistsControllerTest;
 
-use App\Artist;
+use App\Models\Artist;
 use Tests\TestCase;
 
 class ArtistsControllerDeleteTest extends TestCase
@@ -14,7 +14,7 @@ class ArtistsControllerDeleteTest extends TestCase
     {
         $this->signIn();
 
-        $artist = factory(Artist::class)->create();
+        $artist = Artist::factory()->create();
 
         $response = $this->delete('/artists/' . $artist->id);
 

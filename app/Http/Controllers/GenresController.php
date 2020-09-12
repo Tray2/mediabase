@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GenreFormRequest;
-use App\Genre;
-use App\MediaType;
+use App\Models\Genre;
+use App\Models\MediaType;
 
 class GenresController extends Controller
 {

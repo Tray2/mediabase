@@ -3,22 +3,22 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Book;
-use App\Score;
-use App\Genre;
-use App\Format;
-use App\Author;
-use App\BookCollection;
-use App\AuthorBook;
-use App\BookRead;
+use App\Models\Book;
+use App\Models\Score;
+use App\Models\Genre;
+use App\Models\Format;
+use App\Models\Author;
+use App\Models\BookCollection;
+use App\Models\AuthorBook;
+use App\Models\BookRead;
 
 class BookTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-        factory(Format::class)->create(['media_type_id' => env('BOOKS')]);
-        factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
+        Format::factory()->create(['media_type_id' => env('BOOKS')]);
+        Genre::factory()->create(['media_type_id' => env('BOOKS')]);
     }
 
     /**
@@ -26,16 +26,16 @@ class BookTest extends TestCase
     */
     public function it_gets_the_average_of_the_scores_for_the_book()
     {
-        factory(Author::class)->create();
+        Author::factory()->create();
 
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
 
-        factory(Score::class)->create([
+        Score::factory()->create([
             'book_id' => $book->id,
             'score' => '4'
         ]);
 
-        factory(Score::class)->create([
+        Score::factory()->create([
             'book_id' => $book->id,
             'score' => '2'
         ]);
@@ -51,8 +51,8 @@ class BookTest extends TestCase
     {
         $this->signIn();
 
-        $author = factory(Author::class)->create();
-        $book = factory(Book::class)->make([
+        $author = Author::factory()->create();
+        $book = Book::factory()->make([
             'title' => 'THis iS tHe titLE'
         ]);
 
@@ -69,8 +69,8 @@ class BookTest extends TestCase
     {
         $this->signIn();
 
-        $author = factory(Author::class)->create();
-        $book = factory(Book::class)->make([
+        $author = Author::factory()->create();
+        $book = Book::factory()->make([
             'series' => null
         ]);
 
@@ -88,13 +88,13 @@ class BookTest extends TestCase
     {
         $this->signIn();
 
-        factory(Author::class)->create();
+        Author::factory()->create();
 
-        $book = factory(Book::class)->make([
+        $book = Book::factory()->make([
               'series' => 'THis iS tHe Series',
             ]);
 
-        $response = $this->post('/books', $book->toArray());
+        $this->post('/books', $book->toArray());
 
         $this->assertEquals(1, Book::where('series', 'This Is The Series')->count());
     }
@@ -105,18 +105,18 @@ class BookTest extends TestCase
      * */
     public function it_can_list_all_the_books_in_a_series()
     {
-        factory(Author::class)->create();
-        $book = factory(Book::class)->create([
+        Author::factory()->create();
+        $book = Book::factory()->create([
             'title' => 'The Eye Of The World',
             'series' => 'The Wheel Of Time',
             'part' => '1'
         ]);
-        factory(Book::class)->create([
+        Book::factory()->create([
             'title' => 'The Great Hunt',
             'series' => 'The Wheel Of Time',
             'part' => '2'
         ]);
-        factory(Book::class)->create([
+        Book::factory()->create([
             'title' => 'The Dragon Reborn',
             'series' => 'The Wheel Of Time',
             'part' => '3'
@@ -132,35 +132,35 @@ class BookTest extends TestCase
      */
     public function it_can_list_all_the_books_by_the_author_that_are_not_part_of_the_series_being_viewed()
     {
-        $author = factory(Author::class)->create();
+        $author = Author::factory()->create();
 
-        $book1 = factory(Book::class)->create([
+        $book1 = Book::factory()->create([
             'title' => 'The Wizards First Rule',
             'series' => 'The Sword Of Truth',
             'part' => '1'
         ]);
-         $book2 = factory(Book::class)->create([
+         $book2 = Book::factory()->create([
             'title' => 'Law Of Nines',
             'series' => 'Standalone',
             'part' => null
         ]);
-        $book3 = factory(Book::class)->create([
+        $book3 = Book::factory()->create([
             'title' => 'The Stone Of Tears',
             'series' => 'The Sword Of Truth',
             'part' => 2
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book1->id,
             'author_id' => $author->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book2->id,
             'author_id' => $author->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book3->id,
             'author_id' => $author->id
         ]);
@@ -174,37 +174,37 @@ class BookTest extends TestCase
     /** @test */
     public function it_can_list_all_the_books_by_the_author_except_the_one_being_viewed_when_the_series_is_standalone()
     {
-        $author = factory(Author::class)->create();
+        $author = Author::factory()->create();
 
-        $book1 = factory(Book::class)->create([
+        $book1 = Book::factory()->create([
             'title' => 'Law Of Nines',
             'series' => 'Standalone',
             'part' => null
         ]);
-        $book2 = factory(Book::class)->create([
+        $book2 = Book::factory()->create([
             'title' => 'Nest',
             'series' => 'Standalone',
             'part' => null,
             'released' => 2016
         ]);
-        $book3 = factory(Book::class)->create([
+        $book3 = Book::factory()->create([
             'title' => 'The Stone Of Tears',
             'series' => 'The Sword Of Truth',
             'part' => 2,
             'released' => 1996
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book1->id,
             'author_id' => $author->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book2->id,
             'author_id' => $author->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book3->id,
             'author_id' => $author->id
         ]);
@@ -220,10 +220,10 @@ class BookTest extends TestCase
     {
         $this->signIn();
 
-        factory(Author::class)->create();
-        factory(Author::class)->create();
+        Author::factory()->create();
+        Author::factory()->create();
 
-        $book = factory(Book::class)->create([
+        $book = Book::factory()->create([
           'series' => 'Some Series'
         ]);
 
@@ -239,32 +239,32 @@ class BookTest extends TestCase
     */
     public function when_listing_all_books_they_are_alphabetically_sorted_by_authors_last_name()
     {
-        $jordan = factory(Author::class)->create([
+        $jordan = Author::factory()->create([
             'last_name' => 'Jordan',
             'first_name' => 'Robert'
         ]);
-        $terry = factory(Author::class)->create([
+        $terry = Author::factory()->create([
             'last_name' => 'Goodkind',
             'first_name' => 'Terry'
         ]);
-        $sarah = factory(Author::class)->create([
+        $sarah = Author::factory()->create([
             'last_name' => 'Ash',
             'first_name' => 'Sarah'
         ]);
 
-        $bookJordan = factory(Book::class)->create();
-        $bookTerry = factory(Book::class)->create();
-        $bookSarah = factory(Book::class)->create();
+        $bookJordan = Book::factory()->create();
+        $bookTerry = Book::factory()->create();
+        $bookSarah = Book::factory()->create();
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $bookTerry->id,
             'author_id' => $terry->id
         ]);
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $bookJordan->id,
             'author_id' => $jordan->id
         ]);
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $bookSarah->id,
             'author_id' => $sarah->id
         ]);
@@ -282,37 +282,37 @@ class BookTest extends TestCase
     */
     public function books_by_the_same_author_is_sorted_by_relase_year()
     {
-        $author = factory(Author::class)->create([
+        $author = Author::factory()->create([
             'last_name' => 'Goodkind',
             'first_name' => 'Terry'
         ]);
 
-        $book1 = factory(Book::class)->create([
+        $book1 = Book::factory()->create([
             'title' => 'The Law Of Nines',
             'released' => 2009
         ]);
 
-        $book2 = factory(Book::class)->create([
+        $book2 = Book::factory()->create([
             'title' => 'The Wizards First Rule',
             'released' => 1994
         ]);
 
-        $book3 = factory(Book::class)->create([
+        $book3 = Book::factory()->create([
             'title' => 'Nest',
             'released' => 2016
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book1->id,
             'author_id' => $author->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book2->id,
             'author_id' => $author->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book3->id,
             'author_id' => $author->id
         ]);
@@ -331,41 +331,41 @@ class BookTest extends TestCase
     */
     public function books_in_the_same_series_is_sorted_by_the_first_book_in_the_series_release_year_then_by_part()
     {
-        $author = factory(Author::class)->create([
+        $author = Author::factory()->create([
             'last_name' => 'Goodkind',
             'first_name' => 'Terry'
         ]);
 
-        $book1 = factory(Book::class)->create([
+        $book1 = Book::factory()->create([
             'title' => 'The Law Of Nines',
             'series' => 'Standalone',
             'released' => 2009
         ]);
 
-        $book2 = factory(Book::class)->create([
+        $book2 = Book::factory()->create([
             'title' => 'The Wizards First Rule',
             'series' => 'The Sword Of Truth',
             'part' => 1,
             'released' => 1994
         ]);
-        $book3 = factory(Book::class)->create([
+        $book3 = Book::factory()->create([
             'title' => 'The Stone Of Tears',
             'series' => 'The Sword Of Truth',
             'part' => 2,
             'released' => 2010
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book1->id,
             'author_id' => $author->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book2->id,
             'author_id' => $author->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book3->id,
             'author_id' => $author->id
         ]);
@@ -385,21 +385,21 @@ class BookTest extends TestCase
     */
     public function books_can_have_more_than_one_author()
     {
-        $author1 = factory(Author::class)->create([
+        $author1 = Author::factory()->create([
             'first_name' => 'Robert',
             'last_name' => 'Jordan'
         ]);
-        $author2 = factory(Author::class)->create([
+        $author2 = Author::factory()->create([
             'first_name' => 'Brandon',
             'last_name' => 'Sanderson'
         ]);
 
-        $book = factory(Book::class)->create();
-        factory(AuthorBook::class)->create([
+        $book = Book::factory()->create();
+        AuthorBook::factory()->create([
             'book_id' => 1,
             'author_id' => $author1->id
         ]);
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => 1,
             'author_id' => $author2->id
         ]);
@@ -414,9 +414,9 @@ class BookTest extends TestCase
     public function it_returns_how_many_of_the_book_you_have_in_your_collection()
     {
         $this->signIn();
-        factory(Author::class)->create();
+        Author::factory()->create();
 
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
 
         $this->assertEquals(0, $book->inCollection());
 
@@ -439,9 +439,9 @@ class BookTest extends TestCase
     public function it_returns_how_many_times_you_have_read_the_book()
     {
         $this->signIn();
-        factory(Author::class)->create();
+        Author::factory()->create();
 
-        $book = factory(Book::class)->create();
+        $book = Book::factory()->create();
 
         $this->assertEquals(0, $book->isRead());
 

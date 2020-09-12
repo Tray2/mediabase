@@ -3,7 +3,7 @@
 namespace Tests\Unit\Validation;
 
 use Tests\TestCase;
-use App\Author;
+use App\Models\Author;
 
 class DisplayValidationErrorsTest extends TestCase
 {
@@ -13,7 +13,7 @@ class DisplayValidationErrorsTest extends TestCase
     public function validation_errors_are_displayed()
     {
         $this->signIn();
-        $author = factory(Author::class)->make([
+        $author = Author::factory()->make([
             'first_name' => 'Robert',
             'last_name' => null
         ]);

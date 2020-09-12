@@ -1,12 +1,12 @@
 <?php
 
 namespace Tests\Unit;
-use App\Author;
-use App\Book;
-use App\Format;
-use App\Genre;
-use App\AuthorBook;
-use App\BookView;
+use App\Models\Author;
+use App\Models\AuthorBook;
+use App\Models\Book;
+use App\Models\BookView;
+use App\Models\Format;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class BookViewTest extends TestCase
@@ -16,13 +16,11 @@ class BookViewTest extends TestCase
     */
     public function it_returns_an_array_of_authors()
     {
-        $this->withExceptionHandling();
-
-        $author = factory(Author::class)->create();
-        factory(Format::class)->create(['media_type_id' => env('BOOKS')]);
-        factory(Genre::class)->create(['media_type_id' => env('BOOKS')]);
-        factory(Book::class)->create();
-        factory(AuthorBook::class)->create([
+        $author = Author::factory()->create();
+        Format::factory()->create(['media_type_id' => env('BOOKS')]);
+        Genre::factory()->create(['media_type_id' => env('BOOKS')]);
+        Book::factory()->create();
+        AuthorBook::factory()->create([
             'author_id' => 1,
             'book_id' => 1
         ]);

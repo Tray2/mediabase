@@ -3,9 +3,9 @@
 namespace Tests\Feature\Http\BooksControllerTest;
 
 use Tests\TestCase;
-use App\Author;
-use App\Format;
-use App\Genre;
+use App\Models\Author;
+use App\Models\Format;
+use App\Models\Genre;
 
 class BooksControllerTestHelper extends TestCase
 {
@@ -15,9 +15,9 @@ class BooksControllerTestHelper extends TestCase
 
     protected function createForeignKeys($quantity = 1)
     {
-        $this->genre = factory(Genre::class, $quantity)->create();
-        $this->format = factory(Format::class, $quantity)->create();
-        $this->author = factory(Author::class, $quantity)->create();
+        $this->genre = Genre::factory($quantity)->create();
+        $this->format = Format::factory($quantity)->create();
+        $this->author = Author::factory($quantity)->create();
     }
 
 

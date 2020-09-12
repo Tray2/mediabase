@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\BooksControllerTest;
 
-use App\Author;
-use App\AuthorBook;
-use App\Book;
-use App\Format;
-use App\Genre;
-use App\Score;
+use App\Models\Author;
+use App\Models\AuthorBook;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Score;
 
 class BooksControllerShowTest extends BooksControllerTestHelper
 {
@@ -16,20 +16,20 @@ class BooksControllerShowTest extends BooksControllerTestHelper
      */
     public function guests_can_view_a_book_listing()
     {
-        $author = factory(Author::class)->create([
+        $author = Author::factory()->create([
             'first_name' => 'Robert',
             'last_name' => 'Jordan'
         ]);
 
-        $format = factory(Format::class)->create([
+        $format = Format::factory()->create([
             'format' => 'Paperback'
         ]);
 
-        $genre = factory(Genre::class)->create([
+        $genre = Genre::factory()->create([
             'genre' => 'Fantasy'
         ]);
 
-        $book = factory(Book::class)->create([
+        $book = Book::factory()->create([
             'title' => 'The Eye Of The World',
             'series' => 'The Wheel Of Time',
             'part' => '1',
@@ -42,12 +42,12 @@ class BooksControllerShowTest extends BooksControllerTestHelper
             'blurb' => 'The Wheel of Time turns and Ages come and go...'
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => $book->id,
             'author_id' => $author->id
         ]);
 
-        factory(Score::class)->create([
+        Score::factory()->create([
             'book_id' => $book->id,
             'score' => 4
         ]);
@@ -73,33 +73,33 @@ class BooksControllerShowTest extends BooksControllerTestHelper
     public function guests_can_visit_the_books_page_and_see_all_the_books_in_the_series()
     {
         $this->createForeignKeys();
-        factory(Book::class)->create([
+        Book::factory()->create([
             'title' => 'The Eye Of The World',
             'series' => 'The Wheel Of Time',
             'part' => '1'
         ]);
-        factory(Book::class)->create([
+        Book::factory()->create([
             'title' => 'The Great Hunt',
             'series' => 'The Wheel Of Time',
             'part' => '2'
         ]);
-        factory(Book::class)->create([
+        Book::factory()->create([
             'title' => 'The Dragon Reborn',
             'series' => 'The Wheel Of Time',
             'part' => '3'
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => 1,
             'author_id' => $this->author[0]->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => 2,
             'author_id' => $this->author[0]->id
         ]);
 
-        factory(AuthorBook::class)->create([
+        AuthorBook::factory()->create([
             'book_id' => 3,
             'author_id' => $this->author[0]->id
         ]);

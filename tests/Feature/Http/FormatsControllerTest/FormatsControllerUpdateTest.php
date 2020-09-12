@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\FormatsControllerTest;
 
-use App\Format;
+use App\Models\Format;
 use Tests\TestCase;
 
 class FormatsControllerUpdateTest extends TestCase
@@ -13,7 +13,7 @@ class FormatsControllerUpdateTest extends TestCase
     public function after_updating_an_format_the_user_is_redirected_to_the_formats_index_view_and_success_message_is_shown()
     {
         $this->signIn();
-        $format = factory(Format::class)->create();
+        $format = Format::factory()->create();
         $format->format = 'Kalle';
 
         $response = $this->patch('/formats/' . $format->id, $format->toArray());
@@ -30,7 +30,7 @@ class FormatsControllerUpdateTest extends TestCase
      */
     public function the_view_contains_a_list_of_available_media_types()
     {
-        factory(Format::class)->create();
+        Format::factory()->create();
 
         $this->signIn();
         $this->get('/formats/1/edit')->assertSeeInOrder(

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Http\RecordsControllerTest;
 
-use App\Artist;
-use App\Format;
-use App\Genre;
+use App\Models\Artist;
+use App\Models\Format;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class RecordsControllerCreateTest extends TestCase
@@ -14,7 +14,7 @@ class RecordsControllerCreateTest extends TestCase
      */
     public function users_can_visit_the_create_records_page()
     {
-        factory(Artist::class)->create();
+        Artist::factory()->create();
         $this->signIn();
         $response = $this->get('/records/create?artist_id=1');
         $response->assertSee('name="title"', false);
@@ -25,7 +25,7 @@ class RecordsControllerCreateTest extends TestCase
      */
     public function the_create_view_has_all_the_necessary_fields()
     {
-        factory(Artist::class)->create();
+        Artist::factory()->create();
         $this->signIn();
         $response = $this->get('/records/create?artist_id=1');
         $fields =[
@@ -48,12 +48,12 @@ class RecordsControllerCreateTest extends TestCase
      */
     public function the_create_records_page_contains_all_genres()
     {
-        factory(Artist::class)->create();
+        Artist::factory()->create();
         $this->signIn();
-        $genre1 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
-        $genre2 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
-        $genre3 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
-        $genre4 = factory(Genre::class)->create(['media_type_id' => env('RECORDS')]);
+        $genre1 = Genre::factory()->create(['media_type_id' => env('RECORDS')]);
+        $genre2 = Genre::factory()->create(['media_type_id' => env('RECORDS')]);
+        $genre3 = Genre::factory()->create(['media_type_id' => env('RECORDS')]);
+        $genre4 = Genre::factory()->create(['media_type_id' => env('RECORDS')]);
 
         $response = $this->get('/records/create?artist_id=1');
         $response->assertSee($genre1->genre);
@@ -67,13 +67,13 @@ class RecordsControllerCreateTest extends TestCase
      */
     public function the_create_records_page_does_only_contain_record_genres()
     {
-        factory(Artist::class)->create();
+        Artist::factory()->create();
         $this->signIn();
-        $genreToSee = factory(Genre::class)->create([
+        $genreToSee = Genre::factory()->create([
             'genre' => 'Rap',
             'media_type_id' => env('RECORDS')
         ]);
-        $genreNotToSee = factory(Genre::class)->create([
+        $genreNotToSee = Genre::factory()->create([
             'genre' => 'Fantasy',
             'media_type_id' => env('BOOKS')
         ]);
@@ -89,12 +89,12 @@ class RecordsControllerCreateTest extends TestCase
      */
     public function the_create_records_page_contains_all_formats()
     {
-        factory(Artist::class)->create();
+        Artist::factory()->create();
         $this->signIn();
-        $format1 = factory(Format::class)->create(['media_type_id' => env('RECORDS')]);
-        $format2 = factory(Format::class)->create(['media_type_id' => env('RECORDS')]);
-        $format3 = factory(Format::class)->create(['media_type_id' => env('RECORDS')]);
-        $format4 = factory(Format::class)->create(['media_type_id' => env('RECORDS')]);
+        $format1 = Format::factory()->create(['media_type_id' => env('RECORDS')]);
+        $format2 = Format::factory()->create(['media_type_id' => env('RECORDS')]);
+        $format3 = Format::factory()->create(['media_type_id' => env('RECORDS')]);
+        $format4 = Format::factory()->create(['media_type_id' => env('RECORDS')]);
 
         $response = $this->get('/records/create?artist_id=1');
         $response->assertSee($format1->format);
@@ -108,13 +108,13 @@ class RecordsControllerCreateTest extends TestCase
      */
     public function the_create_records_page_does_only_contain_record_formats()
     {
-        factory(Artist::class)->create();
+        Artist::factory()->create();
         $this->signIn();
-        $formatToSee = factory(Format::class)->create([
+        $formatToSee = Format::factory()->create([
             'format' => 'Lp',
             'media_type_id' => env('RECORDS')
         ]);
-        $formatNotToSee = factory(Format::class)->create([
+        $formatNotToSee = Format::factory()->create([
             'format' => 'Paperback',
             'media_type_id' => env('BOOKS')
         ]);

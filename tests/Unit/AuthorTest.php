@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Author;
+use App\Models\Author;
 
 class AuthorTest extends TestCase
 {
@@ -12,7 +12,7 @@ class AuthorTest extends TestCase
     */
     public function name_property_returns_the_authors_last_name_and_first_name()
     {
-        $author = factory(Author::class)->create([
+        $author = Author::factory()->create([
             'first_name' => 'Robert',
             'last_name' => 'Jordan'
         ]);
@@ -26,12 +26,12 @@ class AuthorTest extends TestCase
     public function when_listing_all_authors_they_should_be_sorted_alphabetically_by_last_name_then_first_name()
     {
         $this->withoutExceptionHandling();
-        factory(Author::class)->create([
+        Author::factory()->create([
             'first_name' => 'Steven',
             'last_name' => 'Jordan'
         ]);
 
-        factory(Author::class)->create([
+        Author::factory()->create([
             'first_name' => 'Robert',
             'last_name' => 'Jordan'
         ]);

@@ -1,10 +1,16 @@
 <?php
+namespace Database\Factories;
 
+use App\Models\Score;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-use App\Score;
+class ScoreFactory extends Factory
+{
+    protected $model = Score::class;
 
-$factory->define(Score::class, function () {
-    return [
-        //
-    ];
-});
+    public function definition()
+    {
+        return [];
+    }
+}

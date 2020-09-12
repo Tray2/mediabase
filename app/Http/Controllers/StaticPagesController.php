@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
+use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 
 class StaticPagesController extends Controller

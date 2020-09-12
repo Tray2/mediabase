@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\AuthorsControllerTest;
 
-use App\Author;
+use App\Models\Author;
 use Tests\TestCase;
 
 class AuthorsControllerEditTest extends TestCase
@@ -14,7 +14,7 @@ class AuthorsControllerEditTest extends TestCase
     {
         $this->signIn();
 
-        $author = factory(Author::class)->create([
+        $author = Author::factory()->create([
             'last_name' => 'Jordan',
             'first_name' => 'Robert'
         ]);

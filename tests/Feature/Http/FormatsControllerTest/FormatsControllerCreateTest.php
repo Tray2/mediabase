@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\FormatsControllerTest;
 
-use App\Format;
+use App\Models\Format;
 use Tests\TestCase;
 
 class FormatsControllerCreateTest extends TestCase
@@ -27,7 +27,7 @@ class FormatsControllerCreateTest extends TestCase
     public function after_creating_an_format_the_user_is_redirected_to_the_formats_index_view_and_success_message_is_shown()
     {
         $this->signIn();
-        $format = factory(Format::class)->make();
+        $format = Format::factory()->make();
 
         $response = $this->post('/formats', $format->toArray());
 

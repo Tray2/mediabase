@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\FormatsControllerTest;
 
-use App\Author;
-use App\Book;
-use App\Format;
-use App\Genre;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class FormatsControllerIndexTest extends TestCase
@@ -15,8 +15,8 @@ class FormatsControllerIndexTest extends TestCase
      */
     public function a_guest_can_list_all_formats()
     {
-        $format1 = factory(Format::class)->create();
-        $format2 = factory(Format::class)->create();
+        $format1 = Format::factory()->create();
+        $format2 = Format::factory()->create();
 
         $response = $this->get('/formats');
         $response->assertSee(e($format1->format));
@@ -51,10 +51,10 @@ class FormatsControllerIndexTest extends TestCase
      */
     public function when_visiting_the_index_page_the_amount_of_books_in_the_format_is_shown()
     {
-        factory(Author::class)->create();
-        factory(Format::class)->create();
-        factory(Genre::class)->create();
-        factory(Book::class)->create();
+        Author::factory()->create();
+        Format::factory()->create();
+        Genre::factory()->create();
+        Book::factory()->create();
         $response = $this->get('formats');
         $response->assertSee('<td>1</td>', false);
     }

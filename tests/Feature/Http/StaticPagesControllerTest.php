@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http;
 
-use App\Author;
-use App\Book;
-use App\Format;
-use App\Genre;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class StaticPagesControllerTest extends TestCase
@@ -59,10 +59,10 @@ class StaticPagesControllerTest extends TestCase
         $responseNoBooks = $this->get('/');
         $responseNoBooks->assertSee('Over 0 books');
 
-        factory(Author::class)->create();
-        factory(Format::class)->create();
-        factory(Genre::class)->create();
-        factory(Book::class)->create();
+        Author::factory()->create();
+        Format::factory()->create();
+        Genre::factory()->create();
+        Book::factory()->create();
 
         $responseOneBook = $this->get('/');
         $responseOneBook->assertSee('Over 1 books');

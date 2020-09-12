@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Http\BookCollectionControllerTest;
 
-use App\Author;
-use App\Format;
-use App\Genre;
+use App\Models\Author;
+use App\Models\Format;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class BookCollectionControllerTestHelper extends TestCase
@@ -12,8 +12,8 @@ class BookCollectionControllerTestHelper extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        factory(Author::class)->create();
-        factory(Genre::class)->create();
-        factory(Format::class)->create();
+        Author::factory()->create();
+        Genre::factory()->create();
+        Format::factory()->create();
     }
 }

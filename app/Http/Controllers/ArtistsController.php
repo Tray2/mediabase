@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Artist;
+use App\Models\Artist;
 use App\Http\Requests\ArtistFormRequest;
 use App\Http\Requests\ArtistRequest;
-use App\Record;
+use App\Models\Record;
 use Illuminate\Support\Str;
 
 class ArtistsController extends Controller

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\ArtistsControllerTest;
 
-use App\Artist;
+use App\Models\Artist;
 use Tests\TestCase;
 
 class ArtistsControllerCreateTest extends TestCase
@@ -23,7 +23,7 @@ class ArtistsControllerCreateTest extends TestCase
     public function after_creating_an_artist_the_user_is_redirected_to_the_artists_index_view_and_success_message_is_shown()
     {
         $this->signIn();
-        $artist = factory(Artist::class)->make();
+        $artist = Artist::factory()->make();
 
         $response = $this->post('/artists', $artist->toArray());
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\GenresControllerTest;
 
-use App\Genre;
+use App\Models\Genre;
 use Tests\TestCase;
 
 class GenresControllerEditTest extends TestCase
@@ -14,7 +14,7 @@ class GenresControllerEditTest extends TestCase
     {
         $this->signIn();
 
-        $genre = factory(Genre::class)->create([
+        $genre = Genre::factory()->create([
             'genre' => 'Fantasy',
         ]);
 
