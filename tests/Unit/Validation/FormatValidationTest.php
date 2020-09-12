@@ -18,7 +18,6 @@ class FormatValidationTest extends TestCase
     */
     public function it_can_store_a_valid_format()
     {
-        $this->withoutExceptionHandling();
         $format = Format::factory()->make([
             'format' => 'Paperback',
             'media_type_id' => env('BOOKS')

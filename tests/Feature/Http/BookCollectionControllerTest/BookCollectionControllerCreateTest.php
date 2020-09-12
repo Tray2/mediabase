@@ -12,7 +12,6 @@ class BookCollectionControllerCreateTest extends BookCollectionControllerTestHel
      */
     public function users_can_add_books_to_their_collection()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
         $book = Book::factory()->create();
         $response = $this->post('/bookcollections', ['book_id' => $book->id, 'user_id' => Auth::user()->id]);

@@ -27,7 +27,6 @@ class UserPagesControllerTest extends TestCase
     */
     public function users_can_visit_their_dashboard()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
         $response = $this->get('/home');
         $response->assertStatus(200);

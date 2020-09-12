@@ -12,7 +12,6 @@ class FormatTest extends TestCase
     */
     public function the_format_must_start_every_word_with_an_upper_case_letter()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         $format = Format::factory()->make([
