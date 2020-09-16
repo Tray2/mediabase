@@ -12,15 +12,12 @@ class GenreTest extends TestCase
     */
     public function the_genre_must_start_every_word_with_an_upper_case_letter()
     {
-        $this->signIn();
-
         $genre = Genre::factory()->make([
             'genre' => 'fanTasy',
             'media_type_id' => env('BOOKS')
         ]);
 
-        $this->post('/genres', $genre->toArray());
-        $this->assertEquals(1, Genre::where('genre', 'Fantasy')->count());
+        $this->assertEquals('Fantasy', $genre->genre);
     }
 
     /**

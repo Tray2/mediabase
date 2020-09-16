@@ -12,15 +12,12 @@ class FormatTest extends TestCase
     */
     public function the_format_must_start_every_word_with_an_upper_case_letter()
     {
-        $this->signIn();
-
         $format = Format::factory()->make([
             'format' => 'paPerBack',
             'media_type_id' => env('BOOKS')
         ]);
 
-        $this->post('/formats', $format->toArray());
-        $this->assertEquals(1, Format::where('format', 'Paperback')->count());
+        $this->assertEquals('Paperback', $format->format);
     }
 
     /**

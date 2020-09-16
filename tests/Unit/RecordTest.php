@@ -19,7 +19,7 @@ class RecordTest extends TestCase
             'name' => 'Run Dmc'
         ]);
 
-        $record = Record::factory()->create([
+        $record = Record::factory()->make([
             'artist_id' => $artist->id
         ]);
 
@@ -37,7 +37,7 @@ class RecordTest extends TestCase
             'media_type_id' => env('RECORDS')
         ]);
 
-        $record = Record::factory()->create([
+        $record = Record::factory()->make([
             'format_id' => $format->id
         ]);
 
@@ -56,7 +56,7 @@ class RecordTest extends TestCase
             'media_type_id' => env('RECORDS')
         ]);
 
-        $record = Record::factory()->create([
+        $record = Record::factory()->make([
             'genre_id' => $genre->id
         ]);
 
