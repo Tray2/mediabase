@@ -12,7 +12,7 @@ class AuthorTest extends TestCase
     */
     public function name_property_returns_the_authors_last_name_and_first_name()
     {
-        $author = Author::factory()->create([
+        $author = Author::factory()->make([
             'first_name' => 'Robert',
             'last_name' => 'Jordan'
         ]);

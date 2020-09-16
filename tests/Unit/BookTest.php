@@ -26,8 +26,6 @@ class BookTest extends TestCase
     */
     public function it_gets_the_average_of_the_scores_for_the_book()
     {
-        Author::factory()->create();
-
         $book = Book::factory()->create();
 
         Score::factory()->create([
@@ -49,17 +47,10 @@ class BookTest extends TestCase
     */
     public function the_title_must_start_every_word_with_an_upper_case_letter()
     {
-        $this->signIn();
-
-        $author = Author::factory()->create();
         $book = Book::factory()->make([
             'title' => 'THis iS tHe titLE'
         ]);
-
-        $book->author_id = $author->id;
-
-        $this->post('/books', $book->toArray());
-        $this->assertEquals(1, Book::where('title', 'This Is The Title')->count());
+        $this->assertEquals('This Is The Title', $book->title);
     }
 
     /**
@@ -67,18 +58,12 @@ class BookTest extends TestCase
     */
     public function no_series_given_results_in_standalone_value_is_required()
     {
-        $this->signIn();
 
-        $author = Author::factory()->create();
         $book = Book::factory()->make([
             'series' => null
         ]);
 
-        $book->author_id = $author->id;
-
-        $this->post('/books', $book->toArray());
-
-        $this->assertEquals(1, Book::where('series', 'Standalone')->count());
+        $this->assertEquals('Standalone', $book->series);
     }
 
     /**
@@ -86,17 +71,12 @@ class BookTest extends TestCase
     */
     public function the_series_must_start_every_word_with_an_upper_case_letter()
     {
-        $this->signIn();
-
-        Author::factory()->create();
-
         $book = Book::factory()->make([
               'series' => 'THis iS tHe Series',
             ]);
 
-        $this->post('/books', $book->toArray());
 
-        $this->assertEquals(1, Book::where('series', 'This Is The Series')->count());
+        $this->assertEquals('This Is The Series', $book->series);
     }
 
 
@@ -105,7 +85,6 @@ class BookTest extends TestCase
      * */
     public function it_can_list_all_the_books_in_a_series()
     {
-        Author::factory()->create();
         $book = Book::factory()->create([
             'title' => 'The Eye Of The World',
             'series' => 'The Wheel Of Time',
@@ -220,18 +199,13 @@ class BookTest extends TestCase
     {
         $this->signIn();
 
-        Author::factory()->create();
-        Author::factory()->create();
-
-        $book = Book::factory()->create([
+        $book = Book::factory()->make([
           'series' => 'Some Series'
         ]);
 
         $book->series = null;
 
-        $this->put('/books/' . $book->id, $book->toArray());
-
-        $this->assertEquals(1, Book::where('series', 'Standalone')->count());
+        $this->assertEquals('Standalone', $book->series);
     }
 
     /**
@@ -414,16 +388,10 @@ class BookTest extends TestCase
     public function it_returns_how_many_of_the_book_you_have_in_your_collection()
     {
         $this->signIn();
-        Author::factory()->create();
 
         $book = Book::factory()->create();
 
         $this->assertEquals(0, $book->inCollection());
-
-        AuthorBook::create([
-            'book_id' => 1,
-            'author_id' => 1
-        ]);
 
         BookCollection::create([
             'book_id' => 1,
@@ -439,16 +407,10 @@ class BookTest extends TestCase
     public function it_returns_how_many_times_you_have_read_the_book()
     {
         $this->signIn();
-        Author::factory()->create();
 
         $book = Book::factory()->create();
 
         $this->assertEquals(0, $book->isRead());
-
-        AuthorBook::create([
-            'book_id' => 1,
-            'author_id' => 1
-        ]);
 
         BookRead::create([
             'book_id' => 1,
