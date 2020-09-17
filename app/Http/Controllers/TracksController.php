@@ -37,4 +37,10 @@ class TracksController extends Controller
             'id' => 'required|exists:tracks,id'
         ]));
     }
+
+    public function destroy(Track $track)
+    {
+        $track->delete();
+        return redirect(route('records.show', $track->record->id))->withStatus($track->title . ' successfully deleted.');
+    }
 }
