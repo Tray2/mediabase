@@ -1,7 +1,8 @@
 <?php
 namespace Database\Seeders;
 
-use App\Genre;
+use App\Models\Genre;
+use App\Models\MediaType;
 use Illuminate\Database\Seeder;
 
 class GenresTableSeeder extends Seeder
@@ -14,23 +15,23 @@ class GenresTableSeeder extends Seeder
     protected $genres = [
         [
             'genre' => 'Fantasy',
-            'type' => 'books'
+            'media' => 'Books'
         ],
         [
             'genre' => 'Sci Fi',
-            'type' => 'books'
+            'media' => 'Books'
         ],
         [
             'genre' => 'Crime',
-            'type' => 'books'
+            'media' => 'Books'
         ],
         [
             'genre' => 'Medical Thriller',
-            'type' => 'books'
+            'media' => 'Books'
         ],
         [
             'genre' => 'Hip Hop',
-            'type' => 'records'
+            'media' => 'Records'
         ]
     ];
 
@@ -42,6 +43,8 @@ class GenresTableSeeder extends Seeder
     public function run()
     {
         foreach($this->genres as $genre) {
+            $genre['media_type_id'] = MediaType::where('media', $genre['media'])->pluck('id')->first();
+            unset($genre['media']);
             Genre::create($genre);
         }
     }

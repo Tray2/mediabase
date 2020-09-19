@@ -14,7 +14,6 @@ class RecordCollectionControllerIndexTest extends RecordCollectionControllerTest
      */
     public function anyone_can_list_the_records_in_a_users_collection()
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $record = Record::factory()->create();
         RecordCollection::factory()->create([

@@ -1,6 +1,7 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\Author;
 use Illuminate\Database\Seeder;
 
 class AuthorsTableSeeder extends Seeder
@@ -45,7 +46,7 @@ class AuthorsTableSeeder extends Seeder
     public function run()
     {
         foreach($this->authors as $author) {
-            \App\Author::create($author);
+            Author::create($author);
         }
     }
 }

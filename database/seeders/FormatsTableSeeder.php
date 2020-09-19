@@ -1,33 +1,37 @@
 <?php
 namespace Database\Seeders;
 
-use App\Format;
+use App\Models\Format;
+use App\Models\MediaType;
 use Illuminate\Database\Seeder;
 
 class FormatsTableSeeder extends Seeder
 {
     protected $formats = [
       [
-        'format' => 'Paperback',
-        'type' => 'books'
+         'format' => 'Paperback',
+         'media' => 'Books'
       ],
+
       [
          'format' => 'Hardcover',
-         'type' => 'books'
+         'media' => 'Books'
       ],
       [
          'format' => 'Audio',
-         'type' => 'books'
+         'media' => 'Books'
       ],
       [
         'format' => 'E-book',
-        'type' => 'books'
+        'media' => 'Books'
       ],
       [
-          'format' => 'LP',
-          'type' => 'records'
+        'format' => 'LP',
+        'media' => 'Records'
       ]
     ];
+
+
     /**
      * Run the database seeds.
      *
@@ -36,6 +40,8 @@ class FormatsTableSeeder extends Seeder
     public function run()
     {
         foreach($this->formats as $format) {
+            $format['media_type_id'] = MediaType::where('media', $format['media'])->pluck('id')->first();
+            unset($format['media']);
             Format::create($format);
         }
     }

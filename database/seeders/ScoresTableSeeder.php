@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 
-use App\Score;
+use App\Models\Score;
 use Illuminate\Database\Seeder;
 
 class ScoresTableSeeder extends Seeder

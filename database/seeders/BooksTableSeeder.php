@@ -1,11 +1,11 @@
 <?php
 namespace Database\Seeders;
 
-use App\AuthorBook;
-use App\Format;
-use App\Genre;
-use App\Author;
-use App\Book;
+use App\Models\Author;
+use App\Models\AuthorBook;
+use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -98,8 +98,8 @@ class BooksTableSeeder extends Seeder
     public function run()
     {
         foreach($this->books as $book) {
-            $format = Format::where('format', $book['format'])->where('type', 'books')->first();
-            $genre = Genre::where('genre', $book['genre'])->where('type','books')->first();
+            $format = Format::where('format', $book['format'])->first();
+            $genre = Genre::where('genre', $book['genre'])->first();
             $bookData = array_merge($book, ['format_id' => $format->id, 'genre_id' => $genre->id ]);
             unset($bookData['authors']);
             unset($bookData['format']);
