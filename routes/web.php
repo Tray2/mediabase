@@ -30,4 +30,6 @@ Route::get('/books/read/{user}', 'BookReadsController@index')->name('bookreads.i
 Route::post('/books/read', 'BookReadsController@store')->name('bookreads.store');
 Route::delete('/books/read/{book}', 'BookReadsController@destroy')->name('bookreads.delete');
 
+Route::get('/recordcollections/{user}', 'RecordCollectionsController@index')->name('recordcollections.index');
+
 Auth::routes();
