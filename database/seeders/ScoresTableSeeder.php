@@ -1,6 +1,7 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\MediaType;
 use App\Models\Score;
 use Illuminate\Database\Seeder;
 
@@ -9,32 +10,39 @@ class ScoresTableSeeder extends Seeder
 
     protected $scores = [
         [
-            'book_id' => 1,
-            'score' => 4
+            'item_id' => 1,
+            'score' => 4,
+            'media' => 'Books'
         ],
         [
-            'book_id' => 2,
-            'score' => 3
+            'item_id' => 2,
+            'score' => 3,
+            'media' => 'Books'
         ],
         [
-            'book_id' => 1,
-            'score' => 5
+            'item_id' => 1,
+            'score' => 5,
+            'media' => 'Books'
         ],
         [
-            'book_id' => 1,
-            'score' => 2
+            'item_id' => 1,
+            'score' => 2,
+            'media' => 'Books'
         ],
         [
-            'book_id' => 3,
-            'score' => 1
+            'item_id' => 3,
+            'score' => 1,
+            'media' => 'Books'
         ],
         [
-            'book_id' => 2,
-            'score' => 2
+            'item_id' => 2,
+            'score' => 2,
+            'media' => 'Books'
         ],
         [
-            'book_id' => 2,
-            'score' => 3
+            'item_id' => 2,
+            'score' => 3,
+            'media' => 'Books'
         ],
     ];
 
@@ -46,6 +54,8 @@ class ScoresTableSeeder extends Seeder
     public function run()
     {
             foreach ($this->scores as $score) {
+                $score['media_type_id'] = MediaType::where('media', $score['media'])->pluck('id')->first();
+                unset($score['media']);
                 Score::create($score);
             }
     }

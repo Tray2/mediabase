@@ -29,14 +29,10 @@ class Book extends Model
         return $this->belongsTo(Genre::class);
     }
 
-    public function score()
-    {
-        return $this->hasMany(Score::class);
-    }
-
     public function getScoreAttribute()
     {
-        return $this->score()->average('score');
+        $id = MediaType::where('media', 'Books')->pluck('id')->first();
+        return Score::where('media_type_id', $id)->where('item_id', $this->id)->average('score');
     }
 
     public function setTitleAttribute($value)

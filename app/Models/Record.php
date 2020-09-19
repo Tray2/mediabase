@@ -30,4 +30,10 @@ class Record extends Model
     {
         return $this->belongsTo(Genre::class);
     }
+
+    public function getScoreAttribute()
+    {
+        $id = MediaType::where('media', 'Records')->pluck('id')->first();
+        return Score::where('media_type_id', $id)->where('item_id', $this->id)->average('score');
+    }
 }

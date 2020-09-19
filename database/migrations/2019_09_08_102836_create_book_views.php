@@ -1,16 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateBookViews extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         if (App::environment() == 'local') {
@@ -30,7 +23,8 @@ class CreateBookViews extends Migration
                      b.title,
                     (SELECT ROUND(AVG(s.score), 1)
                     FROM scores s
-                    WHERE s.book_id = b.id) rating,
+                    WHERE s.item_id = b.id
+                    AND media_type_id = 1) rating,
                     b.series,
                     b.part,
                     b.released,
@@ -68,7 +62,8 @@ class CreateBookViews extends Migration
                         b.title,
                         (SELECT ROUND(AVG(s.score), 1)
                         FROM scores s
-                        WHERE s.book_id = b.id) rating,
+                        WHERE s.item_id = b.id
+                        AND media_type_id = 1) rating,
                         b.series,
                         b.part,
                         b.released,
@@ -92,11 +87,6 @@ class CreateBookViews extends Migration
         }
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         DB::statement('DROP VIEW IF EXISTS book_views');

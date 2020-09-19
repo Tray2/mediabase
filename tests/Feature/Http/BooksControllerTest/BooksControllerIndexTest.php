@@ -7,6 +7,7 @@ use App\Models\AuthorBook;
 use App\Models\Book;
 use App\Models\BookCollection;
 use App\Models\BookRead;
+use App\Models\MediaType;
 use App\Models\Score;
 
 class BooksControllerIndexTest extends BooksControllerTestHelper
@@ -104,8 +105,9 @@ class BooksControllerIndexTest extends BooksControllerTestHelper
         $book = Book::factory()->create();
 
         Score::factory()->create([
-            'book_id' => $book->id,
-            'score' => '3'
+            'item_id' => $book->id,
+            'score' => '3',
+            'media_type_id' => MediaType::where('media', 'Books')->pluck('id')->first()
         ]);
 
         $response = $this->get('/books');

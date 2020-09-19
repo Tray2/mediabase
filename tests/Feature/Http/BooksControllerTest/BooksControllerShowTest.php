@@ -7,6 +7,7 @@ use App\Models\AuthorBook;
 use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Score;
 
 class BooksControllerShowTest extends BooksControllerTestHelper
@@ -48,8 +49,9 @@ class BooksControllerShowTest extends BooksControllerTestHelper
         ]);
 
         Score::factory()->create([
-            'book_id' => $book->id,
-            'score' => 4
+            'item_id' => $book->id,
+            'score' => 4,
+            'media_type_id' => MediaType::where('media', 'Books')->pluck('id')->first()
         ]);
 
         $response = $this->get('/books/' . $book->id);

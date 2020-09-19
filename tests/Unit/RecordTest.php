@@ -5,7 +5,9 @@ namespace Tests\Unit;
 use App\Models\Artist;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Record;
+use App\Models\Score;
 use Tests\TestCase;
 
 class RecordTest extends TestCase
@@ -62,4 +64,28 @@ class RecordTest extends TestCase
 
         $this->assertEquals('Rap', $record->genre->genre);
     }
+
+    /**
+     * @test
+     */
+    public function it_gets_the_average_of_the_scores_for_the_record()
+    {
+        $this->withoutExceptionHandling();
+        $record = Record::factory()->create();
+        $mediaType = MediaType::where('media', 'Records')->pluck('id')->first();
+        Score::factory()->create([
+            'item_id' => $record->id,
+            'media_type_id' => $mediaType,
+            'score' => '4'
+        ]);
+
+        Score::factory()->create([
+            'item_id' => $record->id,
+            'media_type_id' => $mediaType,
+            'score' => '2'
+        ]);
+
+        $this->assertEquals(3, $record->score);
+    }
+
 }

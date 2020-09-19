@@ -7,6 +7,7 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Http\Requests\RecordFormRequest;
 use App\Models\Record;
+use App\Models\RecordView;
 use Illuminate\Http\Request;
 
 class RecordsController extends Controller
@@ -18,7 +19,7 @@ class RecordsController extends Controller
 
     public function index()
     {
-        return view('records.index')->with(['records' => Record::all()]);
+        return view('records.index')->with(['records' => RecordView::all()]);
     }
 
     public function show(Record $record)

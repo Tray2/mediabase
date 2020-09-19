@@ -15,7 +15,8 @@ class CreateScoresTable extends Migration
     {
         Schema::create('scores', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('book_id');
+            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('media_type_id');
             $table->unsignedInteger('score');
             $table->timestamps();
         });

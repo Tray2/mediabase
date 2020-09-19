@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\MediaType;
 use Tests\TestCase;
 use App\Models\Book;
 use App\Models\Score;
@@ -29,12 +30,14 @@ class BookTest extends TestCase
         $book = Book::factory()->create();
 
         Score::factory()->create([
-            'book_id' => $book->id,
+            'item_id' => $book->id,
+            'media_type_id' => MediaType::where('media', 'Books')->pluck('id')->first(),
             'score' => '4'
         ]);
 
         Score::factory()->create([
-            'book_id' => $book->id,
+            'item_id' => $book->id,
+            'media_type_id' => MediaType::where('media', 'Books')->pluck('id')->first(),
             'score' => '2'
         ]);
 

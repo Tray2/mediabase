@@ -6,7 +6,7 @@
     @endauth
     <ul>
         @foreach($records as $record)
-            <li>{{ $record->title }}</li>
+            <li>{{ $record->title }} {{ $record->rating? $record->rating . '/5.0' : 'Not rated' }}</li>
         @endforeach
     </ul>
 @endsection
