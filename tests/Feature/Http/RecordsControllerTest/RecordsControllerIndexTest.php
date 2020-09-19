@@ -59,5 +59,27 @@ class RecordsControllerIndexTest extends TestCase
         $response->assertSee('3.0/5.0', false);
     }
 
+    /**
+     * @test
+     */
+    public function if_no_books_exists_then_show_no_books_found_is_shown_in_books_index_view()
+    {
+        $response = $this->get('/records');
+        $response->assertStatus(200);
+        $response->assertSee('No records found');
+    }
+
+    /**
+     * @test
+     */
+    public function only_users_can_see_the_add_record_button()
+    {
+        $guestResponse = $this->get('/records');
+        $this->signIn();
+        $userResponse = $this->get('/records');
+
+        $guestResponse->assertDontSee('Add record');
+        $userResponse->assertSee('Add record');
+    }
 
 }
