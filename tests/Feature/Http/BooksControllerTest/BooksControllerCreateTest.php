@@ -7,6 +7,7 @@ use App\Models\AuthorBook;
 use App\Models\Book;
 use App\Models\BookCollection;
 use App\Models\BookRead;
+use App\Models\Format;
 use App\Models\Genre;
 
 class BooksControllerCreateTest extends BooksControllerTestHelper
@@ -14,7 +15,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
     /**
      * @test
      */
-    public function users_can_visit_books_create()
+    public function users_can_visit_the_create_books_page()
     {
         $this->signIn();
 
@@ -44,7 +45,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
     /**
      * @test
      */
-    public function when_visiting_books_create_a_list_of_all_book_genres_is_loaded()
+    public function the_create_books_page_contains_all_genres()
     {
         $this->signIn();
         $author = Author::factory()->create();
@@ -61,6 +62,81 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
         $response = $this->get('books/create?author_id=' . $author->id);
         $response->assertSee($bookGenre->genre, false);
         $response->assertDontSee($otherGenre->genre, false);
+    }
+
+    /**
+     * @test
+     */
+    public function the_create_books_page_does_only_contain_book_genres()
+    {
+        Author::factory()->create();
+        $this->signIn();
+        $genreNotToSee = Genre::factory()->create([
+            'genre' => 'Rap',
+            'media_type_id' => env('RECORDS')
+        ]);
+        $genreToSee = Genre::factory()->create([
+            'genre' => 'Fantasy',
+            'media_type_id' => env('BOOKS')
+        ]);
+
+        $response = $this->get('/books/create?author_id=1');
+
+        $response->assertSee($genreToSee->genre);
+        $response->assertDontSee($genreNotToSee->genre);
+    }
+
+    /**
+     * @test
+     */
+    public function the_create_books_page_contains_all_formats()
+    {
+        Author::factory()->create();
+        $this->signIn();
+        $format1 = Format::factory()->create(['media_type_id' => env('BOOKS')]);
+        $format2 = Format::factory()->create(['media_type_id' => env('BOOKS')]);
+        $format3 = Format::factory()->create(['media_type_id' => env('BOOKS')]);
+        $format4 = Format::factory()->create(['media_type_id' => env('BOOKS')]);
+
+        $response = $this->get('/books/create?author_id=1');
+        $response->assertSee($format1->format);
+        $response->assertSee($format2->format);
+        $response->assertSee($format3->format);
+        $response->assertSee($format4->format);
+    }
+
+    /**
+     * @test
+     */
+    public function the_create_books_page_does_only_contain_book_formats()
+    {
+        Author::factory()->create();
+        $this->signIn();
+        $formatNotToSee = Format::factory()->create([
+            'format' => 'Lp',
+            'media_type_id' => env('RECORDS')
+        ]);
+        $formatToSee = Format::factory()->create([
+            'format' => 'Paperback',
+            'media_type_id' => env('BOOKS')
+        ]);
+
+        $response = $this->get('/books/create?author_id=1');
+
+        $response->assertSee($formatToSee->format);
+        $response->assertDontSee($formatNotToSee->format);
+    }
+
+    /**
+     * @test
+     */
+    public function users_trying_to_access_book_create_without_author_id_are_redirected_to_the_author_index_and_message_is_shown()
+    {
+        $this->signIn();
+        $response = $this->get('/books/create');
+        $response->assertLocation('/authors');
+        $response = $this->get('/authors');
+        $response->assertSee('You must specify an author.', false);
     }
 
     /**
@@ -99,17 +175,6 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
         $response->assertSee(e($book->title) . ' successfully added.');
     }
 
-    /**
-     * @test
-     */
-    public function users_trying_to_access_book_create_without_author_id_are_redirected_to_the_author_index_and_message_is_shown()
-    {
-        $this->signIn();
-        $response = $this->get('/books/create');
-        $response->assertLocation('/authors');
-        $response = $this->get('/authors');
-        $response->assertSee('You must specify an author.', false);
-    }
 
     /**
      * @test

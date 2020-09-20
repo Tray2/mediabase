@@ -43,7 +43,8 @@ class RecordsController extends Controller
 
     public function store(RecordFormRequest $request)
     {
-        Record::create($request->validated());
+        $record = Record::create($request->validated());
+        return redirect(route('records.index'))->withStatus($record->title . ' successfully added.');
     }
 
     public function edit(Record $record)

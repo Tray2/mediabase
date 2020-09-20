@@ -5,9 +5,9 @@ namespace Tests\Feature\Http\RecordsControllerTest;
 use App\Models\Artist;
 use App\Models\Format;
 use App\Models\Genre;
-use Tests\TestCase;
+use App\Models\Record;
 
-class RecordsControllerCreateTest extends TestCase
+class RecordsControllerCreateTest extends RecordsControllerTestHelper
 {
     /**
      * @test
@@ -136,5 +136,25 @@ class RecordsControllerCreateTest extends TestCase
         $response = $this->get('/artists');
         $response->assertSee('You must specify an artist.', false);
     }
+
+    /**
+     * @test
+     */
+    public function when_users_create_records_they_are_redirected_to_the_record_index_and_are_shown_a_success_message()
+    {
+        $this->createForeignKeys();
+        $this->signIn();
+        $record = Record::factory()->make();
+        $record->artist_id = $this->artist[0]->id;
+
+        $response = $this->post('/records', $record->toArray());
+
+        $response->assertStatus(302);
+        $response->assertLocation('/records');
+
+        $response = $this->get('/records');
+        $response->assertSee(e($record->title) . ' successfully added.');
+    }
+
 
 }

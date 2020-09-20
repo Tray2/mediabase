@@ -32,19 +32,7 @@
                 @auth
                     @if(request()->path() == 'records')
                         <td>
-                            @if($record->inCollection() > 0)
-                                <span class="text-base bg-green-600 text-gray-100 py-1 px-2 rounded">Collected</span>
-                            @else
-                                <form method="POST" action="/recordcollections">
-                                    @csrf
-                                    <input type="hidden" name="record_id" value="{{ $record->record_id }}">
-                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                    <input type="submit" value="Add" title="Add record to your collection."
-                                           class="text-base bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
-                                </form>
-                            @endif
                         </td>
-                        <td>
                     @endif
                 @endauth
             </tr>
