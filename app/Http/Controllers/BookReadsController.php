@@ -32,7 +32,7 @@ class BookReadsController extends Controller
         $bookData = $request->validated();
         $bookData['user_id'] = $request->user()->id;
         $bookRead = BookRead::create($bookData);
-        return redirect('/books/' . $bookRead->book_id)->withStatus($bookRead->book->title . ' marked as read.');
+        return back()->withStatus($bookRead->book->title . ' marked as read.');
     }
 
     public function destroy(Book $book)
