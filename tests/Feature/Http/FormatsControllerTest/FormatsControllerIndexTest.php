@@ -55,7 +55,32 @@ class FormatsControllerIndexTest extends TestCase
         Format::factory()->create();
         Genre::factory()->create();
         Book::factory()->create();
-        $response = $this->get('formats');
+        $response = $this->get('formats?type=books');
         $response->assertSee('<td>1</td>', false);
+    }
+
+    /**
+    * @test
+    */
+    public function it_only_shows_the_formats_for_the_media_type_given_in_the_query_string()
+    {
+        Format::factory()->create(
+            [
+                'format' => 'Audio',
+                'media_type_id' => env('BOOKS')
+            ]
+        );
+        Format::factory()->create(
+            [
+                'format' => 'Lp',
+                'media_type_id' => env('RECORDS')
+            ]
+        );
+
+
+        Format::factory()->create();
+        $response = $this->get('/formats?type=books');
+        $response->assertSee('Audio');
+        $response->assertDontSee('Lp');
     }
 }

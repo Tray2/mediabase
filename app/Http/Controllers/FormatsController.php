@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FormatFormRequest;
 use App\Models\Format;
 use App\Models\MediaType;
+use Illuminate\Http\Request;
 
 class FormatsController extends Controller
 {
@@ -13,13 +14,19 @@ class FormatsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('formats.index')
-            ->with(['formats' => Format::orderBy('media_type_id')
+        if(isset($request->type)) {
+            return view('formats.index')->with(['formats' => Format::where('media_type_id', env(strtoupper($request->type)))
                 ->orderBy('format')
-                ->withCount('books')
+                ->withCount(strtolower($request->type))
                 ->get()]);
+        }
+
+        return view('formats.index')->with(['formats' => Format::orderBy('media_type_id')
+            ->orderBy('format')
+            ->withCount(strtolower($request->type))
+            ->get()]);
     }
 
     public function show($id)
