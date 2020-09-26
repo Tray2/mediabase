@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Http;
 
+use App\Models\Artist;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\Record;
 use Tests\TestCase;
 
 class StaticPagesControllerTest extends TestCase
@@ -66,5 +68,22 @@ class StaticPagesControllerTest extends TestCase
 
         $responseOneBook = $this->get('/');
         $responseOneBook->assertSee('Over 1 books');
+    }
+
+    /**
+    * @test
+    */
+    public function the_start_page_displays_a_count_of_records_that_is_stored()
+    {
+        $responseNoRecords = $this->get('/');
+        $responseNoRecords->assertSee('0 records');
+
+        Artist::factory()->create();
+        Format::factory()->create();
+        Genre::factory()->create();
+        Record::factory()->create();
+
+        $responseOneRecord = $this->get('/');
+        $responseOneRecord->assertSee('1 records');
     }
 }

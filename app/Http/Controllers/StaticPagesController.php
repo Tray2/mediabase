@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Record;
 use Illuminate\Support\Facades\Auth;
 
 class StaticPagesController extends Controller
@@ -22,6 +23,9 @@ class StaticPagesController extends Controller
         if (Auth::check()) {
             return redirect(route('home'));
         }
-        return view('static_pages.start')->with('bookCounter', Book::count());
+        return view('static_pages.start')->with([
+            'bookCounter' => Book::count(),
+            'recordCounter' => Record::count()
+        ]);
     }
 }

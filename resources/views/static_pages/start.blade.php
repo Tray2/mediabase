@@ -5,7 +5,7 @@
         <div class="self-end">
             <ul class="flex">
                <li class="text-gray-600 text-m">Over {{ $bookCounter }} books,</li>
-               <li class="ml-2 text-gray-600 text-m">0 records,</li>
+               <li class="ml-2 text-gray-600 text-m">{{ $recordCounter }} records,</li>
                <li class="ml-2 text-gray-600 text-m">0 movies</li>
                <li class="ml-2 text-gray-600 text-m">and 0 games.</li>
             </ul>
