@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Book;
 use Tests\TestCase;
 use App\Models\Format;
 
@@ -90,5 +91,4 @@ class FormatTest extends TestCase
         $response = $this->get('/formats');
         $response->assertSeeInOrder(['<td>Books</td>', '<td>Records</td>'], false);
     }
-
 }

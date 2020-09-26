@@ -21,8 +21,32 @@ class Format extends Model
         return $this->hasMany(BookView::class);
     }
 
+    public function records()
+    {
+        return $this->hasMany(RecordView::class);
+    }
+
     public function media_types()
     {
         return $this->belongsTo(MediaType::class, 'media_type_id');
+    }
+
+    public function getCountsAttribute()
+    {
+        if ($this->books_count) {
+            return $this->books_count;
+        }
+
+        if ($this->records_count) {
+            return $this->records_count;
+        }
+
+        if ($this->games_count) {
+            return $this->games_count;
+        }
+
+        if ($this->movies_count) {
+            return $this->movies_count;
+        }
     }
 }

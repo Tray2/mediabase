@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Http\FormatsControllerTest;
 
+use App\Models\Artist;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\Record;
 use Tests\TestCase;
 
 class FormatsControllerIndexTest extends TestCase
@@ -83,4 +85,21 @@ class FormatsControllerIndexTest extends TestCase
         $response->assertSee('Audio');
         $response->assertDontSee('Lp');
     }
+
+    /**
+     * @test
+     */
+    public function when_visiting_the_index_page_the_amount_of_records_in_the_format_is_shown()
+    {
+        $this->withoutExceptionHandling();
+        Artist::factory()->create();
+        Format::factory()->create([
+            'media_type_id' => env('RECORDS')
+        ]);
+        Genre::factory()->create();
+        Record::factory()->create();
+        $response = $this->get('formats?type=records');
+        $response->assertSee('<td>1</td>', false);
+    }
+
 }

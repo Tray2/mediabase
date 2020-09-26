@@ -15,7 +15,7 @@
                     <a href="{{ route('formats.show', $format->id )}}" class="hover:underline">{{ $format->format }}</a>
                 </td>
                 <td>{{ucfirst($format->media_types->media)}}</td>
-                <td>{{ $format->books_count }}</td>
+                <td>{{ $format->counts }}</td>
             </tr>
         @endforeach
     </table>
