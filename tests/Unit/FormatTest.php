@@ -79,6 +79,7 @@ class FormatTest extends TestCase
     */
     public function the_format_type_is_shown_on_the_index_page()
     {
+        $this->withoutExceptionHandling();
         Format::factory()->create([
             'format' => 'Hardcover',
             'media_type_id' => env('BOOKS')

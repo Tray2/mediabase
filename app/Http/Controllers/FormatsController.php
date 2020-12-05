@@ -25,7 +25,6 @@ class FormatsController extends Controller
 
         return view('formats.index')->with(['formats' => Format::orderBy('media_type_id')
             ->orderBy('format')
-            ->withCount(strtolower($request->type))
             ->get()]);
     }
 
