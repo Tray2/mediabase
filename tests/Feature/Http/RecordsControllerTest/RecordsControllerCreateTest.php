@@ -155,6 +155,4 @@ class RecordsControllerCreateTest extends RecordsControllerTestHelper
         $response = $this->get('/records');
         $response->assertSee(e($record->title) . ' successfully added.');
     }
-
-
 }

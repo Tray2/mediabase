@@ -8,14 +8,23 @@
         <li>Release Code: {{ $record->release_code }}</li>
         <li>Barcode: {{ $record->barcode }}</li>
     </ul>
-    <table>
-        @foreach($record->tracks as $track)
-            <tr>
-                <td>{{ $track->track_no }}</td>
-                <td>{{ $track->title }}</td>
-                <td>{{ $track->mix }}</td>
-            </tr>
-        @endforeach
-    </table>
-
+        @if($record->tracks->count() == 0)
+            This records has no tracks yet.
+            @auth
+                <a href="{{ route('tracks.create', $record->id) }}">Add tracks</a>
+            @endauth
+        @else
+            <table>
+            @foreach($record->tracks as $track)
+                <tr>
+                    <td>{{ $track->track_no }}</td>
+                    <td>{{ $track->title }}</td>
+                    <td>{{ $track->mix }}</td>
+                </tr>
+            @endforeach
+            </table>
+            @auth
+                <a href="{{ route('tracks.edit', $record->id) }}">Edit track list</a>
+            @endauth
+        @endif
 @endsection

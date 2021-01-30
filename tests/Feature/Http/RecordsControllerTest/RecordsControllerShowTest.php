@@ -11,6 +11,21 @@ use Tests\TestCase;
 
 class RecordsControllerShowTest extends TestCase
 {
+    protected $record;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $artist = Artist::factory()->create([]);
+        $format = Format::factory()->create([]);
+        $genre = Genre::factory()->create([]);
+        $this->record = Record::factory()->create([
+            'artist_id' => $artist->id,
+            'genre_id' => $genre->id,
+            'format_id' => $format->id,
+        ]);
+    }
+
     /**
      * @test
      */
@@ -85,5 +100,55 @@ class RecordsControllerShowTest extends TestCase
             $tracks[3]->title,
             $tracks[3]->mix,
         ]);
+    }
+
+    /**
+    * @test
+    */
+    public function if_the_record_does_not_have_any_tracks_an_add_tracks_button_is_visible_to_logged_in_users()
+    {
+        $this->signIn();
+        $response = $this->get('/records/' . $this->record->id);
+        $response->assertSee('This records has no tracks yet');
+        $response->assertSee('Add tracks');
+    }
+
+    /**
+     * @test
+     */
+    public function the_add_tracks_button_is_not_visible_to_guests()
+    {
+        $response = $this->get('/records/' . $this->record->id);
+        $response->assertSee('This records has no tracks yet');
+        $response->assertDontSee('Add tracks');
+    }
+
+    /**
+    * @test
+    */
+    public function if_the_record_has_tracks_the_edit_track_list_button_is_visible_to_logged_in_users()
+    {
+        Track::factory()->create([
+            'record_id' => $this->record->id
+        ]);
+
+        $this->signIn();
+
+        $response = $this->get('/records/' . $this->record->id);
+        $response->assertDontSee('This records has no tracks yet');
+        $response->assertSee('Edit track list');
+    }
+
+    /**
+     * @test
+     */
+    public function the_edit_track_list_button_is_not_visible_to_guest()
+    {
+        Track::factory()->create([
+            'record_id' => $this->record->id
+        ]);
+        $response = $this->get('/records/' . $this->record->id);
+        $response->assertDontSee('This records has no tracks yet');
+        $response->assertDontSee('Edit track list');
     }
 }
