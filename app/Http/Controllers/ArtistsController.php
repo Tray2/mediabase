@@ -31,7 +31,9 @@ class ArtistsController extends Controller
         return view('artists.show')->with(
             [
                 'artist' => $artist,
-                'records' => Record::where('artist_id', $artist->id)->get()
+                'records' => Record::where('artist_id', $artist->id)
+                                ->orderBy('released')
+                                ->get()
             ]
         );
     }

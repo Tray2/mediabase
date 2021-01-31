@@ -9,5 +9,19 @@
     @if($records->count() == 0)
         <h3>Artist has no records</h3>
     @else
+        <table>
+            <tr>
+                <td>Title</td>
+                <td>Released</td>
+                <td>Format</td>
+            </tr>
+            @foreach($records as $record)
+                <tr>
+                    <td>{{ $record->title }}</td>
+                    <td>{{ $record->released }}</td>
+                    <td>{{ $record->format->format }}</td>
+                </tr>
+            @endforeach
+        </table>
     @endif
 @endsection
