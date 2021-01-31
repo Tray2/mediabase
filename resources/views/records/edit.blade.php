@@ -1,4 +1,3 @@
-{!!  $genres !!}
 @extends('layouts.app')
 @section('content')
     <form action="/records" method="POST">
