@@ -34,8 +34,8 @@ class RecordsController extends Controller
         }
         return view('records.create')
             ->with([
-                'genres' => Genre::where('media_type_id', env('RECORDS'))->get(),
-                'formats' => Format::where('media_type_id', env('RECORDS'))->get(),
+                'genres' => Genre::where('media_type_id', env('RECORDS'))->orderBy('genre')->get(),
+                'formats' => Format::where('media_type_id', env('RECORDS'))->orderBy('format')->get(),
                 'artist' => Artist::findOrFail($request->query('artist_id'))
             ]
         );
@@ -49,7 +49,10 @@ class RecordsController extends Controller
 
     public function edit(Record $record)
     {
-        return view('records.edit')->with(['record' => $record]);
+        return view('records.edit')->with([
+            'record' => $record,
+            'genres' => Genre::where('media_type_id', env('RECORDS'))->orderBy('genre')->get(),
+            'formats' => Format::where('media_type_id', env('RECORDS'))->orderBy('format')->get()]);
     }
 
     public function update(Record $record, RecordFormRequest $request)
