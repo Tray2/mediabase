@@ -58,4 +58,18 @@ class ArtistsControllerIndexTest extends TestCase
         $response = $this->get('/artists');
         $response->assertSee('<td>1</td>', false);
     }
+
+    /**
+    * @test
+    */
+    public function the_artists_in_the_list_is_sorted_in_alphabetical_order()
+    {
+        Artist::factory()->create(['name' => 'Run Dmc']);
+        Artist::factory()->create(['name' => 'Ice-T']);
+        Artist::factory()->create(['name' => 'Body Count']);
+        Artist::factory()->create(['name' => 'N.W.A.']);
+        Artist::factory()->create(['name' => '2Low']);
+        $response = $this->get('/artists');
+        $response->assertSeeTextInOrder(['2Low', 'Body Count', 'Ice-T', 'N.W.A.', 'Run Dmc']);
+    }
 }
