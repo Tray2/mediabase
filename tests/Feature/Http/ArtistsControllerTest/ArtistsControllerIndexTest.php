@@ -49,14 +49,14 @@ class ArtistsControllerIndexTest extends TestCase
      */
     public function when_visiting_the_index_page_the_amount_of_records_by_the_artist_is_shown()
     {
-        Artist::factory()->create();
+        $artist = Artist::factory()->create();
         Genre::factory()->create();
         Format::factory()->create();
         $response = $this->get('/artists');
-        $response->assertSee('<td>0</td>', false);
+        $response->assertSeeTextInOrder([$artist->name, '0'], false);
         Record::factory()->create();
         $response = $this->get('/artists');
-        $response->assertSee('<td>1</td>', false);
+        $response->assertSeeTextInOrder([$artist->name, '1'], false);
     }
 
     /**

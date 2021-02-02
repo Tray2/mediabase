@@ -14,12 +14,17 @@
     @auth
         <a href="/artists/create" class="bg-blue-500  hover:bg-blue-700 text-white font-bold mb-2 py-2 px-4 rounded">Add artist</a>
     @endauth
-    <ul>
-    @foreach($artists as $artist)
-            <tr class="border-b-2 text-lg text-gray-800"><td class="pl-2 py-2"><a href="{{ route('artists.show', $artist->id )}}" class="hover:underline">{{ $artist->name }}</a></td><td>{{ $artist->records->count() }}</td></tr>
-    @endforeach
-    </ul>
-    @if(count($artists) === 0)
+    @if(count($artists) > 0)
+        <table>
+        <tr class="text-left bg-gray-500 text-xl">
+            <th class="py-2 pl-2">Artist</th>
+            <th>Records</th>
+        </tr>
+        @foreach($artists as $artist)
+            <tr class="border-b-2 text-lg text-gray-800"><td class="pl-2 py-2"><a href="{{ route('artists.show', $artist->id )}}" class="hover:underline">{{ $artist->name }}</a></td><td class="text-right">{{ $artist->records->count() }}</td></tr>
+        @endforeach
+        </table>
+    @else
         No artists to display
     @endif
 @endsection
