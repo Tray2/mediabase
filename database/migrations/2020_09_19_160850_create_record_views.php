@@ -25,7 +25,8 @@ class CreateRecordViews extends Migration
                  records r,
                  genres g,
                  formats f
-            WHERE r.genre_id = g.id
+            WHERE r.artist_id = a.id
+            AND r.genre_id = g.id
             AND   r.format_id = f.id"
             );
         } else {
@@ -45,7 +46,8 @@ class CreateRecordViews extends Migration
                    records r,
                    genres g,
                    formats f
-                WHERE r.genre_id = g.id
+                WHERE r.artist_id = a.id
+                AND r.genre_id = g.id
                 AND   r.format_id = f.id"
             );
         }
