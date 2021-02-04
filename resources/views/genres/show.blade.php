@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('common.book_subnav')
+@include('common.' . strtolower($type) . '_subnav')
 @section('content')
 <?php $books = $genre->books; ?>
 {{ $genre->genre }}

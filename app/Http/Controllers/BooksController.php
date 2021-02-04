@@ -25,12 +25,12 @@ class BooksController extends Controller
                          ->orderBy('released')
                          ->orderBy('title')
                          ->get();
-        return view('books.index')->with('books', $books);
+        return view('books.index')->with(['books' => $books, 'type' => 'books']);
     }
 
     public function show(Book $book)
     {
-        return view('books.show')->with('book', $book);
+        return view('books.show')->with(['book' => $book, 'type' => 'books']);
     }
 
     public function create(Request $request)
@@ -43,7 +43,8 @@ class BooksController extends Controller
             'genres' => Genre::where('media_type_id', env('BOOKS'))->orderBy('genre')->get(),
             'formats' => Format::where('media_type_id', env('BOOKS'))->orderBy('format')->get(),
             'author' => $author,
-            'additional_authors' => Author::where('id', '!=', $author->id)->orderBy('last_name')->orderBy('first_name')->get()
+            'additional_authors' => Author::where('id', '!=', $author->id)->orderBy('last_name')->orderBy('first_name')->get(),
+            'type' => 'books'
         ]);
     }
 
@@ -65,7 +66,8 @@ class BooksController extends Controller
              'book' => $book,
              'genres' => Genre::orderBy('genre')->get(),
              'formats' => Format::orderBy('format')->get(),
-             'additional_authors' => Author::where('id', '!=', $book->author[0]->id)->get()
+             'additional_authors' => Author::where('id', '!=', $book->author[0]->id)->get(),
+             'type' => 'books'
             ]
         );
     }

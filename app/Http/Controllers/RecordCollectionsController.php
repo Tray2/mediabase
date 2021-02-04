@@ -26,7 +26,9 @@ class RecordCollectionsController extends Controller
             ->orderBy('released')
             ->orderBy('title')
             ->get(),
-            'user' => $user]);
+            'user' => $user,
+            'type' => 'records'
+        ]);
     }
 
 }

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('common.book_subnav')
+@include('common.' . strtolower($type) . '_subnav')
 @section('content')
 <form method="post" action="/books/{{ $book->id }}">
     @method('PUT')

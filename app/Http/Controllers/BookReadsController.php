@@ -22,7 +22,8 @@ class BookReadsController extends Controller
             ->with(
                 [
                     'user' => $user,
-                    'books' => BookView::whereIn('book_id', BookRead::whereUserId($user->id)->pluck('id'))->get()
+                    'books' => BookView::whereIn('book_id', BookRead::whereUserId($user->id)->pluck('id'))->get(),
+                    'type' => 'books'
                 ]
             );
     }

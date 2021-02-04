@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@include('common.book_subnav')
 @section('content')
 <form method="POST" action="/genres">
     @csrf

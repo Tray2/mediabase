@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('common.book_subnav')
+@include('common.' . strtolower($type) . '_subnav')
 @section('content')
 <div>
     <form method="POST" action="/books" class="w-3/4">

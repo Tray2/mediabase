@@ -19,7 +19,9 @@ class AuthorsController extends Controller
         return view('authors.index')->with(['authors' => Author::orderBy('last_name', 'asc')
             ->orderBy('first_name', 'asc')
             ->withCount('books')
-            ->get()]);
+            ->get(),
+            'type' => 'books'
+        ]);
     }
 
     public function show($id)
@@ -34,14 +36,15 @@ class AuthorsController extends Controller
             [
                 'author' => $author,
                 'books' => BookView::where('author_name', 'like', '%' . $author->name . '%')
-                    ->get()
+                    ->get(),
+                'type' => 'books'
             ]
         );
     }
 
     public function create()
     {
-        return view('authors.create');
+        return view('authors.create')->with(['type' => 'books']);
     }
 
     public function store(AuthorFormRequest $request)
@@ -54,7 +57,7 @@ class AuthorsController extends Controller
 
     public function edit(Author $author)
     {
-        return view('authors.edit')->with(['author' => $author]);
+        return view('authors.edit')->with(['author' => $author, 'type' => 'books']);
     }
 
     public function update(Author $author, AuthorFormRequest $request)

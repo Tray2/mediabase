@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@include('common.book_subnav')
 @section('content')
 <div>
     <form method="POST" action="/genres" class="w-3/4">

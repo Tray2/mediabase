@@ -1,5 +1,7 @@
 @extends('layouts.app')
-@include('common.book_subnav')
+@if(isset($type))
+    @include('common.' . strtolower($type) . '_subnav')
+@endif
 @section('content')
 @auth
     <a href="/genres/create" class="bg-blue-500  hover:bg-blue-700 text-white font-bold mb-2 py-2 px-4 rounded">Add genre</a>

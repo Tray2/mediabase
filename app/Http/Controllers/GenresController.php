@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GenreFormRequest;
 use App\Models\Genre;
 use App\Models\MediaType;
+use Illuminate\Http\Request;
 
 class GenresController extends Controller
 {
@@ -13,9 +14,12 @@ class GenresController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('genres.index')->with(['genres' => Genre::orderBy('genre')->withCount('books')->get()]);
+        return view('genres.index')->with([
+            'genres' => Genre::orderBy('genre')->withCount('books')->get(),
+            'type' => $request->type
+        ]);
     }
 
     public function show($id)

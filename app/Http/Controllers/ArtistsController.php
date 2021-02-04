@@ -17,7 +17,7 @@ class ArtistsController extends Controller
 
     public function index()
     {
-        return view('artists.index')->with(['artists' => Artist::orderBy('name')->get()]);
+        return view('artists.index')->with(['artists' => Artist::orderBy('name')->get(), 'type' => 'records']);
     }
 
     public function show($id)
@@ -33,7 +33,8 @@ class ArtistsController extends Controller
                 'artist' => $artist,
                 'records' => Record::where('artist_id', $artist->id)
                                 ->orderBy('released')
-                                ->get()
+                                ->get(),
+                'type' => 'records'
             ]
         );
     }
@@ -53,7 +54,7 @@ class ArtistsController extends Controller
 
     public function edit(Artist $artist)
     {
-        return view('artists.edit')->with(['artist' => $artist]);
+        return view('artists.edit')->with(['artist' => $artist, 'type' => 'records']);
     }
 
     public function update(Artist $artist, ArtistFormRequest $request)

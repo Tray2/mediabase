@@ -248,6 +248,7 @@ class BookValidationTest extends TestCase
     {
         $book = Book::factory()->create();
 
+
         $this->delete('/books/' . $book->id);
         $this->assertEquals(0, Book::where('title', $book->title)->count());
     }

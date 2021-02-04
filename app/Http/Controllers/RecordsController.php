@@ -19,7 +19,10 @@ class RecordsController extends Controller
 
     public function index()
     {
-        return view('records.index')->with(['records' => RecordView::all()]);
+        return view('records.index')->with([
+            'records' => RecordView::all(),
+            'type' => 'records'
+        ]);
     }
 
     public function show(Record $record)
@@ -36,7 +39,8 @@ class RecordsController extends Controller
             ->with([
                 'genres' => Genre::where('media_type_id', env('RECORDS'))->orderBy('genre')->get(),
                 'formats' => Format::where('media_type_id', env('RECORDS'))->orderBy('format')->get(),
-                'artist' => Artist::findOrFail($request->query('artist_id'))
+                'artist' => Artist::findOrFail($request->query('artist_id')),
+                'type' => 'records'
             ]
         );
     }

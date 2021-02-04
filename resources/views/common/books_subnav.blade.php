@@ -18,7 +18,7 @@
               if(strpos(request()->path(), 'genres') !== false )
                 echo 'italic'
             @endphp
-            " href="{{ route('genres.index'), 'type=BOOKS' }}">Genres</a>
+            " href="{{ route('genres.index', 'type=BOOKS') }}">Genres</a>
     </nav>
 </div>
 @endsection

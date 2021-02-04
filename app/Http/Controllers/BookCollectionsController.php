@@ -31,7 +31,9 @@ class BookCollectionsController extends Controller
             ->orderBy('released')
             ->orderBy('title')
             ->get(),
-            'user' => $user]);
+            'user' => $user,
+            'type' => 'books'
+        ]);
     }
 
     public function store(BookCollectionFormRequest $request)

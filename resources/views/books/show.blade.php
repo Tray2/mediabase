@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('common.book_subnav')
+@include('common.' . strtolower($type) . '_subnav')
 @section('content')
 <div class="flex">
     <div class="w-3/4 p-5 rounded">
@@ -13,7 +13,7 @@
                     </h3>
                     @endif
                 </div>
-                <h2 class="text-lg ml-2 mt-2">by 
+                <h2 class="text-lg ml-2 mt-2">by
                 @foreach($book->author as $author)
                     <a href="/authors/{{ $author->slug }}">{{ $author->name }}</a>
                     @if( $loop->index !== $loop->count -1) & @endif
@@ -27,7 +27,7 @@
                                 @csrf
                                 <input type="hidden" name="book_id" value="{{ $book->id }}">
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="submit" value="Add" title="Add book to your collection." 
+                                <input type="submit" value="Add" title="Add book to your collection."
                                     class="text-base bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
                             </form>
                         @endif
@@ -38,7 +38,7 @@
                                 @csrf
                                 <input type="hidden" name="book_id" value="{{ $book->id }}">
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="submit" value="Mark Read" title="Mark as read." 
+                                <input type="submit" value="Mark Read" title="Mark as read."
                                         class="text-base bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
                             </form>
                         @endif
@@ -77,7 +77,7 @@
             </p>
         </div>
     </div>
-    
+
     <div class="mt-4">
         @if($book->series != 'Standalone')
         <div class="ml-5 bg-gray-200 p-5 rounded">
@@ -91,7 +91,7 @@
         @endif
         @if($book->otherBooks()->count() > 0)
         <div class="mt-5 ml-5 bg-gray-200 p-5 rounded">
-            <h3 class="mt-5 text-base">Other books by 
+            <h3 class="mt-5 text-base">Other books by
                 @foreach($book->author as $author)
                     <a href="/authors/{{ $author->slug }}">{{ $author->name }}</a>
                     @if( $loop->index !== $loop->count -1) & @endif
