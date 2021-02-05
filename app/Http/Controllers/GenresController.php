@@ -27,9 +27,9 @@ class GenresController extends Controller
         return view('genres.show')->with(['genre' => Genre::findOrFail($id)]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('genres.create')->with(['mediaTypes' => MediaType::all()]);
+        return view('genres.create')->with(['mediaTypes' => MediaType::all(), 'type' => $request->type]);
     }
 
     public function store(GenreFormRequest $request)

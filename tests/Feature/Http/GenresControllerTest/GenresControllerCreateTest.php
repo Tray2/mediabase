@@ -44,14 +44,26 @@ class GenresControllerCreateTest extends TestCase
     public function the_view_contains_a_list_of_available_media_types()
     {
         $this->signIn();
-        $this->get('/genres/create')->assertSeeInOrder(
+        $this->get('/genres/create')->assertSeeTextInOrder(
             [
-                '<option value="1">Books</option>',
-                '<option value="2">Games</option>',
-                '<option value="3">Movies</option>',
-                '<option value="4">Records</option>',
+                'Books',
+                'Games',
+                'Movies',
+                'Records',
             ],
             false);
+    }
+
+    /**
+    * @test
+    */
+    public function it_has_preselected_the_media_type_if_the_type_query_string_is_set()
+    {
+        $this->signIn();
+        $this->get('/genres/create?type=BOOKS')->assertSeeInOrder(['selected', 'Books']);
+        $this->get('/genres/create?type=RECORDS')->assertSeeInOrder(['selected', 'Records']);
+        $this->get('/genres/create?type=MOVIES')->assertSeeInOrder(['selected', 'Movies']);
+        $this->get('/genres/create?type=GAMES')->assertSeeInOrder(['selected', 'Games']);
     }
 
 }

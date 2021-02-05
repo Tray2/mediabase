@@ -11,8 +11,14 @@
             >
             <label for="media">Genre Type</label>
             <select name="media">
-                @foreach($mediaTypes as $media)Genr
-                    <option value="{{ $media->id }}">{{ $media->media }}</option>
+                @foreach($mediaTypes as $media)
+                    <option value="{{ $media->id }}"
+                        @if($type == strtoupper($media->media))
+                            {{ 'selected' }}
+                        @endif
+                    >
+                        {{ $media->media }}
+                    </option>
                 @endforeach
             </select>
         </div>

@@ -4,7 +4,11 @@
 @endif
 @section('content')
 @auth
-    <a href="/genres/create" class="bg-blue-500  hover:bg-blue-700 text-white font-bold mb-2 py-2 px-4 rounded">Add genre</a>
+   @if(isset($type))
+     <a href="/genres/create?type={{ $type }}" class="bg-blue-500  hover:bg-blue-700 text-white font-bold mb-2 py-2 px-4 rounded">Add genre</a>
+   @else
+     <a href="/genres/create" class="bg-blue-500  hover:bg-blue-700 text-white font-bold mb-2 py-2 px-4 rounded">Add genre</a>
+   @endif
 @endauth
 @if(count($genres) == 0)
     <h3>No genres found</h3>
