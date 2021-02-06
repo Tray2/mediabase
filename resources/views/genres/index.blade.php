@@ -23,7 +23,7 @@
                 @if($genre->media_type_id == env('BOOKS'))
                     <td>{{ $genre->books_count }}</td>
                 @elseif($genre->media_type_id == env('RECORDS'))
-                    <td>{{ $genre->record_count }}</td>
+                    <td>{{ $genre->records_count }}</td>
                 @endif
             </tr>
         @endforeach
