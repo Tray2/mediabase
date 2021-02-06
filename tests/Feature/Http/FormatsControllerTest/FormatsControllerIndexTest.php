@@ -102,4 +102,28 @@ class FormatsControllerIndexTest extends TestCase
         $response->assertSee('<td>1</td>', false);
     }
 
+    /**
+     * @test
+     */
+    public function when_type_is_present_in_the_query_string_only_formats_of_that_type_is_shown()
+    {
+        Format::factory()->create(['media_type_id' => env('BOOKS'), 'format' => 'Pocket']);
+        Format::factory()->create(['media_type_id' => env('RECORDS'), 'format' => 'Lp']);
+        Format::factory()->create(['media_type_id' => env('MOVIES'), 'format' => 'Dvd']);
+        Format::factory()->create(['media_type_id' => env('GAMES'), 'format' => 'Dvd-Rom']);
+
+        $this->get('/formats?type=BOOKS')->assertSee('Pocket')->assertDontSee(['Lp', 'Dvd', 'Dvd-Rom']);
+    }
+
+    /**
+     * @test
+     */
+    public function when_type_is_set_in_the_query_string_the_table_header_shows_the_type()
+    {
+        Format::factory()->create(['media_type_id' => env('BOOKS'), 'format' => 'Pocket']);
+        Format::factory()->create(['media_type_id' => env('RECORDS'), 'format' => 'Lp']);
+        $this->get('/formats?type=BOOKS')->assertSeeTextInOrder(['Format', 'Books'], false);
+        $this->get('/formats?type=RECORDS')->assertSeeTextInOrder(['Format', 'Records'], false);
+    }
+
 }

@@ -35,9 +35,9 @@ class FormatsController extends Controller
         return view('formats.show')->with(['format' => Format::findOrFail($id)]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('formats.create')->with(['mediaTypes' => MediaType::all()]);
+        return view('formats.create')->with(['mediaTypes' => MediaType::all(), 'type' => $request->type]);
     }
 
     public function store(FormatFormRequest $request)
