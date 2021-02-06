@@ -80,7 +80,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
             'media_type_id' => env('BOOKS')
         ]);
 
-        $response = $this->get('/books/create?author_id=1');
+        $response = $this->get('/books/create?author_id=1&type=BOOKS');
 
         $response->assertSee($genreToSee->genre);
         $response->assertDontSee($genreNotToSee->genre);
@@ -98,7 +98,7 @@ class BooksControllerCreateTest extends BooksControllerTestHelper
         $format3 = Format::factory()->create(['media_type_id' => env('BOOKS')]);
         $format4 = Format::factory()->create(['media_type_id' => env('BOOKS')]);
 
-        $response = $this->get('/books/create?author_id=1');
+        $response = $this->get('/books/create?author_id=1&type=BOOKS');
         $response->assertSee($format1->format);
         $response->assertSee($format2->format);
         $response->assertSee($format3->format);
