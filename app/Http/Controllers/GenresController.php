@@ -30,9 +30,9 @@ class GenresController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
-        return view('genres.show')->with(['genre' => Genre::findOrFail($id)]);
+        return view('genres.show')->with(['genre' => Genre::findOrFail($id), 'type' => $request->type]);
     }
 
     public function create(Request $request)

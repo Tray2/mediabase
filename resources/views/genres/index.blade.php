@@ -18,7 +18,7 @@
         @foreach($genres as $genre)
             <tr class="border-b-2 text-lg text-gray-800">
                 <td class="pl-2 py-2">
-                    <a href="{{ route('genres.show', $genre->id )}}" class="hover:underline">{{ $genre->genre }}</a>
+                    <a href="{{ route('genres.show', $genre->id)}}?type={{ $type }}" class="hover:underline">{{ $genre->genre }}</a>
                 </td>
                 @if($genre->media_type_id == env('BOOKS'))
                     <td>{{ $genre->books_count }}</td>
