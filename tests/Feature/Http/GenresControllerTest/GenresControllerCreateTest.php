@@ -57,7 +57,7 @@ class GenresControllerCreateTest extends TestCase
     /**
     * @test
     */
-    public function it_has_preselected_the_media_type_if_the_type_query_string_is_set()
+    public function it_preselects_the_media_type_when_the_type_query_string_is_set()
     {
         $this->signIn();
         $this->get('/genres/create?type=BOOKS')->assertSeeInOrder(['selected', 'Books']);

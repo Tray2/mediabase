@@ -16,8 +16,16 @@ class GenresController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->type) {
+            $genres = Genre::where('media_type_id', env($request->type))
+                ->orderBy('genre')
+                ->withCount(strtolower($request->type))
+                ->get();
+        } else {
+            $genres = Genre::orderBy('genre')->withCount('books')->get();
+        }
         return view('genres.index')->with([
-            'genres' => Genre::orderBy('genre')->withCount('books')->get(),
+            'genres' => $genres,
             'type' => $request->type
         ]);
     }

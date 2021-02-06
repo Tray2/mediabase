@@ -15,7 +15,7 @@
         @endauth
     </tr>
     @if(count($books) == 0)
-        <h3>No books found</h3>    
+        <h3>No books found</h3>
     @else
         @foreach($books as $book)
             <tr class="border-b-2 text-lg text-gray-800">
@@ -28,7 +28,7 @@
                 <td><a href="/books/{{ $book->book_id }}" class="hover:underline">{{ $book->title }}</a></td>
                 @if($book->rating != null)
                     <td>{{ $book->rating }}/5.0</td>
-                @else 
+                @else
                     <td>Not rated</td>
                 @endif
                 <td>{{ $book->series }}</td>
@@ -46,12 +46,10 @@
                                     @csrf
                                     <input type="hidden" name="book_id" value="{{ $book->book_id }}">
                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                    <input type="submit" value="Add" title="Add book to your collection." 
-                                           class="text-base bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
+                                    <input type="submit" value="Add" title="Add book to your collection."
+                                           class="mt-1 text-base bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
                                 </form>
                             @endif
-                        </td>
-                        <td>
                             @if($book->isRead() > 0)
                                 <span class="text-base bg-green-600 text-gray-100 py-1 px-2 rounded">Read</span>
                             @else
@@ -59,10 +57,11 @@
                                      @csrf
                                      <input type="hidden" name="book_id" value="{{ $book->book_id }}">
                                      <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                     <input type="submit" value="Mark Read" title="Mark as read." 
-                                            class="text-base bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
+                                     <input type="submit" value="Mark Read" title="Mark as read."
+                                            class="mt-1 mb-1 text-base bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded">
                                  </form>
                             @endif
+                        </td>
                      @endif
                 @endauth
             </tr>

@@ -55,9 +55,33 @@ class GenresControllerIndexTest extends TestCase
     {
         Author::factory()->create();
         Format::factory()->create();
-        Genre::factory()->create(['media_type_id' => env('BOOKS')]);
+        $genre = Genre::factory()->create(['media_type_id' => env('BOOKS')]);
         Book::factory()->create();
-        $response = $this->get('genres');
-        $response->assertSee('<td>1</td>', false);
+        $response = $this->get('genres?type=BOOKS');
+        $response->assertSeeTextInOrder([$genre->genre, '1'], false);
+    }
+
+    /**
+    * @test
+    */
+    public function when_type_is_present_in_the_query_string_only_genres_of_that_type_is_shown()
+    {
+        Genre::factory()->create(['media_type_id' => env('BOOKS'), 'genre' => 'Fantasy']);
+        Genre::factory()->create(['media_type_id' => env('RECORDS'), 'genre' => 'Hip Hop']);
+        Genre::factory()->create(['media_type_id' => env('MOVIES'), 'genre' => 'Action']);
+        Genre::factory()->create(['media_type_id' => env('GAMES'), 'genre' => 'MMORPG']);
+
+        $this->get('/genres?type=BOOKS')->assertSee('Fantasy')->assertDontSee(['Hip Hop', 'Action', 'MMORPG']);
+    }
+
+    /**
+    * @test
+    */
+    public function when_type_is_set_in_the_query_string_the_table_header_shows_the_type()
+    {
+        Genre::factory()->create(['media_type_id' => env('BOOKS'), 'genre' => 'Fantasy']);
+        Genre::factory()->create(['media_type_id' => env('RECORDS'), 'genre' => 'Hip Hop']);
+        $this->get('/genres?type=BOOKS')->assertSeeTextInOrder(['Genre', 'Books'], false);
+        $this->get('/genres?type=RECORDS')->assertSeeTextInOrder(['Genre', 'Records'], false);
     }
 }

@@ -14,7 +14,7 @@
     <h3>No genres found</h3>
 @else
     <table class="mt-6 w-1/3">
-        <tr class="text-left bg-gray-500 text-xl"><th class="py-2 pl-2">Genre</th><th>Books</th></tr>
+        <tr class="text-left bg-gray-500 text-xl"><th class="py-2 pl-2">Genre</th><th>{{ ucfirst(strtolower($type)) }}</th></tr>
         @foreach($genres as $genre)
             <tr class="border-b-2 text-lg text-gray-800">
                 <td class="pl-2 py-2">

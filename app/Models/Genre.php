@@ -20,5 +20,10 @@ class Genre extends Model
     {
         return $this->hasMany(BookView::class);
     }
+
+    public function records()
+    {
+        return $this->hasMany(RecordView::class);
+    }
 }
 
