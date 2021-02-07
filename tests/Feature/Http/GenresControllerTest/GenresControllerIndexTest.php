@@ -2,9 +2,6 @@
 
 namespace Tests\Feature\Http\GenresControllerTest;
 
-use App\Models\Author;
-use App\Models\Book;
-use App\Models\Format;
 use App\Models\Genre;
 use Tests\TestCase;
 
@@ -46,42 +43,5 @@ class GenresControllerIndexTest extends TestCase
 
         $guestResponse->assertDontSee('Add genre');
         $userResponse->assertSee('Add genre');
-    }
-
-    /**
-     * @test
-     */
-    public function when_visiting_the_books_index_page_the_amount_of_books_in_the_genre_is_shown()
-    {
-        Author::factory()->create();
-        Format::factory()->create();
-        $genre = Genre::factory()->create(['media_type_id' => env('BOOKS')]);
-        Book::factory()->create();
-        $response = $this->get('genres?type=BOOKS');
-        $response->assertSeeTextInOrder([$genre->genre, '1'], false);
-    }
-
-    /**
-    * @test
-    */
-    public function when_type_is_present_in_the_query_string_only_genres_of_that_type_is_shown()
-    {
-        Genre::factory()->create(['media_type_id' => env('BOOKS'), 'genre' => 'Fantasy']);
-        Genre::factory()->create(['media_type_id' => env('RECORDS'), 'genre' => 'Hip Hop']);
-        Genre::factory()->create(['media_type_id' => env('MOVIES'), 'genre' => 'Action']);
-        Genre::factory()->create(['media_type_id' => env('GAMES'), 'genre' => 'MMORPG']);
-
-        $this->get('/genres?type=BOOKS')->assertSee('Fantasy')->assertDontSee(['Hip Hop', 'Action', 'MMORPG']);
-    }
-
-    /**
-    * @test
-    */
-    public function when_type_is_set_in_the_query_string_the_table_header_shows_the_type()
-    {
-        Genre::factory()->create(['media_type_id' => env('BOOKS'), 'genre' => 'Fantasy']);
-        Genre::factory()->create(['media_type_id' => env('RECORDS'), 'genre' => 'Hip Hop']);
-        $this->get('/genres?type=BOOKS')->assertSeeTextInOrder(['Genre', 'Books'], false);
-        $this->get('/genres?type=RECORDS')->assertSeeTextInOrder(['Genre', 'Records'], false);
     }
 }

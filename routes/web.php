@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+Route::get('books/genres', 'BookGenresController@index')->name('books.genres');
 Route::resource('books', 'BooksController');
 
 Route::resource('genres', 'GenresController');
