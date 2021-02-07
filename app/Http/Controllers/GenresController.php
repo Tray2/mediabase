@@ -32,7 +32,26 @@ class GenresController extends Controller
 
     public function show($id, Request $request)
     {
-        return view('genres.show')->with(['genre' => Genre::findOrFail($id), 'type' => $request->type]);
+        $genre = '';
+        if ($request->type == 'BOOKS') {
+            $genre = Genre::with(['books' => function ($query){
+                $query->orderBy('author_name')
+                    ->orderBy('series_started')
+                    ->orderBy('part')
+                    ->orderBy('released')
+                    ->orderBy('title');
+            }])->findOrFail($id);
+        } elseif ($request->type == 'RECORDS') {
+            $genre = Genre::with(['records' => function ($query){
+                $query->orderBy('name')
+                    ->orderBy('released')
+                    ->orderBy('title');
+            }])->findOrFail($id);
+        }
+        return view('genres.show')->with([
+            'genre' => $genre,
+            'type' => $request->type
+        ]);
     }
 
     public function create(Request $request)
