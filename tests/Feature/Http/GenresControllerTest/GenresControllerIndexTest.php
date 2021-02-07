@@ -51,7 +51,7 @@ class GenresControllerIndexTest extends TestCase
     /**
      * @test
      */
-    public function when_visiting_the_index_page_the_amount_of_books_in_the_genre_is_shown()
+    public function when_visiting_the_books_index_page_the_amount_of_books_in_the_genre_is_shown()
     {
         Author::factory()->create();
         Format::factory()->create();
