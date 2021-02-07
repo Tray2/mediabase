@@ -13,7 +13,7 @@ class CreateRecordViews extends Migration
                 "CREATE OR REPLACE VIEW record_views AS
             SELECT a.id artist_id,
                    a.name,
-                   r.id book_id,
+                   r.id record_id,
                    r.title,
                    r.released,
                    g.id genre_id,
@@ -34,7 +34,7 @@ class CreateRecordViews extends Migration
                 "CREATE VIEW IF NOT EXISTS record_views AS
                 SELECT a.id artist_id,
                    a.name,
-                   r.id book_id,
+                   r.id record_id,
                    r.title,
                    r.released,
                    g.id genre_id,
