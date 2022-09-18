@@ -1,0 +1,172 @@
+<?php
+
+use App\Models\Author;
+use App\Models\Book;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use function Pest\Laravel\get;
+
+uses(RefreshDatabase::class);
+
+it('lists books', function () {
+    $fields = ['author_name', 'title', 'published_year', 'series', 'part'];
+    [$book1, $book2] = Book::factory()->count(2)->create();
+
+    get(route('books.index'))
+        ->assertOk()
+        ->assertSeeText([
+            ...$book1->only($fields),
+            ...$book2->only($fields)
+        ]);
+});
+
+it('sorts books by author', function () {
+    Author::factory()
+        ->count(2)
+        ->sequence(
+            ['first_name' => 'David', 'last_name' => 'Eddings',],
+            ['first_name' => 'Sarah', 'last_name' => 'Ash']
+        )->has(Book::factory())
+        ->create();
+
+    get(route('books.index'))
+        ->assertOk()
+        ->assertSeeTextInOrder([
+            'Ash, Sarah',
+            'Eddings, David'
+        ]);
+});
+
+it('sorts books by the same author by published_year', function () {
+    $years = Author::factory()
+        ->has(Book::factory())
+        ->count(5)
+        ->create()
+        ->pluck('published_year')
+        ->sort()
+        ->toArray();
+
+    get(route('books.index'))
+        ->assertOk()
+        ->assertSeeTextInOrder($years);
+});
+
+it('sorts books in the same series by part', function () {
+    Author::factory()
+        ->has(Book::factory([
+            'series' => 'The Second Series',
+        ])
+        ->count(3)
+        ->sequence(
+            ['part' => 2, 'published_year' => 1990,],
+            ['part' => 1, 'published_year' => 1989,],
+            ['part' => 3, 'published_year' => 1991,]
+        ))
+        ->create();
+
+    get(route('books.index'))
+        ->assertOk()
+        ->assertSeeTextInOrder([1989 ,1990 ,1991]);
+});
+
+it('sorts series of the same author by the published year of the first book in the series', function () {
+    Author::factory()
+        ->has(Book::factory([
+            'series' => 'The Second Series',
+        ])
+            ->count(3)
+            ->sequence(
+                ['part' => 2, 'published_year' => 1971],
+                ['part' => 1, 'published_year' => 1970],
+                ['part' => 3, 'published_year' => 1972]
+            )
+        )
+        ->create([
+            'first_name' => 'Ben',
+            'last_name' => 'Something',
+        ]);
+
+    Author::factory()
+        ->has(Book::factory([
+            'series' => 'The First Series',
+        ])
+            ->count(3)
+            ->sequence(
+                ['part' => 2, 'published_year' => 1970],
+                ['part' => 1, 'published_year' => 1968],
+                ['part' => 3, 'published_year' => 1971]
+            )
+        )
+        ->create([
+            'first_name' => 'Ben',
+            'last_name' => 'Something',
+        ]);
+
+
+    get(route('books.index'))
+        ->assertOk()
+        ->assertSeeTextInOrder([
+            '1968', 'The First Series',
+            '1970', 'The First Series',
+            '1971', 'The First Series',
+            '1970', 'The Second Series',
+            '1971', 'The Second Series',
+            '1972', 'The Second Series',
+        ]);
+});
+
+it('sorts a standalone book by the same author as a part of a Standalone series', function () {
+        Author::factory()
+            ->has(Book::factory(['series' => 'Second Series',])
+                ->count(3)
+                ->sequence(
+                    ['part' => 2, 'published_year' => 1971],
+                    ['part' => 1, 'published_year' => 1970],
+                    ['part' => 3, 'published_year' => 1972]
+                )
+            )
+            ->create([
+                'first_name' => 'Ben',
+                'last_name' => 'Something'
+            ]);
+
+        Author::factory()
+            ->has(Book::factory([
+                'series' => 'Standalone',
+                'part' => null,
+                'published_year' => 1971,
+            ]))
+            ->create([
+                'first_name' => 'Ben',
+                'last_name' => 'Something'
+            ]);
+
+        get(route('books.index'))
+            ->assertOk()
+            ->assertSeeTextInOrder([
+                '1970', 'Second Series',
+                '1971', 'Second Series',
+                '1972', 'Second Series',
+                '1971', 'Standalone',
+            ]);
+    });
+
+it('sorts books with multiple authors by the first author in alphabetical order', function () {
+    [$author1, $author2] = Author::factory()
+        ->count(2)
+        ->sequence(
+            ['first_name' => 'Robert', 'last_name' => 'Jordan',],
+            ['first_name' => 'Brandon', 'last_name' => 'Sanderson', ]
+        )
+        ->create();
+
+    $book = Book::factory()->create();
+    $book->authors()->attach($author1);
+    $book->authors()->attach($author2);
+
+    get(route('books.index'))
+        ->assertOk()
+        ->assertSeeTextInOrder([
+            'Jordan, Robert',
+            'Sanderson, Brandon'
+        ]);
+});
