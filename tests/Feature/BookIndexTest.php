@@ -2,20 +2,28 @@
 
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Format;
+use App\Models\Genre;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 it('lists books', function () {
-    $fields = ['author_name', 'title', 'published_year', 'series', 'part'];
-    [$book1, $book2] = Book::factory()->count(2)->create();
-
+    $genre = Genre::factory()->create();
+    $format = Format::factory()->create();
+    $fields = ['title', 'published_year', 'series', 'part',];
+    [$book1, $book2] = Book::factory()->count(2)->create([
+        'genre_id' => $genre->id,
+        'format_id' => $format->id,
+    ]);
     get(route('books.index'))
         ->assertOk()
         ->assertSeeText([
             ...$book1->only($fields),
-            ...$book2->only($fields)
+            ...$book2->only($fields),
+            $genre->name,
+            $format->name,
         ]);
 });
 

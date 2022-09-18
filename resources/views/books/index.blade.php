@@ -5,6 +5,8 @@
         <th>Published:</th>
         <th>Series:</th>
         <th>Part:</th>
+        <th>Genre:</th>
+        <th>Format:</th>
     </tr>
     @foreach($books as $book)
         <tr>
@@ -13,6 +15,8 @@
             <td>{{ $book->published_year }}</td>
             <td>{{ $book->series }}</td>
             <td>{{ $book->part }}</td>
+            <td>{{ $book->genre }}</td>
+            <td>{{ $book->format }}</td>
         </tr>
     @endforeach
 </table>

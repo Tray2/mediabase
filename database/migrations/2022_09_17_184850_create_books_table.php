@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Format;
+use App\Models\Genre;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +15,8 @@ return new class extends Migration {
             $table->integer('published_year');
             $table->string('series')->nullable();
             $table->tinyInteger('part')->nullable();
+            $table->foreignIdFor(Format::class);
+            $table->foreignIdFor(Genre::class);
             $table->timestamps();
         });
     }

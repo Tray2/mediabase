@@ -10,18 +10,18 @@ class CreateBookIndexViews extends Migration
     {
 
         DB::statement("CREATE OR REPLACE VIEW book_index_views AS
-                         SELECT
+                    SELECT
                     (SELECT GROUP_CONCAT(a.id ORDER BY a.id SEPARATOR ',')
-                     FROM authors a, author_book ab
-                     WHERE a.id = ab.author_id
-                     AND ab.book_id = b.id) author_id,
+                    FROM authors a, author_book ab
+                    WHERE a.id = ab.author_id
+                    AND ab.book_id = b.id) author_id,
                     (SELECT GROUP_CONCAT(concat(a.last_name, ', ', a.first_name)
-                     ORDER BY a.last_name, a.first_name SEPARATOR ' & ')
-                     FROM authors a, author_book ab
-                     WHERE ab.author_id = a.id
-                     AND ab.book_id = b.id) author_name,
-                     b.id book_id,
-                     b.title,
+                    ORDER BY a.last_name, a.first_name SEPARATOR ' & ')
+                    FROM authors a, author_book ab
+                    WHERE ab.author_id = a.id
+                    AND ab.book_id = b.id) author_name,
+                    b.id book_id,
+                    b.title,
                     b.series,
                     b.part,
                     b.published_year,
@@ -31,8 +31,14 @@ class CreateBookIndexViews extends Migration
                         ELSE (SELECT MIN(bi.published_year)
                               FROM books bi
                               WHERE bi.series = b.series)
-                        END series_started
-                FROM books b
+                        END series_started,
+                    f.name format,
+                    g.name genre
+                    FROM books b,
+                         formats f,
+                         genres g
+                    WHERE b.genre_id = g.id
+                    AND b.format_id = f.id
         ");
     }
 
