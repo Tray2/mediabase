@@ -4,6 +4,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\Series;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
 
@@ -12,10 +13,12 @@ uses(RefreshDatabase::class);
 it('lists books', function () {
     $genre = Genre::factory()->create();
     $format = Format::factory()->create();
-    $fields = ['title', 'published_year', 'series', 'part',];
+    $series = Series::factory()->create();
+    $fields = ['title', 'published_year', 'part',];
     [$book1, $book2] = Book::factory()->count(2)->create([
         'genre_id' => $genre->id,
         'format_id' => $format->id,
+        'series_id' => $series->id,
     ]);
     get(route('books.index'))
         ->assertOk()
@@ -24,6 +27,7 @@ it('lists books', function () {
             ...$book2->only($fields),
             $genre->name,
             $format->name,
+            $series->name,
         ]);
 });
 
@@ -60,15 +64,17 @@ it('sorts books by the same author by published_year', function () {
 
 it('sorts books in the same series by part', function () {
     Author::factory()
-        ->has(Book::factory([
-            'series' => 'The Second Series',
-        ])
+        ->has(Book::factory()
         ->count(3)
         ->sequence(
             ['part' => 2, 'published_year' => 1990,],
             ['part' => 1, 'published_year' => 1989,],
             ['part' => 3, 'published_year' => 1991,]
-        ))
+        )
+       ->for(Series::factory([
+             'name' => 'The Second Series',
+        ]))
+       )
         ->create();
 
     get(route('books.index'))
@@ -78,15 +84,16 @@ it('sorts books in the same series by part', function () {
 
 it('sorts series of the same author by the published year of the first book in the series', function () {
     Author::factory()
-        ->has(Book::factory([
-            'series' => 'The Second Series',
-        ])
+        ->has(Book::factory()
             ->count(3)
             ->sequence(
                 ['part' => 2, 'published_year' => 1971],
                 ['part' => 1, 'published_year' => 1970],
                 ['part' => 3, 'published_year' => 1972]
             )
+            ->for(Series::factory([
+                'name' => 'The Second Series',
+            ]))
         )
         ->create([
             'first_name' => 'Ben',
@@ -94,15 +101,16 @@ it('sorts series of the same author by the published year of the first book in t
         ]);
 
     Author::factory()
-        ->has(Book::factory([
-            'series' => 'The First Series',
-        ])
+        ->has(Book::factory()
             ->count(3)
             ->sequence(
                 ['part' => 2, 'published_year' => 1970],
                 ['part' => 1, 'published_year' => 1968],
                 ['part' => 3, 'published_year' => 1971]
             )
+            ->for(Series::factory([
+                'name' => 'The First Series',
+            ]))
         )
         ->create([
             'first_name' => 'Ben',
@@ -124,13 +132,14 @@ it('sorts series of the same author by the published year of the first book in t
 
 it('sorts a standalone book by the same author as a part of a Standalone series', function () {
         Author::factory()
-            ->has(Book::factory(['series' => 'Second Series',])
+            ->has(Book::factory()
                 ->count(3)
                 ->sequence(
                     ['part' => 2, 'published_year' => 1971],
                     ['part' => 1, 'published_year' => 1970],
                     ['part' => 3, 'published_year' => 1972]
                 )
+                ->for(Series::factory(['name' => 'Second Series',]))
             )
             ->create([
                 'first_name' => 'Ben',
@@ -139,10 +148,11 @@ it('sorts a standalone book by the same author as a part of a Standalone series'
 
         Author::factory()
             ->has(Book::factory([
-                'series' => 'Standalone',
                 'part' => null,
                 'published_year' => 1971,
-            ]))
+            ])
+                ->for(Series::factory(['name' => 'Standalone',]))
+            )
             ->create([
                 'first_name' => 'Ben',
                 'last_name' => 'Something'

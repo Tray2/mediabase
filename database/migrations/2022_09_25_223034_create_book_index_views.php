@@ -22,23 +22,25 @@ class CreateBookIndexViews extends Migration
                     AND ab.book_id = b.id) author_name,
                     b.id book_id,
                     b.title,
-                    b.series,
                     b.part,
                     b.published_year,
-                    CASE series
+                    CASE s.name
                         WHEN 'Standalone'
                         THEN b.published_year
                         ELSE (SELECT MIN(bi.published_year)
                               FROM books bi
-                              WHERE bi.series = b.series)
+                              WHERE bi.series_id = b.series_id)
                         END series_started,
                     f.name format,
-                    g.name genre
+                    g.name genre,
+                    s.name series
                     FROM books b,
                          formats f,
-                         genres g
+                         genres g,
+                         series s
                     WHERE b.genre_id = g.id
                     AND b.format_id = f.id
+                    AND b.series_id = s.id
         ");
     }
 
