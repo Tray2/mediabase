@@ -20,4 +20,19 @@ class Book extends Model
     {
         return $this->belongsTo(Series::class);
     }
+
+    public function genre(): BelongsTo
+    {
+        return $this->belongsTo(Genre::class);
+    }
+
+    public function format(): BelongsTo
+    {
+        return $this->belongsTo(Format::class);
+    }
+
+    public function publisher(): BelongsTo
+    {
+        return $this->belongsTo(Publisher::class);
+    }
 }
