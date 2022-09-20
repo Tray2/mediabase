@@ -11,4 +11,5 @@ Route::get('/', function () {
 
 Route::get('/books', BooksIndexController::class)->name('books.index');
 Route::get('/books/create', BooksCreateController::class)->name('books.create');
-Route::get('books/{bookShowView}', BooksShowController::class)->name('books.show');
+Route::get('/books/{bookShowView}', BooksShowController::class)->name('books.show');
+Route::post('/books/store', BooksCreateController::class)->name('books.store');
