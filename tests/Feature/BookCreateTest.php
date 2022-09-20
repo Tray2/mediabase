@@ -28,13 +28,18 @@ it('has a token field', function () {
 it('has a title field', function () {
     get(route('books.create'))
         ->assertSee([
+            'for="title"',
+            'id="title"',
             'name="title"',
         ], false);
 });
 
+
 it('has a published_year field', function () {
     get(route('books.create'))
         ->assertSee([
+            'for="published_year',
+            'id="published_year"',
             'name="published_year"',
         ], false);
 });
