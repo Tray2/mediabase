@@ -5,7 +5,7 @@ This is the coming create books page.
     <input type="text" name="title" id="title" placeholder="Title..."/>
     <label for="published_year">Published:</label>
     <input type="text" id="published_year" name="published_year" placeholder="YYYY" size="4">
-    <label for="artist">Artist</label>
-    <input list="artists" id="artist" name="artist" placeholder="Artist...">
-    <datalist id="artists"></datalist>
+    <label for="author">Author</label>
+    <input list="authors" id="author" name="author" placeholder="Author...">
+    <datalist id="authors"></datalist>
 </form>
