@@ -43,3 +43,14 @@ it('has a published_year field', function () {
             'name="published_year"',
         ], false);
 });
+
+it('has an artist field', function () {
+    get(route('books.create'))
+        ->assertSee([
+            'for="artist',
+            'id="artist"',
+            'name="artist"',
+            'list="artists',
+            'datalist id="artists',
+        ], false);
+});
