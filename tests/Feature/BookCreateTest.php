@@ -54,3 +54,27 @@ it('has an author field', function () {
             'datalist id="authors',
         ], false);
 });
+
+it('has a format field', function () {
+    get(route('books.create'))
+        ->assertSee([
+            'for="format',
+            'id="format"',
+            'name="format"',
+            'list="formats',
+            'datalist id="formats',
+        ], false);
+});
+
+it('has a genres field', function () {
+    get(route('books.create'))
+        ->assertSee([
+            'for="genre',
+            'id="genre"',
+            'name="genre"',
+            'list="genres',
+            'datalist id="genres',
+        ], false);
+});
+
+
