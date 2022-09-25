@@ -69,13 +69,18 @@ class BooksStoreController extends Controller
                 ->value('id');
     }
 
-    protected function getAuthor($name): Author
+    protected function getAuthor($name): array
     {
-        [$lastName, $firstName] = explode(', ', $name);
-        return Author::firstOrCreate(
-            ['last_name' => $lastName],
-            ['first_name' => $firstName]
-        );
+        $authors = [];
+
+        foreach($name as $author) {
+            [$lastName, $firstName] = explode(', ', $author);
+            $authors[] =  Author::firstOrCreate(
+                ['last_name' => $lastName],
+                ['first_name' => $firstName]
+            )->value('id');
+        }
+        return $authors;
     }
 
     public function getPublisherId($publisherName): mixed

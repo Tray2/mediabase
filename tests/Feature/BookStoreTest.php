@@ -26,7 +26,7 @@ beforeEach(function() {
         'isbn' => '9781398510784',
         'blurb' => 'Some boring text',
         'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
+        'author' => ["{$this->author->last_name}, {$this->author->first_name}"],
         'genre_name' => $this->genre->name,
         'format_name' => $this->format->name,
         'series_name' => $this->series->name,
@@ -41,6 +41,20 @@ it('stores a valid book', function () {
     ->assertRedirect(route('books.index'));
     assertDatabaseCount('books',1);
     assertDatabaseCount('author_book',1);
+});
+
+it('stores a valid book with multiple authors', function () {
+    $author = Author::factory()->create();
+    $validBook = $this->validBook;
+    $validBook['author'] = [
+        "{$this->author->last_name}, {$this->author->first_name}",
+        "{$author->last_name}, {$author->first_name}",
+    ];
+
+    post(route('books.store', $validBook))
+        ->assertRedirect(route('books.index'));
+    assertDatabaseCount('books',1);
+    assertDatabaseCount('author_book',2);
 });
 
 it('redirects and shows an error if the title is missing', function () {
@@ -234,7 +248,7 @@ it('shows an error if the author is missing', function () {
 
 it('creates a new author if the one passed does not exist in the database', function () {
     $validBook = $this->validBook;
-    $validBook['author'] = 'Jordan, Robert';
+    $validBook['author'] = ['Jordan, Robert'];
 
     post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));

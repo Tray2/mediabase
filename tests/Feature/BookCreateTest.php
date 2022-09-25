@@ -54,7 +54,7 @@ it('has an author field', function () {
         ->assertSee([
             'for="author',
             'id="author"',
-            'name="author"',
+            'name="author[]"',
             'list="authors',
             'datalist id="authors',
         ], false);
