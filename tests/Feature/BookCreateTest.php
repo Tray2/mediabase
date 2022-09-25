@@ -65,7 +65,7 @@ it('has a format field', function () {
         ->assertSee([
             'for="format',
             'id="format"',
-            'name="format"',
+            'name="format_name"',
             'list="formats',
             'datalist id="formats',
         ], false);
@@ -76,7 +76,7 @@ it('has a genres field', function () {
         ->assertSee([
             'for="genre',
             'id="genre"',
-            'name="genre"',
+            'name="genre_name"',
             'list="genres',
             'datalist id="genres',
         ], false);
@@ -105,7 +105,7 @@ it('has a series field', function () {
         ->assertSee([
             'for="series',
             'id="series"',
-            'name="series"',
+            'name="series_name"',
             'list="series-list',
             'datalist id="series-list',
         ], false);
@@ -125,7 +125,7 @@ it('has a publishers field', function () {
         ->assertSee([
             'for="publisher',
             'id="publisher"',
-            'name="publisher"',
+            'name="publisher_name"',
             'list="publishers',
             'datalist id="publishers',
         ], false);

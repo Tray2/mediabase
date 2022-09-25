@@ -13,14 +13,14 @@ This is the coming create books page.
         @endforeach
     </datalist>
     <label for="format">Format:</label>
-    <input list="formats" id="format" name="format" placeholder="Format...">
+    <input list="formats" id="format" name="format_name" placeholder="Format...">
     <datalist id="formats">
         @foreach($formats as $format)
             <option value="{{ $format->name }}"></option>
         @endforeach
     </datalist>
     <label for="genre">Genre:</label>
-    <input list="genres" id="genre" name="genre" placeholder="Genre...">
+    <input list="genres" id="genre" name="genre_name" placeholder="Genre...">
     <datalist id="genres">
         @foreach($genres as $genre)
             <option value="{{ $genre->name }}"></option>
@@ -31,7 +31,7 @@ This is the coming create books page.
     <label for="blurb">Blurb:</label>
     <textarea name="blurb" id="blurb" cols="30" rows="10"></textarea>
     <label for="series">Series:</label>
-    <input list="series-list" id="series" name="series" placeholder="Series...">
+    <input list="series-list" id="series" name="series_name" placeholder="Series...">
     <datalist id="series-list">
         @foreach($series as $item)
             <option value="{{ $item->name }}"></option>
@@ -40,7 +40,7 @@ This is the coming create books page.
     <label for="part">part:</label>
     <input type="number" id="part" name="part" placeholder="Part..." size="3">
     <label for="publisher">Publisher:</label>
-    <input list="publishers" id="publisher" name="publisher" placeholder="Publisher...">
+    <input list="publishers" id="publisher" name="publisher_name" placeholder="Publisher...">
     <datalist id="publishers">
         @foreach($publishers as $publisher)
             <option value="{{ $publisher->name }}"></option>
