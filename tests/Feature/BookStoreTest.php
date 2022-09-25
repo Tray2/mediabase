@@ -20,11 +20,7 @@ beforeEach(function() {
     $this->format = Format::factory()->create();
     $this->series = Series::factory()->create();
     $this->publisher = Publisher::factory()->create();
-    get(route('books.create'));
-});
-
-it('stores a valid book', function () {
-    $bookData = [
+    $this->validBook = [
         'title' => 'Some Title',
         'published_year' => 1984,
         'isbn' => '9781398510784',
@@ -36,28 +32,22 @@ it('stores a valid book', function () {
         'series_name' => $this->series->name,
         'publisher_name' => $this->publisher->name,
     ];
+    get(route('books.create'));
+});
 
-    post(route('books.store', $bookData))
+
+it('stores a valid book', function () {
+    post(route('books.store', $this->validBook))
     ->assertRedirect();
     assertDatabaseCount('books',1);
     assertDatabaseCount('author_book',1);
 });
 
 it('redirects and shows an error if the title is missing', function () {
-    $bookData = [
-        'title' => '',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['title'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('title');
     get(route('books.create'))
@@ -67,20 +57,10 @@ it('redirects and shows an error if the title is missing', function () {
 });
 
 it('redirects and shows an error if the published year is missing', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => '',
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook =  $this->validBook;
+    $invalidBook['published_year'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -91,20 +71,10 @@ it('redirects and shows an error if the published year is missing', function () 
 });
 
 it('shows an error if the published year is not numeric', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 'Nineteen Eighty Four',
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['published_year'] = 'Nineteen Eighty Four';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -114,20 +84,10 @@ it('shows an error if the published year is not numeric', function () {
 });
 
 it('shows an error if the published year is less than four digits', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 123,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['published_year'] = 123;
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -137,20 +97,10 @@ it('shows an error if the published year is less than four digits', function () 
 });
 
 it('shows an error if the published year is more than four digits', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 12345,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['published_year'] = 12345;
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -160,20 +110,10 @@ it('shows an error if the published year is more than four digits', function () 
 });
 
 it('shows an error if the published year is more than a year into the future', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => Carbon::now()->addYear(2)->year,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['published_year'] = Carbon::now()->addYear(2)->year;
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -183,20 +123,10 @@ it('shows an error if the published year is more than a year into the future', f
 });
 
 it('shows an error if the isbn is missing', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['isbn'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -206,20 +136,10 @@ it('shows an error if the isbn is missing', function () {
 });
 
 it('shows an error if the isbn is not a valid isbn10 or isbn13' , function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '97813985100000',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['isbn'] = '97813985100000';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -230,20 +150,10 @@ it('shows an error if the isbn is not a valid isbn10 or isbn13' , function () {
 });
 
 it('shows an error if the blurb is missing', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => '',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['blurb'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -253,20 +163,10 @@ it('shows an error if the blurb is missing', function () {
 });
 
 it('shows an error if the blurb word count is less than three', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'This',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['blurb'] = 'This';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -276,20 +176,10 @@ it('shows an error if the blurb word count is less than three', function () {
 });
 
 it('shows an error if the part is missing and the book is not standalone', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'This is some boring text',
-        'part' => '',
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['part'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
@@ -302,20 +192,11 @@ it('stores a valid standalone book', function () {
     $standalone = Series::create([
         'name' => 'Standalone',
     ]);
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'This is some boring text',
-        'part' => '',
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $standalone->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $validBook = $this->validBook;
+    $validBook['part'] = '';
+    $validBook['series_name'] = $standalone->name;
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $validBook))
         ->assertRedirect('/books')
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('books',1);
@@ -326,20 +207,10 @@ it('removes the part if the book is a standalone', function () {
     $standalone = Series::create([
         'name' => 'Standalone',
     ]);
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'This is some boring text',
-        'part' => '1',
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $standalone->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $validBook = $this->validBook;
+    $validBook['series_name'] = $standalone->name;
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $validBook))
         ->assertRedirect('/books')
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('books',1);
@@ -348,20 +219,10 @@ it('removes the part if the book is a standalone', function () {
 });
 
 it('shows an error if the author is missing', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'This is some boring text',
-        'part' => '1',
-        'author' => '',
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['author'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('author');
     get(route('books.create'))
@@ -372,20 +233,10 @@ it('shows an error if the author is missing', function () {
 });
 
 it('creates a new author if the one passed does not exist in the database', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => 'Jordan, Robert',
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $validBook = $this->validBook;
+    $validBook['author'] = 'Jordan, Robert';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $validBook))
         ->assertRedirect();
     assertDatabaseCount('books',1);
     assertDatabaseCount('author_book',1);
@@ -393,20 +244,10 @@ it('creates a new author if the one passed does not exist in the database', func
 });
 
 it('shows an error if the genre is missing', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => '',
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['genre_name'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('genre_name');
     get(route('books.create'))
@@ -416,20 +257,10 @@ it('shows an error if the genre is missing', function () {
 });
 
 it('creates a new genre if the one passed does not exist in the database', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => 'Fantasy',
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $validBook = $this->validBook;
+    $validBook['genre_name'] = 'Fantasy';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $validBook))
         ->assertRedirect();
     assertDatabaseCount('books',1);
     assertDatabaseCount('author_book',1);
@@ -437,20 +268,10 @@ it('creates a new genre if the one passed does not exist in the database', funct
 });
 
 it('shows an error if the format is missing', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => '',
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['format_name'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('format_name');
     get(route('books.create'))
@@ -460,41 +281,21 @@ it('shows an error if the format is missing', function () {
 });
 
 it('creates a new format if the one passed does not exist in the database', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => '10"',
-        'series_name' => $this->series->name,
-        'publisher_name' => $this->publisher->name,
-    ];
+    $validBook = $this->validBook;
+    $validBook['format_name'] = 'Hardcover';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $validBook))
         ->assertRedirect();
     assertDatabaseCount('books',1);
     assertDatabaseCount('author_book',1);
-    assertDatabaseHas('formats', ['name' => '10"']);
+    assertDatabaseHas('formats', ['name' => 'Hardcover']);
 });
 
 it('shows an error if the series is missing', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => '',
-        'publisher_name' => $this->publisher->name,
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['series_name'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('format_name');
     get(route('books.create'))
@@ -504,20 +305,10 @@ it('shows an error if the series is missing', function () {
 });
 
 it('creates a new serie if the one passed does not exist in the database', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => 'The Great',
-        'publisher_name' => $this->publisher->name,
-    ];
+    $validBook = $this->validBook;
+    $validBook['series_name'] = 'The Great';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $validBook))
         ->assertRedirect();
     assertDatabaseCount('books',1);
     assertDatabaseCount('author_book',1);
@@ -525,20 +316,10 @@ it('creates a new serie if the one passed does not exist in the database', funct
 });
 
 it('shows an error if the publisher is missing', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => '',
-    ];
+    $invalidBook = $this->validBook;
+    $invalidBook['publisher_name'] = '';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $invalidBook))
         ->assertRedirect('/books/create')
         ->assertSessionHasErrorsIn('format_name');
     get(route('books.create'))
@@ -548,20 +329,10 @@ it('shows an error if the publisher is missing', function () {
 });
 
 it('creates a new publisher if the one passed does not exist in the database', function () {
-    $bookData = [
-        'title' => 'Some Title',
-        'published_year' => 1984,
-        'isbn' => '9781398510784',
-        'blurb' => 'Some boring text',
-        'part' => 1,
-        'author' => "{$this->author->last_name}, {$this->author->first_name}",
-        'genre_name' => $this->genre->name,
-        'format_name' => $this->format->name,
-        'series_name' => $this->series->name,
-        'publisher_name' => 'TOR',
-    ];
+    $validBook = $this->validBook;
+    $validBook['publisher_name'] = 'TOR';
 
-    post(route('books.store', $bookData))
+    post(route('books.store', $validBook))
         ->assertRedirect();
     assertDatabaseCount('books',1);
     assertDatabaseCount('author_book',1);
