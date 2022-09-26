@@ -1,10 +1,10 @@
-This is the coming create books page.
-<form action="{{ route('books.store') }}" method="post">
+<form action="{{ route('books.update', $book) }}" method="post">
+    @method('PUT')
     @csrf
     <label for="title">Title:</label>
-    <input type="text" name="title" id="title" placeholder="Title..."/>
+    <input type="text" name="title" id="title" placeholder="Title..." value="{{ $book->title }}"/>
     <label for="published_year">Published:</label>
-    <input type="text" id="published_year" name="published_year" placeholder="YYYY" size="4">
+    <input type="text" id="published_year" name="published_year" placeholder="YYYY" size="4" value="{{ $book->published_year }}">
     <label for="author">Author:</label>
     <input list="authors" id="author" name="author[]" placeholder="Author...">
     <datalist id="authors">
@@ -13,32 +13,32 @@ This is the coming create books page.
         @endforeach
     </datalist>
     <label for="format">Format:</label>
-    <input list="formats" id="format" name="format_name" placeholder="Format...">
+    <input list="formats" value="{{ $book->format }}" id="format" name="format_name" placeholder="Format...">
     <datalist id="formats">
         @foreach($formats as $format)
             <option value="{{ $format->name }}"></option>
         @endforeach
     </datalist>
     <label for="genre">Genre:</label>
-    <input list="genres" id="genre" name="genre_name" placeholder="Genre...">
+    <input list="genres" value="{{ $book->genre }}" id="genre" name="genre_name" placeholder="Genre...">
     <datalist id="genres">
         @foreach($genres as $genre)
             <option value="{{ $genre->name }}"></option>
         @endforeach
     </datalist>
     <label for="isbn">ISBN:</label>
-    <input type="text" id="isbn" name="isbn" placeholder="ISBN...">
+    <input type="text" id="isbn" name="isbn" placeholder="ISBN..." value="{{ $book->isbn }}">
     <label for="blurb">Blurb:</label>
-    <textarea name="blurb" id="blurb" cols="30" rows="10"></textarea>
+    <textarea name="blurb" id="blurb" cols="30" rows="10" value="{{ $book->blurb }}"></textarea>
     <label for="series">Series:</label>
-    <input list="series-list" id="series" name="series_name" placeholder="Series...">
+    <input list="series-list" value="{{ $book->series }}" id="series" name="series_name" placeholder="Series...">
     <datalist id="series-list">
         @foreach($series as $item)
             <option value="{{ $item->name }}"></option>
         @endforeach
     </datalist>
     <label for="part">part:</label>
-    <input type="number" id="part" name="part" placeholder="Part..." size="3">
+    <input type="number" id="part" name="part" placeholder="Part..." size="3" value="{{ $book->part }}">
     <label for="publisher">Publisher:</label>
     <input list="publishers" id="publisher" name="publisher_name" placeholder="Publisher...">
     <datalist id="publishers">
@@ -58,5 +58,3 @@ This is the coming create books page.
         </ul>
     </div>
 @endif
-
-

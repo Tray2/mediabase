@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Author;
+use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\Publisher;
@@ -10,28 +11,40 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-it('can show books.create page', function () {
-    get(route('books.create'))
+beforeEach(function() {
+    $this->book = Book::factory()->create();
+});
+
+it('can show books.edit page', function () {
+    get(route('books.edit', $this->book))
         ->assertOk();
 });
 
 it('has a form with the correct post action and method', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'method="post"',
-            'action="' . route('books.store') . '"',
+            'action="' . route('books.update', $this->book) . '"',
+        ], false);
+});
+
+it('has a method field with the action put', function () {
+    get(route('books.edit', $this->book))
+        ->assertSee([
+            'name="_method"',
+            'value="PUT"',
         ], false);
 });
 
 it('has a token field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'name="_token"',
         ], false);
 });
 
 it('has a title field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="title"',
             'id="title"',
@@ -41,7 +54,7 @@ it('has a title field', function () {
 
 
 it('has a published_year field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="published_year',
             'id="published_year"',
@@ -50,7 +63,7 @@ it('has a published_year field', function () {
 });
 
 it('has an author field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="author',
             'id="author"',
@@ -61,7 +74,7 @@ it('has an author field', function () {
 });
 
 it('has a format field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="format',
             'id="format"',
@@ -72,7 +85,7 @@ it('has a format field', function () {
 });
 
 it('has a genres field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="genre',
             'id="genre"',
@@ -83,7 +96,7 @@ it('has a genres field', function () {
 });
 
 it('has an isbn field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="isbn',
             'id="isbn"',
@@ -92,7 +105,7 @@ it('has an isbn field', function () {
 });
 
 it('has a blurb text area', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="blurb',
             'id="blurb"',
@@ -101,7 +114,7 @@ it('has a blurb text area', function () {
 });
 
 it('has a series field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="series',
             'id="series"',
@@ -112,7 +125,7 @@ it('has a series field', function () {
 });
 
 it('has a part field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="part',
             'id="part"',
@@ -121,7 +134,7 @@ it('has a part field', function () {
 });
 
 it('has a publishers field', function () {
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertSee([
             'for="publisher',
             'id="publisher"',
@@ -222,9 +235,69 @@ it('loads a list of publishers that is sorted in alphabetical order', function (
         ]);
 });
 
-it('has a submit button', function () {
-    get(route('books.create'))
+it('has the title of the book in the title field', function () {
+    get(route('books.edit', $this->book))
         ->assertSee([
-            '<input type="submit">'
+            'value="' . $this->book->title . '"',
         ], false);
 });
+
+it('has the published year of the book in the published year field', function () {
+    get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->published_year . '"',
+        ], false);
+});
+
+it('has the isbn of the book in the isbn field', function () {
+    get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->isbn . '"',
+        ], false);
+});
+
+it('has the blurb of the book in the blurb field', function () {
+    get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->blurb . '"',
+        ], false);
+});
+
+it('has the part of the book in the part field', function () {
+    get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->part . '"',
+        ], false);
+});
+
+it('has the format of the book in the format field', function () {
+    $pattern = '/<input(.)*value="' . $this->book->format->name . '"(.)*>/';
+    $response = get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->format->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+});
+
+it('has the genre of the book in the genre field', function () {
+    $pattern = '/<input(.)*value="' . $this->book->genre->name . '"(.)*>/';
+    $response = get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->genre->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+});
+
+it('has the series of the book in the genre field', function () {
+    $pattern = '/<input(.)*value="' . $this->book->series->name . '"(.)*>/';
+    $response = get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->series->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+
+
+
+});
+
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookFormRequest;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Format;
@@ -16,36 +17,20 @@ use Illuminate\Http\Request;
 
 class BooksStoreController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(BookFormRequest $request)
     {
-        $valid =  $request->validate([
-           'title' => 'required',
-            'published_year' => ['required', 'numeric', 'min_digits:4', 'max_digits:4', 'between:1800,' . Carbon::now()->addYear(1)->year],
-            'isbn' => ['required', new Isbn(),],
-            'blurb' => ['required', new MinWords(3)],
-            'author' => 'required',
-            'genre_name' => 'required',
-            'format_name' => 'required',
-            'series_name' => 'required',
-            'publisher_name' => 'required',
-            'part' => [new RequiredIfNotStandalone($request->series_name),],
-        ]);
+        $valid =  $request->validated();
 
         if ($request->series_name === 'Standalone') {
-            $request->part = null;
+            $valid['part'] = null;
         }
 
-        $book =Book::create([
-            'title' => $request->title,
-            'published_year' => $request->published_year,
-            'isbn' => $request->isbn,
-            'part' => $request->part,
-            'blurb' => $request->blurb,
+        $book = Book::create(array_merge($valid,[
             'genre_id' => $this->getGenreId($request->genre_name),
             'format_id' => $this->getFormatId($request->format_name),
             'series_id' => $this->getSeriesId($request->series_name),
             'publisher_id' => $this->getPublisherId($request->publisher_name),
-        ]);
+        ]));
 
         $book->authors()->attach($this->getAuthor($request->author));
         return redirect(route('books.index'));

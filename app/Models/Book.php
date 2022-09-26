@@ -10,7 +10,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Book extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'published_year',
+        'part',
+        'isbn',
+        'blurb',
+        'format_id',
+        'genre_id',
+        'series_id',
+        'publisher_id'
+    ];
 
     public function authors(): BelongsToMany
     {
