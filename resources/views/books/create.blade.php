@@ -6,6 +6,7 @@ This is the coming create books page.
     <label for="published_year">Published:</label>
     <input type="text" id="published_year" name="published_year" placeholder="YYYY" size="4">
     <label for="author">Author:</label>
+    <button title="Add Author">+</button>
     <input list="authors" id="author" name="author[]" placeholder="Author...">
     <datalist id="authors">
         @foreach($authors as $author)

@@ -5,8 +5,10 @@
     <input type="text" name="title" id="title" placeholder="Title..." value="{{ $book->title }}"/>
     <label for="published_year">Published:</label>
     <input type="text" id="published_year" name="published_year" placeholder="YYYY" size="4" value="{{ $book->published_year }}">
+    <button title="Add Author">+</button>
     @foreach(explode(' & ', $book->author_name) as $author)
         <label for="author">Author:</label>
+        <button title="Remove Author">X</button>
         <input list="authors" value="{{ $author }}" id="author" name="author[]" placeholder="Author...">
         <datalist id="authors">
             @foreach($authors as $author)

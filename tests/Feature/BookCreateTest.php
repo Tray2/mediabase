@@ -228,3 +228,8 @@ it('has a submit button', function () {
             '<input type="submit">'
         ], false);
 });
+
+it('has a add author button', function () {
+    get(route('books.create'))
+        ->assertSee('title="Add Author"', false);
+});

@@ -331,4 +331,17 @@ it('has the authors of a book in two author fields', function () {
     $this->assertMatchesRegularExpression($pattern2, $response->content());
 });
 
+it('has an add author button', function () {
+    get(route('books.edit', $this->book))
+        ->assertSee('title="Add Author"', false);
+});
 
+it('has a delete author button', function () {
+    get(route('books.edit', $this->book))
+        ->assertSee('title="Remove Author"', false);
+});
+
+it('has a update button', function () {
+    get(route('books.edit', $this->book))
+        ->assertSee('<input type="submit">', false);
+});
