@@ -6,7 +6,7 @@
     <label for="published_year">Published:</label>
     <input type="text" id="published_year" name="published_year" placeholder="YYYY" size="4" value="{{ $book->published_year }}">
     <label for="author">Author:</label>
-    <input list="authors" id="author" name="author[]" placeholder="Author...">
+    <input list="authors" value="{{ $book->author_name }}" id="author" name="author[]" placeholder="Author...">
     <datalist id="authors">
         @foreach($authors as $author)
             <option value="{{ $author->last_name }}, {{ $author->first_name }}">
@@ -29,7 +29,7 @@
     <label for="isbn">ISBN:</label>
     <input type="text" id="isbn" name="isbn" placeholder="ISBN..." value="{{ $book->isbn }}">
     <label for="blurb">Blurb:</label>
-    <textarea name="blurb" id="blurb" cols="30" rows="10" value="{{ $book->blurb }}"></textarea>
+    <textarea name="blurb" id="blurb" cols="30" rows="10">{{ $book->blurb }}</textarea>
     <label for="series">Series:</label>
     <input list="series-list" value="{{ $book->series }}" id="series" name="series_name" placeholder="Series...">
     <datalist id="series-list">
@@ -40,7 +40,7 @@
     <label for="part">part:</label>
     <input type="number" id="part" name="part" placeholder="Part..." size="3" value="{{ $book->part }}">
     <label for="publisher">Publisher:</label>
-    <input list="publishers" id="publisher" name="publisher_name" placeholder="Publisher...">
+    <input list="publishers" value="{{ $book->publisher }}" id="publisher" name="publisher_name" placeholder="Publisher...">
     <datalist id="publishers">
         @foreach($publishers as $publisher)
             <option value="{{ $publisher->name }}"></option>

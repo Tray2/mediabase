@@ -259,7 +259,7 @@ it('has the isbn of the book in the isbn field', function () {
 it('has the blurb of the book in the blurb field', function () {
     get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->blurb . '"',
+            $this->book->blurb,
         ], false);
 });
 
@@ -288,16 +288,32 @@ it('has the genre of the book in the genre field', function () {
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
-it('has the series of the book in the genre field', function () {
+it('has the series of the book in the series field', function () {
     $pattern = '/<input(.)*value="' . $this->book->series->name . '"(.)*>/';
     $response = get(route('books.edit', $this->book))
         ->assertSee([
             'value="' . $this->book->series->name . '"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
+});
 
+it('has the publisher of the book in the publisher field', function () {
+    $pattern = '/<input(.)*value="' . $this->book->publisher->name . '"(.)*>/';
+    $response = get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->publisher->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+});
 
-
+it('has the author of the book in the author field', function () {
+    $this->book->authors()->attach(Author::factory()->create());
+    $pattern = '/<input(.)*value="' . $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name . '"(.)*>/';
+    $response = get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 
