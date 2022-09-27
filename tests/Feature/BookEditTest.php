@@ -316,4 +316,19 @@ it('has the author of the book in the author field', function () {
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
+it('has the authors of a book in two author fields', function () {
+    $this->book->authors()->attach(Author::factory()->create());
+    $this->book->authors()->attach(Author::factory()->create());
+
+    $pattern1 = '/<input(.)*value="' . $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name . '"(.)*>/';
+    $pattern2 = '/<input(.)*value="' . $this->book->authors[1]->last_name . ', ' . $this->book->authors[1]->first_name . '"(.)*>/';
+    $response = get(route('books.edit', $this->book))
+        ->assertSee([
+            'value="' . $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name . '"',
+            'value="' . $this->book->authors[1]->last_name . ', ' . $this->book->authors[1]->first_name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern1, $response->content());
+    $this->assertMatchesRegularExpression($pattern2, $response->content());
+});
+
 

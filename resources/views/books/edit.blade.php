@@ -5,13 +5,15 @@
     <input type="text" name="title" id="title" placeholder="Title..." value="{{ $book->title }}"/>
     <label for="published_year">Published:</label>
     <input type="text" id="published_year" name="published_year" placeholder="YYYY" size="4" value="{{ $book->published_year }}">
-    <label for="author">Author:</label>
-    <input list="authors" value="{{ $book->author_name }}" id="author" name="author[]" placeholder="Author...">
-    <datalist id="authors">
-        @foreach($authors as $author)
-            <option value="{{ $author->last_name }}, {{ $author->first_name }}">
-        @endforeach
-    </datalist>
+    @foreach(explode(' & ', $book->author_name) as $author)
+        <label for="author">Author:</label>
+        <input list="authors" value="{{ $author }}" id="author" name="author[]" placeholder="Author...">
+        <datalist id="authors">
+            @foreach($authors as $author)
+                <option value="{{ $author->last_name }}, {{ $author->first_name }}">
+            @endforeach
+        </datalist>
+    @endforeach
     <label for="format">Format:</label>
     <input list="formats" value="{{ $book->format }}" id="format" name="format_name" placeholder="Format...">
     <datalist id="formats">
