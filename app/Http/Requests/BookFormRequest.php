@@ -2,6 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Author;
+use App\Models\Format;
+use App\Models\Genre;
+use App\Models\Publisher;
+use App\Models\Series;
 use App\Rules\Isbn;
 use App\Rules\MinWords;
 use App\Rules\RequiredIfNotStandalone;
@@ -26,4 +31,43 @@ class BookFormRequest extends FormRequest
 
         ];
     }
+
+    public function getSeriesId(): int
+    {
+        return Series::firstOrCreate(['name' => $this->series_name])
+            ->value('id');
+    }
+
+    public function getFormatId(): int
+    {
+        return Format::firstOrCreate(['name' => $this->format_name])
+            ->value('id');
+    }
+
+    public function getGenreId(): int
+    {
+        return Genre::FirstOrCreate(['name' => $this->genre_name])
+            ->value('id');
+    }
+
+    public function getAuthor(): array
+    {
+        $authors = [];
+
+        foreach($this->author as $author) {
+            [$lastName, $firstName] = explode(', ', $author);
+            $authors[] =  Author::firstOrCreate(
+                ['last_name' => $lastName],
+                ['first_name' => $firstName]
+            )->value('id');
+        }
+        return $authors;
+    }
+
+    public function getPublisherId(): int
+    {
+        return Publisher::firstOrCreate(['name' => $this->publisher_name])
+            ->value('id');
+    }
+
 }
