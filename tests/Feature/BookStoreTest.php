@@ -351,3 +351,62 @@ it('creates a new publisher if the one passed does not exist in the database', f
     assertDatabaseCount('author_book',1);
     assertDatabaseHas('publishers', ['name' => 'TOR']);
 });
+
+it('has the old values in the form if the validation fails', function () {
+    $invalidBook = $this->validBook;
+    $invalidBook['title'] = '';
+    $formatPattern = '/<input(.)*value="' . $invalidBook['format_name'] . '"(.)*>/';
+    $genrePattern = '/<input(.)*value="' . $invalidBook['genre_name'] . '"(.)*>/';
+    $seriesPattern = '/<input(.)*value="' . $invalidBook['series_name'] . '"(.)*>/';
+    $publisherPattern = '/<input(.)*value="' . $invalidBook['publisher_name'] . '"(.)*>/';
+    $authorPattern = '/<input(.)*value="' . $invalidBook['author'][0] . '"(.)*>/';
+
+
+    post(route('books.store', $invalidBook))
+        ->assertRedirect(route('books.create'))
+        ->assertSessionHasErrorsIn('title');
+    $response = get(route('books.create'))
+        ->assertSeeText('The title field is required.')
+        ->assertSee([
+            'value="' . $this->validBook['published_year'],
+            'value="' . $this->validBook['isbn'],
+            $this->validBook['blurb'],
+            'value="' . $this->validBook['part'],
+        ], false);
+
+    $this->assertMatchesRegularExpression($authorPattern, $response->content());
+    $this->assertMatchesRegularExpression($formatPattern, $response->content());
+    $this->assertMatchesRegularExpression($genrePattern, $response->content());
+    $this->assertMatchesRegularExpression($seriesPattern, $response->content());
+    $this->assertMatchesRegularExpression($publisherPattern, $response->content());
+});
+
+it('has the old title value in the form if the validation fails', function () {
+    $invalidBook = $this->validBook;
+    $invalidBook['blurb'] = '';
+
+    post(route('books.store', $invalidBook))
+        ->assertRedirect(route('books.create'))
+        ->assertSessionHasErrorsIn('title');
+    get(route('books.create'))
+        ->assertSee([
+            'value="' . $this->validBook['title']
+        ], false);
+});
+
+it('can handle multiple authors when validation fails', function () {
+    $author = Author::factory()->create();
+    $invalidBook = $this->validBook;
+    $invalidBook['author'] = [
+        "{$this->author->last_name}, {$this->author->first_name}",
+        "{$author->last_name}, {$author->first_name}",
+    ];
+
+    $invalidBook['title'] = '';
+    $pattern1 = '/<input(.)*value="' . $invalidBook['author'][0] . '"(.)*>/';
+    $pattern2 = '/<input(.)*value="' . $invalidBook['author'][1] . '"(.)*>/';
+    post(route('books.store', $invalidBook));
+    $response = get(route('books.create'));
+    $this->assertMatchesRegularExpression($pattern1, $response->content());
+    $this->assertMatchesRegularExpression($pattern2, $response->content());
+});
