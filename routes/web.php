@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BooksCreateController;
+use App\Http\Controllers\BooksDeleteController;
 use App\Http\Controllers\BooksEditController;
 use App\Http\Controllers\BooksIndexController;
 use App\Http\Controllers\BooksShowController;
@@ -18,3 +19,4 @@ Route::get('/books/{bookShowView}', BooksShowController::class)->name('books.sho
 Route::post('/books/store', BooksStoreController::class)->name('books.store');
 Route::get('/books/edit/{bookShowView}', BooksEditController::class)->name('books.edit');
 Route::put('books/{book}', BooksUpdateController::class)->name('books.update');
+Route::delete('books/{book}', BooksDeleteController::class)->name('books.delete');
