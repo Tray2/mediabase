@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Books;
 
+use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\BookShowView;
 use App\Models\Format;

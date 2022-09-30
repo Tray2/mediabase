@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Books;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BookFormRequest;
 use App\Models\Book;
 

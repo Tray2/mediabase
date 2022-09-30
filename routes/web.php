@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\BooksCreateController;
-use App\Http\Controllers\BooksDeleteController;
-use App\Http\Controllers\BooksEditController;
-use App\Http\Controllers\BooksIndexController;
-use App\Http\Controllers\BooksShowController;
-use App\Http\Controllers\BooksStoreController;
-use App\Http\Controllers\BooksUpdateController;
+use App\Http\Controllers\Books\BooksCreateController;
+use App\Http\Controllers\Books\BooksDeleteController;
+use App\Http\Controllers\Books\BooksEditController;
+use App\Http\Controllers\Books\BooksIndexController;
+use App\Http\Controllers\Books\BooksShowController;
+use App\Http\Controllers\Books\BooksStoreController;
+use App\Http\Controllers\Books\BooksUpdateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
