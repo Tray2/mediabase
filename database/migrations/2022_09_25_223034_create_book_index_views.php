@@ -46,6 +46,6 @@ class CreateBookIndexViews extends Migration
 
     public function down(): void
     {
-        DB::statement('DROP INDEX IF EXISTS book_index_views');
+        DB::statement('DROP VIEW IF EXISTS book_index_views');
     }
 }
