@@ -10,7 +10,10 @@ class RecordsIndexController extends Controller
     {
         return view('records.index')
             ->with([
-               'records' => RecordIndexView::all(),
+               'records' => RecordIndexView::query()
+                    ->orderBy('artist')
+                    ->orderBy('released')
+                    ->get(),
             ]);
     }
 }

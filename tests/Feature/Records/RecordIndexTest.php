@@ -32,3 +32,37 @@ it('lists records', function() {
             $artist->name,
         ]);
 });
+
+it('sorts records by artist', function () {
+    Artist::factory()
+        ->count(2)
+        ->sequence(
+            ['name' => 'Run Dmc',],
+            ['name' => 'Public Enemy']
+        )->has(Record::factory())
+        ->create();
+
+    get(route('records.index'))
+        ->assertOk()
+        ->assertSeeTextInOrder([
+            'Public Enemy',
+            'Run Dmc'
+        ]);
+});
+
+it('sorts records by the same artist by released year', function () {
+    $years = Artist::factory()
+        ->has(Record::factory())
+        ->count(5)
+        ->create([
+            'name' => 'Public Enemy',
+        ])
+        ->pluck('released')
+        ->sort()
+        ->toArray();
+
+    get(route('records.index'))
+        ->assertOk()
+        ->assertSeeTextInOrder($years);
+});
+
