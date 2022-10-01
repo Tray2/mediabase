@@ -48,20 +48,6 @@ it('sorts books by author', function () {
         ]);
 });
 
-it('sorts books by the same author by published_year', function () {
-    $years = Author::factory()
-        ->has(Book::factory())
-        ->count(5)
-        ->create()
-        ->pluck('published_year')
-        ->sort()
-        ->toArray();
-
-    get(route('books.index'))
-        ->assertOk()
-        ->assertSeeTextInOrder($years);
-});
-
 it('sorts books in the same series by part', function () {
     Author::factory()
         ->has(Book::factory()

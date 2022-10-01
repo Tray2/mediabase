@@ -51,18 +51,28 @@ it('sorts records by artist', function () {
 });
 
 it('sorts records by the same artist by released year', function () {
-    $years = Artist::factory()
-        ->has(Record::factory())
+    Artist::factory()
+        ->has(Record::factory()
         ->count(5)
+        ->sequence(
+            ['released' => 1986],
+            ['released' => 1982],
+            ['released' => 2006],
+            ['released' => 1971],
+            ['released' => 2004],
+        ))
         ->create([
             'name' => 'Public Enemy',
-        ])
-        ->pluck('released')
-        ->sort()
-        ->toArray();
+        ]);
 
     get(route('records.index'))
         ->assertOk()
-        ->assertSeeTextInOrder($years);
+        ->assertSeeTextInOrder([
+            1971,
+            1982,
+            1986,
+            2004,
+            2006,
+        ]);
 });
 
