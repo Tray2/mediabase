@@ -8,6 +8,7 @@ use App\Http\Controllers\Books\BooksShowController;
 use App\Http\Controllers\Books\BooksStoreController;
 use App\Http\Controllers\Books\BooksUpdateController;
 use App\Http\Controllers\RecordsIndexController;
+use App\Http\Controllers\RecordsShowController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,3 +24,4 @@ Route::put('books/{book}', BooksUpdateController::class)->name('books.update');
 Route::delete('books/{book}', BooksDeleteController::class)->name('books.delete');
 
 Route::get('/records', RecordsIndexController::class)->name('records.index');
+Route::get('/records/{recordShowView}', RecordsShowController::class)->name('records.show');
