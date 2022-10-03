@@ -3,16 +3,27 @@
 use App\Models\Artist;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Record;
+use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function() {
+    $this->seed(MediaTypeSeeder::class);
+    $this->mediaTypeId = MediaType::query()
+        ->where('name', 'record')
+        ->value('id');
+});
+
 it('lists records', function() {
     $fields = ['title', 'released_year',];
     $genre = Genre::factory()->create();
-    $format = Format::factory()->create();
+    $format = Format::factory()->create([
+        'media_type_id' => $this->mediaTypeId,
+    ]);
     $artist = Artist::factory()->create();
     [$record1, $record2] = Record::factory()
                             ->count(2)

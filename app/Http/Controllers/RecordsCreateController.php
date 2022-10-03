@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artist;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\RecordFormatView;
 use App\Models\RecordLabel;
 
 class RecordsCreateController extends Controller
@@ -16,7 +17,7 @@ class RecordsCreateController extends Controller
                 'artists' => Artist::query()
                     ->orderBy('name')
                     ->get(),
-                'formats' => Format::query()
+                'formats' => RecordFormatView::query()
                     ->orderBy('name')
                     ->get(),
                 'genres' => Genre::query()

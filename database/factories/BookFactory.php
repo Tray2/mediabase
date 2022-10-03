@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +23,11 @@ class BookFactory extends Factory
             'blurb' => $this->faker->paragraph(),
             'series_id' => Series::factory()->create()->id,
             'genre_id' => Genre::factory()->create()->id,
-            'format_id' => Format::factory()->create()->id,
+            'format_id' => Format::factory()->create([
+                'media_type_id' => MediaType::query()
+                    ->where('name', 'book')
+                    ->value('id'),
+            ])->id,
             'publisher_id' => Publisher::factory()->create()->id,
         ];
     }

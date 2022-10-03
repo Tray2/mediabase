@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Author;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
 use App\Rules\Isbn;
@@ -12,6 +13,7 @@ use App\Rules\MinWords;
 use App\Rules\RequiredIfNotStandalone;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class BookFormRequest extends FormRequest
 {
@@ -40,7 +42,12 @@ class BookFormRequest extends FormRequest
 
     public function getFormatId(): int
     {
-        return Format::firstOrCreate(['name' => $this->format_name])
+        return Format::firstOrCreate(
+            ['name' => $this->format_name,],
+            ['media_type_id' => MediaType::query()
+                ->where('name', $this->getMediaType())
+                ->value('id'),
+            ])
             ->value('id');
     }
 
@@ -68,6 +75,11 @@ class BookFormRequest extends FormRequest
     {
         return Publisher::firstOrCreate(['name' => $this->publisher_name])
             ->value('id');
+    }
+
+    protected function getMediaType(): string
+    {
+        return Str::singular(explode('/',trim($this->getPathInfo(), '/'))[0]);
     }
 
 }

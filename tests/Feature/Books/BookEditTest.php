@@ -6,12 +6,17 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\Publisher;
 use App\Models\Series;
+use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function() {
+    $this->seed(MediaTypeSeeder::class);
+    $this->mediaTypeId = \App\Models\MediaType::query()
+        ->where('name', 'book')
+        ->value('id');
     $this->book = Book::factory()->create();
 });
 
@@ -171,8 +176,14 @@ it('loads a list of formats that is sorted in alphabetical order', function () {
     Format::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'Pocket',],
-            ['name' => 'Hardcover',]
+            [
+                'name' => 'Pocket',
+                'media_type_id' => $this->mediaTypeId,
+            ],
+            [
+                'name' => 'Hardcover',
+                'media_type_id' => $this->mediaTypeId,
+            ]
         )
         ->create();
 

@@ -4,9 +4,11 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
 use Carbon\Carbon;
+use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
@@ -16,9 +18,15 @@ use function Pest\Laravel\put;
 uses(RefreshDatabase::class);
 
 beforeEach(function() {
+    $this->seed(MediaTypeSeeder::class);
+    $mediaTypeId = MediaType::query()
+        ->where('name', 'book')
+        ->value('id');
     $this->author = Author::factory()->create();
     $this->genre = Genre::factory()->create();
-    $this->format = Format::factory()->create();
+    $this->format = Format::factory()->create([
+        'media_type_id' => $mediaTypeId,
+    ]);
     $this->series = Series::factory()->create();
     $this->publisher = Publisher::factory()->create();
     $this->book = Book::factory()->create([

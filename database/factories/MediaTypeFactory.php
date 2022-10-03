@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Format;
+use App\Models\MediaType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class FormatFactory extends Factory
+class MediaTypeFactory extends Factory
 {
-    protected $model = Format::class;
+    protected $model = MediaType::class;
 
     public function definition(): array
     {

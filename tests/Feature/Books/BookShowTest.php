@@ -4,18 +4,29 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
+use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function() {
+   $this->seed(MediaTypeSeeder::class);
+   $this->mediaTypeId = MediaType::query()
+       ->where('name', 'book')
+       ->value('id');
+});
+
 it('it shows all the information about a book', function() {
    $book = Book::factory()
        ->has(Author::factory())
        ->for($genre = Genre::factory()->create())
-       ->for($format = Format::factory()->create())
+       ->for($format = Format::factory()->create([
+           'media_type_id' => $this->mediaTypeId,
+       ]))
        ->for($series = Series::factory()->create())
        ->for($publisher = Publisher::factory()->create())
        ->create();

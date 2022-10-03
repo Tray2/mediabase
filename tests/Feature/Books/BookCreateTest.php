@@ -3,12 +3,21 @@
 use App\Models\Author;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
+use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function() {
+   $this->seed(MediaTypeSeeder::class);
+   $this->mediaTypeId = MediaType::query()
+       ->where('name', 'book')
+       ->value('id');
+});
 
 it('can show books.create page', function () {
     get(route('books.create'))
@@ -158,8 +167,14 @@ it('loads a list of formats that is sorted in alphabetical order', function () {
     Format::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'Pocket',],
-            ['name' => 'Hardcover',]
+            [
+                'name' => 'Pocket',
+                'media_type_id' => $this->mediaTypeId,
+            ],
+            [
+                'name' => 'Hardcover',
+                'media_type_id' => $this->mediaTypeId,
+            ]
         )
         ->create();
 
@@ -232,4 +247,21 @@ it('has a submit button', function () {
 it('has a add author button', function () {
     get(route('books.create'))
         ->assertSee('title="Add Author"', false);
+});
+
+it('loads only formats that are book formats', function () {
+    $bookFormat = Format::factory()->create([
+        'media_type_id' => MediaType::query()
+            ->where('name', 'book')
+            ->value('id'),
+    ]);
+    $recordFormat = Format::factory()->create([
+        'media_type_id' => MediaType::query()
+            ->where('name', 'record')
+            ->value('id'),
+    ]);
+
+    get(route('books.create'))
+        ->assertDontSee('value="' . $recordFormat->name . '"', false)
+        ->assertSee('value="' . $bookFormat->name . '"', false);
 });

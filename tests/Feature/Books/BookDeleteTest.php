@@ -2,6 +2,7 @@
 
 use App\Models\Author;
 use App\Models\Book;
+use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\delete;
@@ -9,6 +10,7 @@ use function Pest\Laravel\delete;
 uses(RefreshDatabase::class);
 
 it('deletes a book', function() {
+   $this->seed(MediaTypeSeeder::class);
    $book = Book::factory()->create();
    $book->authors()->attach(Author::factory()->create());
    assertDatabaseCount(Book::class, 1);
