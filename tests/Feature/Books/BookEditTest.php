@@ -4,6 +4,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Format;
 use App\Models\Genre;
+use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
 use Database\Seeders\MediaTypeSeeder;
@@ -14,7 +15,7 @@ uses(RefreshDatabase::class);
 
 beforeEach(function() {
     $this->seed(MediaTypeSeeder::class);
-    $this->mediaTypeId = \App\Models\MediaType::query()
+    $this->mediaTypeId = MediaType::query()
         ->where('name', 'book')
         ->value('id');
     $this->book = Book::factory()->create();

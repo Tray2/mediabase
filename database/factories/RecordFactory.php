@@ -14,20 +14,27 @@ class RecordFactory extends Factory
 {
     protected $model = Record::class;
 
+    protected int $mediaTypeId;
+
+    protected function getMediaTypeId(): void
+    {
+        $this->mediaTypeId = MediaType::query()
+            ->where('name', 'record')
+            ->value('id');
+    }
+
+
     public function definition(): array
     {
+        $this->getMediaTypeId();
         return [
             'title' => $this->faker->word(),
             'released' => $this->faker->year('now'),
             'genre_id' => Genre::factory()->create([
-                'media_type_id' => MediaType::query()
-                    ->where('name', 'record')
-                    ->value('id'),
+                'media_type_id' => $this->mediaTypeId,
             ]),
             'format_id' => Format::factory()->create([
-                'media_type_id' => MediaType::query()
-                    ->where('name', 'record')
-                    ->value('id'),
+                'media_type_id' => $this->mediaTypeId,
             ]),
             'record_label_id' => RecordLabel::factory()->create(),
             'country_id' => Country::factory()->create(),

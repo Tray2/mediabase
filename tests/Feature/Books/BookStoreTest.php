@@ -18,15 +18,12 @@ uses(RefreshDatabase::class);
 
 beforeEach(function() {
     $this->seed(MediaTypeSeeder::class);
+    $mediaTypeId = MediaType::query()
+        ->where('name', 'book')
+        ->value('id');
     $this->author = Author::factory()->create();
-    $this->genre = Genre::factory()->create(['media_type_id' => MediaType::query()
-        ->where('name', 'book')
-        ->value('id')
-    ]);
-    $this->format = Format::factory()->create(['media_type_id' => MediaType::query()
-        ->where('name', 'book')
-        ->value('id')
-    ]);
+    $this->genre = Genre::factory()->create(['media_type_id' => $mediaTypeId,]);
+    $this->format = Format::factory()->create(['media_type_id' => $mediaTypeId,]);
     $this->series = Series::factory()->create();
     $this->publisher = Publisher::factory()->create();
     $this->validBook = [

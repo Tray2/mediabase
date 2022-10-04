@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Publisher;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class PublisherFactory extends Factory
 {
@@ -12,7 +13,7 @@ class PublisherFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->company(),
         ];
     }
 }

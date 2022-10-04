@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Author;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class AuthorFactory extends Factory
 {
@@ -12,8 +13,8 @@ class AuthorFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName(),
+            'first_name' => Str::replace("'", '',$this->faker->firstName()),
+            'last_name' => Str::replace("'", '',$this->faker->lastName()),
         ];
     }
 }
