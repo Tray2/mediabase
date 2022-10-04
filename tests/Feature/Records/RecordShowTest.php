@@ -26,7 +26,9 @@ it('shows all the information about  a record', function() {
         ->for($format = Format::factory()->create([
             'media_type_id' => $this->mediaTypeId,
         ]))
-        ->for($genre = Genre::factory()->create())
+        ->for($genre = Genre::factory()->create([
+            'media_type_id' => $this->mediaTypeId,
+        ]))
         ->for($recordLabel = RecordLabel::factory()->create())
         ->for($country = Country::factory()->create())
         ->create();

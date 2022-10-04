@@ -19,7 +19,10 @@ uses(RefreshDatabase::class);
 beforeEach(function() {
     $this->seed(MediaTypeSeeder::class);
     $this->author = Author::factory()->create();
-    $this->genre = Genre::factory()->create();
+    $this->genre = Genre::factory()->create(['media_type_id' => MediaType::query()
+        ->where('name', 'book')
+        ->value('id')
+    ]);
     $this->format = Format::factory()->create(['media_type_id' => MediaType::query()
         ->where('name', 'book')
         ->value('id')

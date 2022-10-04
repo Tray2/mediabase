@@ -23,7 +23,9 @@ beforeEach(function() {
         ->where('name', 'book')
         ->value('id');
     $this->author = Author::factory()->create();
-    $this->genre = Genre::factory()->create();
+    $this->genre = Genre::factory()->create([
+        'media_type_id' => $mediaTypeId,
+    ]);
     $this->format = Format::factory()->create([
         'media_type_id' => $mediaTypeId,
     ]);

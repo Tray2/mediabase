@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Books;
 use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\BookFormatView;
+use App\Models\BookGenreView;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\Publisher;
@@ -24,8 +25,7 @@ class BooksCreateController extends Controller
                 'formats' => BookFormatView::query()
                             ->orderBy('name')
                             ->get(),
-                'genres' => Genre::query()
-                            ->select('id', 'name')
+                'genres' => BookGenreView::query()
                             ->orderBy('name')
                             ->get(),
                 'series' => Series::query()

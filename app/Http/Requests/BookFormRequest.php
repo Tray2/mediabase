@@ -53,7 +53,12 @@ class BookFormRequest extends FormRequest
 
     public function getGenreId(): int
     {
-        return Genre::FirstOrCreate(['name' => $this->genre_name])
+        return Genre::FirstOrCreate(
+            ['name' => $this->genre_name],
+            ['media_type_id' => MediaType::query()
+                ->where('name', $this->getMediaType())
+                ->value('id'),
+            ])
             ->value('id');
     }
 

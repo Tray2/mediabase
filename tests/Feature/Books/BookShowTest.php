@@ -23,7 +23,9 @@ beforeEach(function() {
 it('it shows all the information about a book', function() {
    $book = Book::factory()
        ->has(Author::factory())
-       ->for($genre = Genre::factory()->create())
+       ->for($genre = Genre::factory()->create([
+           'media_type_id' => $this->mediaTypeId,
+       ]))
        ->for($format = Format::factory()->create([
            'media_type_id' => $this->mediaTypeId,
        ]))

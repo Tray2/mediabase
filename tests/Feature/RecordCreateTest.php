@@ -149,8 +149,14 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
     Genre::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'Fantasy',],
-            ['name' => 'Crime',]
+            [
+                'name' => 'Fantasy',
+                'media_type_id' => $this->mediaTypeId,
+            ],
+            [
+                'name' => 'Crime',
+                'media_type_id' => $this->mediaTypeId,
+            ]
         )
         ->create();
 
@@ -201,4 +207,21 @@ it('loads only formats that are record formats', function () {
     get(route('records.create'))
         ->assertSee('value="' . $recordFormat->name . '"', false)
         ->assertDontSee('value="' . $bookFormat->name . '"', false);
+});
+
+it('loads only genres that are record genres', function () {
+    $bookGenre = Genre::factory()->create([
+        'media_type_id' => MediaType::query()
+            ->where('name', 'book')
+            ->value('id'),
+    ]);
+    $recordGenre = Genre::factory()->create([
+        'media_type_id' => MediaType::query()
+            ->where('name', 'record')
+            ->value('id'),
+    ]);
+
+    get(route('records.create'))
+        ->assertSee('value="' . $recordGenre->name . '"', false)
+        ->assertDontSee('value="' . $bookGenre->name . '"', false);
 });

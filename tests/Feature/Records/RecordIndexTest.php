@@ -20,7 +20,9 @@ beforeEach(function() {
 
 it('lists records', function() {
     $fields = ['title', 'released_year',];
-    $genre = Genre::factory()->create();
+    $genre = Genre::factory()->create([
+        'media_type_id' => $this->mediaTypeId,
+    ]);
     $format = Format::factory()->create([
         'media_type_id' => $this->mediaTypeId,
     ]);

@@ -199,8 +199,14 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
     Genre::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'Fantasy',],
-            ['name' => 'Crime',]
+            [
+                'name' => 'Fantasy',
+                'media_type_id' => $this->mediaTypeId,
+            ],
+            [
+                'name' => 'Crime',
+                'media_type_id' => $this->mediaTypeId,
+            ]
         )
         ->create();
 

@@ -6,6 +6,7 @@ use App\Models\Artist;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\RecordFormatView;
+use App\Models\RecordGenreView;
 use App\Models\RecordLabel;
 
 class RecordsCreateController extends Controller
@@ -20,7 +21,7 @@ class RecordsCreateController extends Controller
                 'formats' => RecordFormatView::query()
                     ->orderBy('name')
                     ->get(),
-                'genres' => Genre::query()
+                'genres' => RecordGenreView::query()
                     ->orderBy('name')
                     ->get(),
                 'recordLabels' => RecordLabel::query()

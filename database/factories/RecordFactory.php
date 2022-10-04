@@ -19,7 +19,11 @@ class RecordFactory extends Factory
         return [
             'title' => $this->faker->word(),
             'released' => $this->faker->year('now'),
-            'genre_id' => Genre::factory()->create(),
+            'genre_id' => Genre::factory()->create([
+                'media_type_id' => MediaType::query()
+                    ->where('name', 'record')
+                    ->value('id'),
+            ]),
             'format_id' => Format::factory()->create([
                 'media_type_id' => MediaType::query()
                     ->where('name', 'record')

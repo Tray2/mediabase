@@ -22,7 +22,11 @@ class BookFactory extends Factory
             'isbn' => $this->faker->isbn13(),
             'blurb' => $this->faker->paragraph(),
             'series_id' => Series::factory()->create()->id,
-            'genre_id' => Genre::factory()->create()->id,
+            'genre_id' => Genre::factory()->create([
+                'media_type_id' => MediaType::query()
+                    ->where('name', 'book')
+                    ->value('id'),
+            ])->id,
             'format_id' => Format::factory()->create([
                 'media_type_id' => MediaType::query()
                     ->where('name', 'book')
