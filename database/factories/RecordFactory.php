@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Artist;
 use App\Models\Country;
 use App\Models\Format;
 use App\Models\Genre;
@@ -40,6 +41,7 @@ class RecordFactory extends Factory
             'country_id' => Country::factory()->create(),
             'barcode' => $this->faker->creditCardNumber(),
             'spine_code' => $this->faker->creditCardNumber(),
+            'artist_id' => Artist::factory()->create(),
         ];
     }
 }

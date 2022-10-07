@@ -8,9 +8,12 @@ use App\Http\Controllers\Books\BooksShowController;
 use App\Http\Controllers\Books\BooksStoreController;
 use App\Http\Controllers\Books\BooksUpdateController;
 use App\Http\Controllers\RecordsCreateController;
+use App\Http\Controllers\RecordsDeleteController;
+use App\Http\Controllers\RecordsEditController;
 use App\Http\Controllers\RecordsIndexController;
 use App\Http\Controllers\RecordsShowController;
 use App\Http\Controllers\RecordsStoreController;
+use App\Http\Controllers\RecordsUpdateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,10 +25,13 @@ Route::get('/books/create', BooksCreateController::class)->name('books.create');
 Route::get('/books/{bookShowView}', BooksShowController::class)->name('books.show');
 Route::post('/books/store', BooksStoreController::class)->name('books.store');
 Route::get('/books/edit/{bookShowView}', BooksEditController::class)->name('books.edit');
-Route::put('books/{book}', BooksUpdateController::class)->name('books.update');
-Route::delete('books/{book}', BooksDeleteController::class)->name('books.delete');
+Route::put('/books/{book}', BooksUpdateController::class)->name('books.update');
+Route::delete('/books/{book}', BooksDeleteController::class)->name('books.delete');
 
 Route::get('/records', RecordsIndexController::class)->name('records.index');
 Route::get('/records/create', RecordsCreateController::class)->name('records.create');
 Route::get('/records/{recordShowView}', RecordsShowController::class)->name('records.show');
 Route::post('/records', RecordsStoreController::class)->name('records.store');
+Route::get('/records/edit/{recordShowView}', RecordsEditController::class)->name('records.edit');
+Route::put('/records/{record}', RecordsUpdateController::class)->name('records.update');
+Route::delete('/records/{record}', RecordsDeleteController::class)->name('records.delete');
