@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artist;
+use App\Models\Country;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\RecordFormatView;
@@ -25,6 +26,9 @@ class RecordsCreateController extends Controller
                     ->orderBy('name')
                     ->get(),
                 'recordLabels' => RecordLabel::query()
+                    ->orderBy('name')
+                    ->get(),
+                'countries' => Country::query()
                     ->orderBy('name')
                     ->get(),
             ]);

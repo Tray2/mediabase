@@ -8,7 +8,7 @@ return new class extends Migration {
         DB::statement("CREATE OR REPLACE VIEW record_index_views AS
             SELECT a.name AS artist,
                    r.title,
-                   r.released,
+                   r.release_year,
                    g.name AS genre_name,
                    f.name AS format_name
             FROM records r,

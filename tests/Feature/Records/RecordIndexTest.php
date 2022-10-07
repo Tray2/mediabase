@@ -19,7 +19,7 @@ beforeEach(function() {
 });
 
 it('lists records', function() {
-    $fields = ['title', 'released_year',];
+    $fields = ['title', 'release_year',];
     $genre = Genre::factory()->create([
         'media_type_id' => $this->mediaTypeId,
     ]);
@@ -68,11 +68,11 @@ it('sorts records by the same artist by released year', function () {
         ->has(Record::factory()
         ->count(5)
         ->sequence(
-            ['released' => 1986],
-            ['released' => 1982],
-            ['released' => 2006],
-            ['released' => 1971],
-            ['released' => 2004],
+            ['release_year' => 1986],
+            ['release_year' => 1982],
+            ['release_year' => 2006],
+            ['release_year' => 1971],
+            ['release_year' => 2004],
         ))
         ->create([
             'name' => 'Public Enemy',

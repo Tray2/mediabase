@@ -12,7 +12,7 @@ class RecordsIndexController extends Controller
             ->with([
                'records' => RecordIndexView::query()
                     ->orderBy('artist')
-                    ->orderBy('released')
+                    ->orderBy('release_year')
                     ->get(),
             ]);
     }

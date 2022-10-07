@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Artist;
+use App\Models\Country;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
@@ -48,13 +49,42 @@ it('has a title field', function () {
         ], false);
 });
 
-
-it('has a released field', function () {
+it('has a barcode field', function () {
     get(route('records.create'))
         ->assertSee([
-            'for="released',
-            'id="released"',
-            'name="released"',
+            'for="barcode"',
+            'id="barcode"',
+            'name="barcode"',
+        ], false);
+});
+
+it('has a spine_code field', function () {
+    get(route('records.create'))
+        ->assertSee([
+            'for="spine_code"',
+            'id="spine_code"',
+            'name="spine_code"',
+        ], false);
+});
+
+it('has a country_name field', function () {
+    get(route('records.create'))
+        ->assertSee([
+            'for="country_name',
+            'id="country_name"',
+            'name="country_name"',
+            'list="countries',
+            'datalist id="countries',
+        ], false);
+});
+
+
+it('has a release year field', function () {
+    get(route('records.create'))
+        ->assertSee([
+            'for="release_year',
+            'id="release_year"',
+            'name="release_year"',
         ], false);
 });
 
@@ -191,6 +221,24 @@ it('has a submit button', function () {
             '<input type="submit">'
         ], false);
 });
+
+it('loads a list of countries that is sorted in alphabetical order', function () {
+    Country::factory()
+        ->count(2)
+        ->sequence(
+            ['name' => 'Sweden',],
+            ['name' => 'England',]
+        )
+        ->create();
+
+    get(route('records.create'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            'England',
+            'Sweden',
+        ]);
+});
+
 
 it('loads only formats that are record formats', function () {
     $bookFormat = Format::factory()->create([

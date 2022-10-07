@@ -10,6 +10,8 @@ class Artist extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function records(): HasMany
     {
         return $this->hasMany(Record::class);

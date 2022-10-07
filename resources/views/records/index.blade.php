@@ -11,7 +11,7 @@
         <tr>
             <td>{{ $record->artist }}</td>
             <td>{{ $record->title }}</td>
-            <td>{{ $record->released }}</td>
+            <td>{{ $record->release_year }}</td>
             <td>{{ $record->genre_name }}</td>
             <td>{{ $record->format_name }}</td>
         </tr>

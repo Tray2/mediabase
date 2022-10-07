@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('released');
+            $table->integer('release_year');
             $table->string('barcode');
             $table->string('spine_code');
             $table->foreignIdFor(Artist::class);

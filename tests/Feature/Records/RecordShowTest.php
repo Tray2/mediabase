@@ -39,7 +39,7 @@ it('shows all the information about  a record', function() {
             $artist->name,
             $record->title,
             $record->spine_code,
-            $record->released,
+            $record->release_year,
             $record->barcode,
             $genre->name,
             $format->name,

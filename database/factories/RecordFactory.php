@@ -29,7 +29,7 @@ class RecordFactory extends Factory
         $this->getMediaTypeId();
         return [
             'title' => $this->faker->word(),
-            'released' => $this->faker->year('now'),
+            'release_year' => $this->faker->year('now'),
             'genre_id' => Genre::factory()->create([
                 'media_type_id' => $this->mediaTypeId,
             ]),

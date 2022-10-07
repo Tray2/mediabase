@@ -1,6 +1,6 @@
 {{ $record->artist }}
 {{ $record->title }}
-{{ $record->released }}
+{{ $record->release_year }}
 {{ $record->format }}
 {{ $record->genre }}
 {{ $record->spine_code }}

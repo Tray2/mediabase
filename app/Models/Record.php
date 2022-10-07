@@ -10,6 +10,18 @@ class Record extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'barcode',
+        'release_year',
+        'spine_code',
+        'artist_id',
+        'genre_id',
+        'format_id',
+        'country_id',
+        'record_label_id',
+    ];
+
     public function artist(): BelongsTo
     {
         return $this->belongsTo(Artist::class);
