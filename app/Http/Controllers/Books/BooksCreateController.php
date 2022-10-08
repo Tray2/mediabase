@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\BookFormatView;
 use App\Models\BookGenreView;
-use App\Models\Format;
-use App\Models\Genre;
 use App\Models\Publisher;
 use App\Models\Series;
 

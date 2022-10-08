@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Artist;
 use App\Models\Country;
-use App\Models\Format;
-use App\Models\Genre;
+use App\Models\RecordFormatView;
+use App\Models\RecordGenreView;
 use App\Models\RecordLabel;
 use App\Models\RecordShowView;
 
@@ -19,10 +19,10 @@ class RecordsEditController extends Controller
                 'artists' => Artist::query()
                     ->orderBy('name')
                     ->get(),
-                'formats' => Format::query()
+                'formats' => RecordFormatView::query()
                     ->orderBy('name')
                     ->get(),
-                'genres' => Genre::query()
+                'genres' => RecordGenreView::query()
                     ->orderBy('name')
                     ->get(),
                 'recordLabels' => RecordLabel::query()

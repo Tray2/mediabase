@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Artist;
 use App\Models\Country;
-use App\Models\Format;
-use App\Models\Genre;
 use App\Models\RecordFormatView;
 use App\Models\RecordGenreView;
 use App\Models\RecordLabel;
