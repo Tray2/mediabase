@@ -13,7 +13,7 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
+beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'book')
@@ -30,7 +30,7 @@ it('has a form with the correct post action and method', function () {
     get(route('books.edit', $this->book))
         ->assertSee([
             'method="post"',
-            'action="' . route('books.update', $this->book) . '"',
+            'action="'.route('books.update', $this->book).'"',
         ], false);
 });
 
@@ -57,7 +57,6 @@ it('has a title field', function () {
             'name="title"',
         ], false);
 });
-
 
 it('has a published_year field', function () {
     get(route('books.edit', $this->book))
@@ -156,11 +155,11 @@ it('loads a list of authors that is sorted in alphabetical order', function () {
         ->sequence(
             [
                 'last_name' => 'Goodkind',
-                'first_name' => 'Terry'
+                'first_name' => 'Terry',
             ],
             [
                 'last_name' => 'Eddings',
-                'first_name' => 'David'
+                'first_name' => 'David',
             ]
         )
         ->create();
@@ -223,8 +222,8 @@ it('loads a list of series that is sorted in alphabetical order', function () {
     Series::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'The Wheel Of Time',],
-            ['name' => 'The Sword Of Truth',]
+            ['name' => 'The Wheel Of Time'],
+            ['name' => 'The Sword Of Truth']
         )
         ->create();
 
@@ -240,8 +239,8 @@ it('loads a list of publishers that is sorted in alphabetical order', function (
     Publisher::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'TOR',],
-            ['name' => 'Ace Books',]
+            ['name' => 'TOR'],
+            ['name' => 'Ace Books']
         )
         ->create();
 
@@ -256,21 +255,21 @@ it('loads a list of publishers that is sorted in alphabetical order', function (
 it('has the title of the book in the title field', function () {
     get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->title . '"',
+            'value="'.$this->book->title.'"',
         ], false);
 });
 
 it('has the published year of the book in the published year field', function () {
     get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->published_year . '"',
+            'value="'.$this->book->published_year.'"',
         ], false);
 });
 
 it('has the isbn of the book in the isbn field', function () {
     get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->isbn . '"',
+            'value="'.$this->book->isbn.'"',
         ], false);
 });
 
@@ -284,52 +283,52 @@ it('has the blurb of the book in the blurb field', function () {
 it('has the part of the book in the part field', function () {
     get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->part . '"',
+            'value="'.$this->book->part.'"',
         ], false);
 });
 
 it('has the format of the book in the format field', function () {
-    $pattern = '/<input(.)*value="' . $this->book->format->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->book->format->name.'"(.)*>/';
     $response = get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->format->name . '"',
+            'value="'.$this->book->format->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 it('has the genre of the book in the genre field', function () {
-    $pattern = '/<input(.)*value="' . $this->book->genre->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->book->genre->name.'"(.)*>/';
     $response = get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->genre->name . '"',
+            'value="'.$this->book->genre->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 it('has the series of the book in the series field', function () {
-    $pattern = '/<input(.)*value="' . $this->book->series->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->book->series->name.'"(.)*>/';
     $response = get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->series->name . '"',
+            'value="'.$this->book->series->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 it('has the publisher of the book in the publisher field', function () {
-    $pattern = '/<input(.)*value="' . $this->book->publisher->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->book->publisher->name.'"(.)*>/';
     $response = get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->publisher->name . '"',
+            'value="'.$this->book->publisher->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 it('has the author of the book in the author field', function () {
     $this->book->authors()->attach(Author::factory()->create());
-    $pattern = '/<input(.)*value="' . $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->book->authors[0]->last_name.', '.$this->book->authors[0]->first_name.'"(.)*>/';
     $response = get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name . '"',
+            'value="'.$this->book->authors[0]->last_name.', '.$this->book->authors[0]->first_name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
@@ -338,12 +337,12 @@ it('has the authors of a book in two author fields', function () {
     $this->book->authors()->attach(Author::factory()->create());
     $this->book->authors()->attach(Author::factory()->create());
 
-    $pattern1 = '/<input(.)*value="' . $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name . '"(.)*>/';
-    $pattern2 = '/<input(.)*value="' . $this->book->authors[1]->last_name . ', ' . $this->book->authors[1]->first_name . '"(.)*>/';
+    $pattern1 = '/<input(.)*value="'.$this->book->authors[0]->last_name.', '.$this->book->authors[0]->first_name.'"(.)*>/';
+    $pattern2 = '/<input(.)*value="'.$this->book->authors[1]->last_name.', '.$this->book->authors[1]->first_name.'"(.)*>/';
     $response = get(route('books.edit', $this->book))
         ->assertSee([
-            'value="' . $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name . '"',
-            'value="' . $this->book->authors[1]->last_name . ', ' . $this->book->authors[1]->first_name . '"',
+            'value="'.$this->book->authors[0]->last_name.', '.$this->book->authors[0]->first_name.'"',
+            'value="'.$this->book->authors[1]->last_name.', '.$this->book->authors[1]->first_name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern1, $response->content());
     $this->assertMatchesRegularExpression($pattern2, $response->content());

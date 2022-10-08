@@ -13,13 +13,12 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
+beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
     $this->record = Record::factory()->create();
-
 });
 
 it('can show records.edit page', function () {
@@ -31,7 +30,7 @@ it('has a form with the correct put action and method', function () {
     get(route('records.edit', $this->record))
         ->assertSee([
             'method="post"',
-            'action="' . route('records.update', $this->record) . '"',
+            'action="'.route('records.update', $this->record).'"',
         ], false);
 });
 
@@ -144,8 +143,8 @@ it('loads a list of artists that is sorted in alphabetical order', function () {
     Artist::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'Public Enemy',],
-            ['name' => 'Anthrax',]
+            ['name' => 'Public Enemy'],
+            ['name' => 'Anthrax']
         )
         ->create();
 
@@ -207,8 +206,8 @@ it('loads a list of record labels that is sorted in alphabetical order', functio
     RecordLabel::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'TOR',],
-            ['name' => 'Ace Books',]
+            ['name' => 'TOR'],
+            ['name' => 'Ace Books']
         )
         ->create();
 
@@ -223,7 +222,7 @@ it('loads a list of record labels that is sorted in alphabetical order', functio
 it('has a submit button', function () {
     get(route('records.create'))
         ->assertSee([
-            '<input type="submit">'
+            '<input type="submit">',
         ], false);
 });
 
@@ -231,8 +230,8 @@ it('loads a list of countries that is sorted in alphabetical order', function ()
     Country::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'Sweden',],
-            ['name' => 'England',]
+            ['name' => 'Sweden'],
+            ['name' => 'England']
         )
         ->create();
 
@@ -257,8 +256,8 @@ it('loads only formats that are record formats', function () {
     ]);
 
     get(route('records.create'))
-        ->assertSee('value="' . $recordFormat->name . '"', false)
-        ->assertDontSee('value="' . $bookFormat->name . '"', false);
+        ->assertSee('value="'.$recordFormat->name.'"', false)
+        ->assertDontSee('value="'.$bookFormat->name.'"', false);
 });
 
 it('loads only genres that are record genres', function () {
@@ -274,8 +273,8 @@ it('loads only genres that are record genres', function () {
     ]);
 
     get(route('records.create'))
-        ->assertSee('value="' . $recordGenre->name . '"', false)
-        ->assertDontSee('value="' . $bookGenre->name . '"', false);
+        ->assertSee('value="'.$recordGenre->name.'"', false)
+        ->assertDontSee('value="'.$bookGenre->name.'"', false);
 });
 
 it('has the title of the book in the title field', function () {
@@ -299,46 +298,46 @@ it('has the spine code in the spine code field', function () {
 });
 
 it('has the format of the record in the format field', function () {
-    $pattern = '/<input(.)*value="' . $this->record->format->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->record->format->name.'"(.)*>/';
     $response = get(route('records.edit', $this->record))
         ->assertSee([
-            'value="' . $this->record->format->name . '"',
+            'value="'.$this->record->format->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 it('has the genre of the records in the genre field', function () {
-    $pattern = '/<input(.)*value="' . $this->record->genre->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->record->genre->name.'"(.)*>/';
     $response = get(route('records.edit', $this->record))
         ->assertSee([
-            'value="' . $this->record->genre->name . '"',
+            'value="'.$this->record->genre->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 it('has the record label of the record in the record label field', function () {
-    $pattern = '/<input(.)*value="' . $this->record->recordLabel->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->record->recordLabel->name.'"(.)*>/';
     $response = get(route('records.edit', $this->record))
         ->assertSee([
-            'value="' . $this->record->recordLabel->name . '"',
+            'value="'.$this->record->recordLabel->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 it('has the artist of the record in the artist field', function () {
-    $pattern = '/<input(.)*value="' . $this->record->artist->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->record->artist->name.'"(.)*>/';
     $response = get(route('records.edit', $this->record))
         ->assertSee([
-            'value="' . $this->record->artist->name . '"',
+            'value="'.$this->record->artist->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });
 
 it('has the country of the record in the country field', function () {
-    $pattern = '/<input(.)*value="' . $this->record->country->name . '"(.)*>/';
+    $pattern = '/<input(.)*value="'.$this->record->country->name.'"(.)*>/';
     $response = get(route('records.edit', $this->record))
         ->assertSee([
-            'value="' . $this->record->country->name . '"',
+            'value="'.$this->record->country->name.'"',
         ], false);
     $this->assertMatchesRegularExpression($pattern, $response->content());
 });

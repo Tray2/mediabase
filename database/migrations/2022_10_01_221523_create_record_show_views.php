@@ -2,10 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
-        DB::statement("CREATE OR REPLACE VIEW record_show_views AS
+        DB::statement('CREATE OR REPLACE VIEW record_show_views AS
             SELECT r.*,
                    a.name AS artist,
                    g.name AS genre,
@@ -22,7 +23,7 @@ return new class extends Migration {
             AND r.genre_id = g.id
             AND r.format_id = f.id
             AND r.record_label_id = rl.id
-            AND r.country_id = c.id;"
+            AND r.country_id = c.id;'
         );
     }
 

@@ -13,8 +13,8 @@ class AuthorFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => Str::replace("'", '',$this->faker->firstName()),
-            'last_name' => Str::replace("'", '',$this->faker->lastName()),
+            'first_name' => Str::replace("'", '', $this->faker->firstName()),
+            'last_name' => Str::replace("'", '', $this->faker->lastName()),
         ];
     }
 }

@@ -21,7 +21,7 @@ class RecordFormRequest extends FormRequest
             'title' => 'required',
             'barcode' => 'required',
             'spine_code' => 'required',
-            'release_year' => ['required', 'numeric', 'min_digits:4', 'max_digits:4', 'between:1800,' . Carbon::now()->addYear(1)->year],
+            'release_year' => ['required', 'numeric', 'min_digits:4', 'max_digits:4', 'between:1800,'.Carbon::now()->addYear(1)->year],
             'format_name' => 'required',
             'genre_name' => 'required',
             'country_name' => 'required',
@@ -32,7 +32,7 @@ class RecordFormRequest extends FormRequest
     public function getArtistId(): int
     {
         return Artist::firstOrCreate(
-            ['name' => $this->artist,]
+            ['name' => $this->artist]
         )->value('id');
     }
 
@@ -46,7 +46,7 @@ class RecordFormRequest extends FormRequest
     public function getFormatId(): int
     {
         return Format::firstOrCreate(
-            ['name' => $this->format_name,],
+            ['name' => $this->format_name],
             ['media_type_id' => MediaType::query()
                 ->where('name', $this->getMediaType())
                 ->value('id'),
@@ -73,6 +73,6 @@ class RecordFormRequest extends FormRequest
 
     protected function getMediaType(): string
     {
-        return Str::singular(explode('/',trim($this->getPathInfo(), '/'))[0]);
+        return Str::singular(explode('/', trim($this->getPathInfo(), '/'))[0]);
     }
 }

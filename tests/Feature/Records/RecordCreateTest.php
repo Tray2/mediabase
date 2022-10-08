@@ -12,7 +12,7 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
+beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'record')
@@ -24,12 +24,11 @@ it('can show records.create page', function () {
         ->assertOk();
 });
 
-
 it('has a form with the correct post action and method', function () {
     get(route('records.create'))
         ->assertSee([
             'method="post"',
-            'action="' . route('records.store') . '"',
+            'action="'.route('records.store').'"',
         ], false);
 });
 
@@ -77,7 +76,6 @@ it('has a country_name field', function () {
             'datalist id="countries',
         ], false);
 });
-
 
 it('has a release year field', function () {
     get(route('records.create'))
@@ -202,8 +200,8 @@ it('loads a list of record labels that is sorted in alphabetical order', functio
     RecordLabel::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'TOR',],
-            ['name' => 'Ace Books',]
+            ['name' => 'TOR'],
+            ['name' => 'Ace Books']
         )
         ->create();
 
@@ -218,7 +216,7 @@ it('loads a list of record labels that is sorted in alphabetical order', functio
 it('has a submit button', function () {
     get(route('records.create'))
         ->assertSee([
-            '<input type="submit">'
+            '<input type="submit">',
         ], false);
 });
 
@@ -226,8 +224,8 @@ it('loads a list of countries that is sorted in alphabetical order', function ()
     Country::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'Sweden',],
-            ['name' => 'England',]
+            ['name' => 'Sweden'],
+            ['name' => 'England']
         )
         ->create();
 
@@ -238,7 +236,6 @@ it('loads a list of countries that is sorted in alphabetical order', function ()
             'Sweden',
         ]);
 });
-
 
 it('loads only formats that are record formats', function () {
     $bookFormat = Format::factory()->create([
@@ -253,8 +250,8 @@ it('loads only formats that are record formats', function () {
     ]);
 
     get(route('records.create'))
-        ->assertSee('value="' . $recordFormat->name . '"', false)
-        ->assertDontSee('value="' . $bookFormat->name . '"', false);
+        ->assertSee('value="'.$recordFormat->name.'"', false)
+        ->assertDontSee('value="'.$bookFormat->name.'"', false);
 });
 
 it('loads only genres that are record genres', function () {
@@ -270,6 +267,6 @@ it('loads only genres that are record genres', function () {
     ]);
 
     get(route('records.create'))
-        ->assertSee('value="' . $recordGenre->name . '"', false)
-        ->assertDontSee('value="' . $bookGenre->name . '"', false);
+        ->assertSee('value="'.$recordGenre->name.'"', false)
+        ->assertDontSee('value="'.$bookGenre->name.'"', false);
 });

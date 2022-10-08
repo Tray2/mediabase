@@ -6,18 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BookFormRequest;
 use App\Models\Book;
 
-
 class BooksUpdateController extends Controller
 {
     public function __invoke(Book $book, BookFormRequest $request)
     {
-        $valid =  $request->validated();
+        $valid = $request->validated();
 
         if ($request->series_name === 'Standalone') {
             $valid['part'] = null;
         }
 
-        $book->update(array_merge($valid,[
+        $book->update(array_merge($valid, [
             'genre_id' => $request->getGenreId(),
             'format_it' => $request->getFormatId(),
             'series_id' => $request->getSeriesId(),
@@ -25,6 +24,7 @@ class BooksUpdateController extends Controller
         ]));
 
         $book->authors()->sync($request->getAuthor());
+
         return redirect(route('books.index'));
     }
 }

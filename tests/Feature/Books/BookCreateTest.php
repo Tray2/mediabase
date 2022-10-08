@@ -12,11 +12,11 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
-   $this->seed(MediaTypeSeeder::class);
-   $this->mediaTypeId = MediaType::query()
-       ->where('name', 'book')
-       ->value('id');
+beforeEach(function () {
+    $this->seed(MediaTypeSeeder::class);
+    $this->mediaTypeId = MediaType::query()
+        ->where('name', 'book')
+        ->value('id');
 });
 
 it('can show books.create page', function () {
@@ -28,7 +28,7 @@ it('has a form with the correct post action and method', function () {
     get(route('books.create'))
         ->assertSee([
             'method="post"',
-            'action="' . route('books.store') . '"',
+            'action="'.route('books.store').'"',
         ], false);
 });
 
@@ -47,7 +47,6 @@ it('has a title field', function () {
             'name="title"',
         ], false);
 });
-
 
 it('has a published_year field', function () {
     get(route('books.create'))
@@ -146,11 +145,11 @@ it('loads a list of authors that is sorted in alphabetical order', function () {
         ->sequence(
             [
                 'last_name' => 'Goodkind',
-                'first_name' => 'Terry'
+                'first_name' => 'Terry',
             ],
             [
                 'last_name' => 'Eddings',
-                'first_name' => 'David'
+                'first_name' => 'David',
             ]
         )
         ->create();
@@ -213,8 +212,8 @@ it('loads a list of series that is sorted in alphabetical order', function () {
     Series::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'The Wheel Of Time',],
-            ['name' => 'The Sword Of Truth',]
+            ['name' => 'The Wheel Of Time'],
+            ['name' => 'The Sword Of Truth']
         )
         ->create();
 
@@ -230,8 +229,8 @@ it('loads a list of publishers that is sorted in alphabetical order', function (
     Publisher::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'TOR',],
-            ['name' => 'Ace Books',]
+            ['name' => 'TOR'],
+            ['name' => 'Ace Books']
         )
         ->create();
 
@@ -246,7 +245,7 @@ it('loads a list of publishers that is sorted in alphabetical order', function (
 it('has a submit button', function () {
     get(route('books.create'))
         ->assertSee([
-            '<input type="submit">'
+            '<input type="submit">',
         ], false);
 });
 
@@ -268,8 +267,8 @@ it('loads only formats that are book formats', function () {
     ]);
 
     get(route('books.create'))
-        ->assertDontSee('value="' . $recordFormat->name . '"', false)
-        ->assertSee('value="' . $bookFormat->name . '"', false);
+        ->assertDontSee('value="'.$recordFormat->name.'"', false)
+        ->assertSee('value="'.$bookFormat->name.'"', false);
 });
 
 it('loads only genres that are book genres', function () {
@@ -285,6 +284,6 @@ it('loads only genres that are book genres', function () {
     ]);
 
     get(route('books.create'))
-        ->assertDontSee('value="' . $recordGenre->name . '"', false)
-        ->assertSee('value="' . $bookGenre->name . '"', false);
+        ->assertDontSee('value="'.$recordGenre->name.'"', false)
+        ->assertSee('value="'.$bookGenre->name.'"', false);
 });

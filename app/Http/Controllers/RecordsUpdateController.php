@@ -6,6 +6,5 @@ class RecordsUpdateController extends Controller
 {
     public function __invoke()
     {
-
     }
 }

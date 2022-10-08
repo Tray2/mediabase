@@ -21,15 +21,15 @@ class BookFormRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'published_year' => ['required', 'numeric', 'min_digits:4', 'max_digits:4', 'between:1800,' . Carbon::now()->addYear(1)->year],
-            'isbn' => ['required', new Isbn(),],
+            'published_year' => ['required', 'numeric', 'min_digits:4', 'max_digits:4', 'between:1800,'.Carbon::now()->addYear(1)->year],
+            'isbn' => ['required', new Isbn()],
             'blurb' => ['required', new MinWords(3)],
             'author' => 'required',
             'genre_name' => 'required',
             'format_name' => 'required',
             'series_name' => 'required',
             'publisher_name' => 'required',
-            'part' => [new RequiredIfNotStandalone($this->series_name),],
+            'part' => [new RequiredIfNotStandalone($this->series_name)],
 
         ];
     }
@@ -43,7 +43,7 @@ class BookFormRequest extends FormRequest
     public function getFormatId(): int
     {
         return Format::firstOrCreate(
-            ['name' => $this->format_name,],
+            ['name' => $this->format_name],
             ['media_type_id' => MediaType::query()
                 ->where('name', $this->getMediaType())
                 ->value('id'),
@@ -66,13 +66,14 @@ class BookFormRequest extends FormRequest
     {
         $authors = [];
 
-        foreach($this->author as $author) {
+        foreach ($this->author as $author) {
             [$lastName, $firstName] = explode(', ', $author);
-            $authors[] =  Author::firstOrCreate(
+            $authors[] = Author::firstOrCreate(
                 ['last_name' => $lastName],
                 ['first_name' => $firstName]
             )->value('id');
         }
+
         return $authors;
     }
 
@@ -84,7 +85,6 @@ class BookFormRequest extends FormRequest
 
     protected function getMediaType(): string
     {
-        return Str::singular(explode('/',trim($this->getPathInfo(), '/'))[0]);
+        return Str::singular(explode('/', trim($this->getPathInfo(), '/'))[0]);
     }
-
 }

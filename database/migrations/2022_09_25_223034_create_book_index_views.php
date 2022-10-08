@@ -6,7 +6,6 @@ class CreateBookIndexViews extends Migration
 {
     public function up(): void
     {
-
         DB::statement("CREATE OR REPLACE VIEW book_index_views AS
                     SELECT
                     (SELECT GROUP_CONCAT(a.id ORDER BY a.id SEPARATOR ',')

@@ -11,15 +11,15 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
+beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
 });
 
-it('lists records', function() {
-    $fields = ['title', 'release_year',];
+it('lists records', function () {
+    $fields = ['title', 'release_year'];
     $genre = Genre::factory()->create([
         'media_type_id' => $this->mediaTypeId,
     ]);
@@ -32,7 +32,7 @@ it('lists records', function() {
                             ->create([
                                 'artist_id' => $artist->id,
                                 'genre_id' => $genre->id,
-                                'format_id' => $format->id
+                                'format_id' => $format->id,
                             ]);
 
     get(route('records.index'))
@@ -50,7 +50,7 @@ it('sorts records by artist', function () {
     Artist::factory()
         ->count(2)
         ->sequence(
-            ['name' => 'Run Dmc',],
+            ['name' => 'Run Dmc'],
             ['name' => 'Public Enemy']
         )->has(Record::factory())
         ->create();
@@ -59,7 +59,7 @@ it('sorts records by artist', function () {
         ->assertOk()
         ->assertSeeTextInOrder([
             'Public Enemy',
-            'Run Dmc'
+            'Run Dmc',
         ]);
 });
 
@@ -88,4 +88,3 @@ it('sorts records by the same artist by released year', function () {
             2006,
         ]);
 });
-

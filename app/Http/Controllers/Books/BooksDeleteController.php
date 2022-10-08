@@ -11,6 +11,7 @@ class BooksDeleteController extends Controller
     {
         $book->authors()->detach();
         $book->delete();
+
         return redirect(route('books.index'));
     }
 }

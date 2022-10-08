@@ -13,14 +13,14 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
+beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
 });
 
-it('shows all the information about  a record', function() {
+it('shows all the information about  a record', function () {
     $record = Record::factory()
         ->for($artist = Artist::factory()->create())
         ->for($format = Format::factory()->create([

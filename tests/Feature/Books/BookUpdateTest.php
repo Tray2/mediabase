@@ -17,7 +17,7 @@ use function Pest\Laravel\put;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
+beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);
     $mediaTypeId = MediaType::query()
         ->where('name', 'book')
@@ -38,7 +38,7 @@ beforeEach(function() {
         'blurb' => 'Some boring text',
         'part' => 1,
     ]);
-    $this->validBook = array_merge($this->book->toArray(),[
+    $this->validBook = array_merge($this->book->toArray(), [
         'author' => ["{$this->author->last_name}, {$this->author->first_name}"],
         'genre_name' => $this->genre->name,
         'format_name' => $this->format->name,
@@ -47,7 +47,6 @@ beforeEach(function() {
     ]);
     get(route('books.edit', $this->book));
 });
-
 
 it('updates a valid book', function () {
     $validBook = $this->validBook;
@@ -62,7 +61,7 @@ it('updates a valid book', function () {
 it('can update a book with multiple authors into on author', function () {
     $this->book->authors()->attach(Author::factory()->create());
     $this->book->authors()->attach(Author::factory()->create());
-    assertDatabaseCount('author_book',2);
+    assertDatabaseCount('author_book', 2);
 
     $validBook = $this->validBook;
     $validBook['author'] = [
@@ -71,8 +70,8 @@ it('can update a book with multiple authors into on author', function () {
 
     put(route('books.update', $this->book), $validBook)
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
 });
 
 it('redirects and shows an error if the title is missing', function () {
@@ -87,7 +86,7 @@ it('redirects and shows an error if the title is missing', function () {
 });
 
 it('redirects and shows an error if the published year is missing', function () {
-    $invalidBook =  $this->validBook;
+    $invalidBook = $this->validBook;
     $invalidBook['published_year'] = '';
 
     put(route('books.update', $this->book), $invalidBook)
@@ -138,7 +137,7 @@ it('shows an error if the published year is more than a year into the future', f
         ->assertRedirect(route('books.edit', $this->book))
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.edit', $this->book))
-        ->assertSeeText('The published year must be between 1800 and ' . Carbon::now()->addYear(1)->year . '.');
+        ->assertSeeText('The published year must be between 1800 and '.Carbon::now()->addYear(1)->year.'.');
 });
 
 it('shows an error if the isbn is missing', function () {
@@ -152,7 +151,7 @@ it('shows an error if the isbn is missing', function () {
         ->assertSeeText('The isbn field is required.');
 });
 
-it('shows an error if the isbn is not a valid isbn10 or isbn13' , function () {
+it('shows an error if the isbn is not a valid isbn10 or isbn13', function () {
     $invalidBook = $this->validBook;
     $invalidBook['isbn'] = '97813985100000';
 
@@ -204,7 +203,7 @@ it('updates a valid standalone book', function () {
     $validBook['part'] = '';
     $validBook['series_name'] = $standalone->name;
 
-    put(route('books.update',$this->book), $validBook)
+    put(route('books.update', $this->book), $validBook)
         ->assertRedirect('/books')
         ->assertSessionDoesntHaveErrors();
 });
@@ -213,7 +212,7 @@ it('removes the part if the book is a standalone', function () {
     $standalone = Series::create([
         'name' => 'Standalone',
     ]);
-    assertDatabaseHas('books',['part' => $this->book->part]);
+    assertDatabaseHas('books', ['part' => $this->book->part]);
 
     $validBook = $this->validBook;
     $validBook['series_name'] = $standalone->name;
@@ -221,7 +220,7 @@ it('removes the part if the book is a standalone', function () {
     put(route('books.update', $this->book), $validBook)
         ->assertRedirect(route('books.index'))
         ->assertSessionDoesntHaveErrors();
-    assertDatabaseHas('books',['part' => null]);
+    assertDatabaseHas('books', ['part' => null]);
 });
 
 it('shows an error if the author is missing', function () {
@@ -233,7 +232,6 @@ it('shows an error if the author is missing', function () {
         ->assertSessionHasErrorsIn('author');
     get(route('books.edit', $this->book))
         ->assertSeeText('The author field is required.');
-
 });
 
 it('creates a new author if the one passed does not exist in the database', function () {
@@ -242,8 +240,8 @@ it('creates a new author if the one passed does not exist in the database', func
 
     put(route('books.update', $this->book), $validBook)
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('authors', ['last_name' => 'Jordan', 'first_name' => 'Robert']);
 });
 
@@ -264,8 +262,8 @@ it('creates a new genre if the one passed does not exist in the database', funct
 
     put(route('books.update', $this->book), $validBook)
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('genres', ['name' => 'Fantasy']);
 });
 
@@ -286,8 +284,8 @@ it('creates a new format if the one passed does not exist in the database', func
 
     put(route('books.update', $this->book), $validBook)
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('formats', ['name' => 'Hardcover']);
 });
 
@@ -308,8 +306,8 @@ it('creates a new serie if the one passed does not exist in the database', funct
 
     put(route('books.update', $this->book), $validBook)
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('series', ['name' => 'The Great']);
 });
 
@@ -330,20 +328,19 @@ it('creates a new publisher if the one passed does not exist in the database', f
 
     put(route('books.update', $this->book), $validBook)
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('publishers', ['name' => 'TOR']);
 });
 
 it('has the old values in the form if the validation fails', function () {
     $invalidBook = $this->validBook;
     $invalidBook['title'] = '';
-    $formatPattern = '/<input(.)*value="' . $invalidBook['format_name'] . '"(.)*>/';
-    $genrePattern = '/<input(.)*value="' . $invalidBook['genre_name'] . '"(.)*>/';
-    $seriesPattern = '/<input(.)*value="' . $invalidBook['series_name'] . '"(.)*>/';
-    $publisherPattern = '/<input(.)*value="' . $invalidBook['publisher_name'] . '"(.)*>/';
-    $authorPattern = '/<input(.)*value="' . $invalidBook['author'][0] . '"(.)*>/';
-
+    $formatPattern = '/<input(.)*value="'.$invalidBook['format_name'].'"(.)*>/';
+    $genrePattern = '/<input(.)*value="'.$invalidBook['genre_name'].'"(.)*>/';
+    $seriesPattern = '/<input(.)*value="'.$invalidBook['series_name'].'"(.)*>/';
+    $publisherPattern = '/<input(.)*value="'.$invalidBook['publisher_name'].'"(.)*>/';
+    $authorPattern = '/<input(.)*value="'.$invalidBook['author'][0].'"(.)*>/';
 
     put(route('books.update', $this->book), $invalidBook)
         ->assertRedirect(route('books.edit', $this->book))
@@ -351,10 +348,10 @@ it('has the old values in the form if the validation fails', function () {
     $response = get(route('books.edit', $this->book))
         ->assertSeeText('The title field is required.')
         ->assertSee([
-            'value="' . $this->validBook['published_year'],
-            'value="' . $this->validBook['isbn'],
+            'value="'.$this->validBook['published_year'],
+            'value="'.$this->validBook['isbn'],
             $this->validBook['blurb'],
-            'value="' . $this->validBook['part'],
+            'value="'.$this->validBook['part'],
         ], false);
 
     $this->assertMatchesRegularExpression($authorPattern, $response->content());
@@ -373,7 +370,7 @@ it('has the old title value in the form if the validation fails', function () {
         ->assertSessionHasErrorsIn('blurb');
     get(route('books.create'))
         ->assertSee([
-            'value="' . $this->validBook['title']
+            'value="'.$this->validBook['title'],
         ], false);
 });
 
@@ -386,11 +383,10 @@ it('can handle multiple authors when validation fails', function () {
     ];
 
     $invalidBook['title'] = '';
-    $pattern1 = '/<input(.)*value="' . $invalidBook['author'][0] . '"(.)*>/';
-    $pattern2 = '/<input(.)*value="' . $invalidBook['author'][1] . '"(.)*>/';
+    $pattern1 = '/<input(.)*value="'.$invalidBook['author'][0].'"(.)*>/';
+    $pattern2 = '/<input(.)*value="'.$invalidBook['author'][1].'"(.)*>/';
     put(route('books.update', $this->book), $invalidBook);
     $response = get(route('books.edit', $this->book));
     $this->assertMatchesRegularExpression($pattern1, $response->content());
     $this->assertMatchesRegularExpression($pattern2, $response->content());
 });
-

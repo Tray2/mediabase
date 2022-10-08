@@ -9,7 +9,7 @@ class RecordsStoreController extends Controller
 {
     public function __invoke(RecordFormRequest $request)
     {
-        $valid =  $request->validated();
+        $valid = $request->validated();
         Record::create(array_merge($valid, [
             'genre_id' => $request->getGenreId(),
             'format_id' => $request->getFormatId(),
@@ -17,6 +17,7 @@ class RecordsStoreController extends Controller
             'country_id' => $request->getCountryId(),
             'record_label_id' => $request->getRecordLabelId(),
         ]));
+
         return redirect(route('records.index'));
     }
 }

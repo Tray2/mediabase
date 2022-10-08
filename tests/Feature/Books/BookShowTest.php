@@ -13,27 +13,26 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
-   $this->seed(MediaTypeSeeder::class);
-   $this->mediaTypeId = MediaType::query()
-       ->where('name', 'book')
-       ->value('id');
+beforeEach(function () {
+    $this->seed(MediaTypeSeeder::class);
+    $this->mediaTypeId = MediaType::query()
+        ->where('name', 'book')
+        ->value('id');
 });
 
-it('it shows all the information about a book', function() {
-   $book = Book::factory()
-       ->has(Author::factory())
-       ->for($genre = Genre::factory()->create([
-           'media_type_id' => $this->mediaTypeId,
-       ]))
-       ->for($format = Format::factory()->create([
-           'media_type_id' => $this->mediaTypeId,
-       ]))
-       ->for($series = Series::factory()->create())
-       ->for($publisher = Publisher::factory()->create())
-       ->create();
-   $author = $book->authors->first();
-
+it('it shows all the information about a book', function () {
+    $book = Book::factory()
+        ->has(Author::factory())
+        ->for($genre = Genre::factory()->create([
+            'media_type_id' => $this->mediaTypeId,
+        ]))
+        ->for($format = Format::factory()->create([
+            'media_type_id' => $this->mediaTypeId,
+        ]))
+        ->for($series = Series::factory()->create())
+        ->for($publisher = Publisher::factory()->create())
+        ->create();
+    $author = $book->authors->first();
 
     get(route('books.show', $book))
     ->assertOk()
@@ -51,5 +50,3 @@ it('it shows all the information about a book', function() {
         $publisher->name,
     ]);
 });
-
-

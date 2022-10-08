@@ -8,7 +8,7 @@ use function Pest\Laravel\delete;
 
 uses(RefreshDatabase::class);
 
-it('deletes a record', function() {
+it('deletes a record', function () {
     $this->seed(MediaTypeSeeder::class);
     $record = Record::factory()->create();
     assertDatabaseCount(Record::class, 1);

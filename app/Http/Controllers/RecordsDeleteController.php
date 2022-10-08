@@ -9,6 +9,7 @@ class RecordsDeleteController extends Controller
     public function __invoke(Record $record)
     {
         $record->delete();
+
         return redirect(route('records.index'));
     }
 }

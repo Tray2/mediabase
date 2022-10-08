@@ -24,10 +24,10 @@ class RecordFactory extends Factory
             ->value('id');
     }
 
-
     public function definition(): array
     {
         $this->getMediaTypeId();
+
         return [
             'title' => $this->faker->word(),
             'release_year' => $this->faker->year('now'),

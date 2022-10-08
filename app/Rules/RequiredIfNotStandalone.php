@@ -24,6 +24,7 @@ class RequiredIfNotStandalone implements Rule
         if ($value === null) {
             return $this->series === 'Standalone';
         }
+
         return true;
     }
 

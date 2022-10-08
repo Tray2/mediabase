@@ -26,6 +26,7 @@ class BookFactory extends Factory
     public function definition(): array
     {
         $this->getMediaTypeId();
+
         return [
             'title' => $this->faker->words(2, true),
             'published_year' => $this->faker->year('now'),

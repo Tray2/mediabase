@@ -16,14 +16,14 @@ use function Pest\Laravel\post;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function() {
+beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);
     $mediaTypeId = MediaType::query()
         ->where('name', 'book')
         ->value('id');
     $this->author = Author::factory()->create();
-    $this->genre = Genre::factory()->create(['media_type_id' => $mediaTypeId,]);
-    $this->format = Format::factory()->create(['media_type_id' => $mediaTypeId,]);
+    $this->genre = Genre::factory()->create(['media_type_id' => $mediaTypeId]);
+    $this->format = Format::factory()->create(['media_type_id' => $mediaTypeId]);
     $this->series = Series::factory()->create();
     $this->publisher = Publisher::factory()->create();
     $this->validBook = [
@@ -41,12 +41,11 @@ beforeEach(function() {
     get(route('books.create'));
 });
 
-
 it('stores a valid book', function () {
     post(route('books.store', $this->validBook))
     ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
 });
 
 it('stores a valid book with multiple authors', function () {
@@ -59,8 +58,8 @@ it('stores a valid book with multiple authors', function () {
 
     post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',2);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 2);
 });
 
 it('redirects and shows an error if the title is missing', function () {
@@ -72,12 +71,12 @@ it('redirects and shows an error if the title is missing', function () {
         ->assertSessionHasErrorsIn('title');
     get(route('books.create'))
         ->assertSeeText('The title field is required.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('redirects and shows an error if the published year is missing', function () {
-    $invalidBook =  $this->validBook;
+    $invalidBook = $this->validBook;
     $invalidBook['published_year'] = '';
 
     post(route('books.store', $invalidBook))
@@ -85,8 +84,8 @@ it('redirects and shows an error if the published year is missing', function () 
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The published year field is required.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('shows an error if the published year is not numeric', function () {
@@ -98,8 +97,8 @@ it('shows an error if the published year is not numeric', function () {
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The published year must be a number.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('shows an error if the published year is less than four digits', function () {
@@ -111,8 +110,8 @@ it('shows an error if the published year is less than four digits', function () 
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The published year must have at least 4 digits.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('shows an error if the published year is more than four digits', function () {
@@ -124,8 +123,8 @@ it('shows an error if the published year is more than four digits', function () 
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The published year must not have more than 4 digits.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('shows an error if the published year is more than a year into the future', function () {
@@ -136,9 +135,9 @@ it('shows an error if the published year is more than a year into the future', f
         ->assertRedirect(route('books.create'))
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
-        ->assertSeeText('The published year must be between 1800 and ' . Carbon::now()->addYear(1)->year . '.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+        ->assertSeeText('The published year must be between 1800 and '.Carbon::now()->addYear(1)->year.'.');
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('shows an error if the isbn is missing', function () {
@@ -150,11 +149,11 @@ it('shows an error if the isbn is missing', function () {
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The isbn field is required.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
-it('shows an error if the isbn is not a valid isbn10 or isbn13' , function () {
+it('shows an error if the isbn is not a valid isbn10 or isbn13', function () {
     $invalidBook = $this->validBook;
     $invalidBook['isbn'] = '97813985100000';
 
@@ -163,9 +162,8 @@ it('shows an error if the isbn is not a valid isbn10 or isbn13' , function () {
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The isbn must be a valid ISBN10 or ISBN13.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
-
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('shows an error if the blurb is missing', function () {
@@ -177,8 +175,8 @@ it('shows an error if the blurb is missing', function () {
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The blurb field is required.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('shows an error if the blurb word count is less than three', function () {
@@ -190,8 +188,8 @@ it('shows an error if the blurb word count is less than three', function () {
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The blurb must be at least 3 words.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('shows an error if the part is missing and the book is not standalone', function () {
@@ -203,8 +201,8 @@ it('shows an error if the part is missing and the book is not standalone', funct
         ->assertSessionHasErrorsIn('published_year');
     get(route('books.create'))
         ->assertSeeText('The part is required when book belongs to a series.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('stores a valid standalone book', function () {
@@ -218,8 +216,8 @@ it('stores a valid standalone book', function () {
     post(route('books.store', $validBook))
         ->assertRedirect('/books')
         ->assertSessionDoesntHaveErrors();
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
 });
 
 it('removes the part if the book is a standalone', function () {
@@ -232,9 +230,9 @@ it('removes the part if the book is a standalone', function () {
     post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'))
         ->assertSessionDoesntHaveErrors();
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
-    assertDatabaseHas('books',['part' => null]);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
+    assertDatabaseHas('books', ['part' => null]);
 });
 
 it('shows an error if the author is missing', function () {
@@ -247,8 +245,8 @@ it('shows an error if the author is missing', function () {
     get(route('books.create'))
         ->assertSeeText('The author field is required.');
 
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('creates a new author if the one passed does not exist in the database', function () {
@@ -257,8 +255,8 @@ it('creates a new author if the one passed does not exist in the database', func
 
     post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('authors', ['last_name' => 'Jordan', 'first_name' => 'Robert']);
 });
 
@@ -271,8 +269,8 @@ it('shows an error if the genre is missing', function () {
         ->assertSessionHasErrorsIn('genre_name');
     get(route('books.create'))
         ->assertSeeText('The genre name field is required.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('creates a new genre if the one passed does not exist in the database', function () {
@@ -281,8 +279,8 @@ it('creates a new genre if the one passed does not exist in the database', funct
 
     post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('genres', ['name' => 'Fantasy']);
 });
 
@@ -295,8 +293,8 @@ it('shows an error if the format is missing', function () {
         ->assertSessionHasErrorsIn('format_name');
     get(route('books.create'))
         ->assertSeeText('The format name field is required.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('creates a new format if the one passed does not exist in the database', function () {
@@ -305,8 +303,8 @@ it('creates a new format if the one passed does not exist in the database', func
 
     post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('formats', ['name' => 'Hardcover']);
 });
 
@@ -319,8 +317,8 @@ it('shows an error if the series is missing', function () {
         ->assertSessionHasErrorsIn('format_name');
     get(route('books.create'))
         ->assertSeeText('The series name field is required.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('creates a new serie if the one passed does not exist in the database', function () {
@@ -329,8 +327,8 @@ it('creates a new serie if the one passed does not exist in the database', funct
 
     post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('series', ['name' => 'The Great']);
 });
 
@@ -343,8 +341,8 @@ it('shows an error if the publisher is missing', function () {
         ->assertSessionHasErrorsIn('format_name');
     get(route('books.create'))
         ->assertSeeText('The publisher name field is required.');
-    assertDatabaseCount('books',0);
-    assertDatabaseCount('author_book',0);
+    assertDatabaseCount('books', 0);
+    assertDatabaseCount('author_book', 0);
 });
 
 it('creates a new publisher if the one passed does not exist in the database', function () {
@@ -353,20 +351,19 @@ it('creates a new publisher if the one passed does not exist in the database', f
 
     post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
-    assertDatabaseCount('books',1);
-    assertDatabaseCount('author_book',1);
+    assertDatabaseCount('books', 1);
+    assertDatabaseCount('author_book', 1);
     assertDatabaseHas('publishers', ['name' => 'TOR']);
 });
 
 it('has the old values in the form if the validation fails', function () {
     $invalidBook = $this->validBook;
     $invalidBook['title'] = '';
-    $formatPattern = '/<input(.)*value="' . $invalidBook['format_name'] . '"(.)*>/';
-    $genrePattern = '/<input(.)*value="' . $invalidBook['genre_name'] . '"(.)*>/';
-    $seriesPattern = '/<input(.)*value="' . $invalidBook['series_name'] . '"(.)*>/';
-    $publisherPattern = '/<input(.)*value="' . $invalidBook['publisher_name'] . '"(.)*>/';
-    $authorPattern = '/<input(.)*value="' . $invalidBook['author'][0] . '"(.)*>/';
-
+    $formatPattern = '/<input(.)*value="'.$invalidBook['format_name'].'"(.)*>/';
+    $genrePattern = '/<input(.)*value="'.$invalidBook['genre_name'].'"(.)*>/';
+    $seriesPattern = '/<input(.)*value="'.$invalidBook['series_name'].'"(.)*>/';
+    $publisherPattern = '/<input(.)*value="'.$invalidBook['publisher_name'].'"(.)*>/';
+    $authorPattern = '/<input(.)*value="'.$invalidBook['author'][0].'"(.)*>/';
 
     post(route('books.store', $invalidBook))
         ->assertRedirect(route('books.create'))
@@ -374,10 +371,10 @@ it('has the old values in the form if the validation fails', function () {
     $response = get(route('books.create'))
         ->assertSeeText('The title field is required.')
         ->assertSee([
-            'value="' . $this->validBook['published_year'],
-            'value="' . $this->validBook['isbn'],
+            'value="'.$this->validBook['published_year'],
+            'value="'.$this->validBook['isbn'],
             $this->validBook['blurb'],
-            'value="' . $this->validBook['part'],
+            'value="'.$this->validBook['part'],
         ], false);
 
     $this->assertMatchesRegularExpression($authorPattern, $response->content());
@@ -396,7 +393,7 @@ it('has the old title value in the form if the validation fails', function () {
         ->assertSessionHasErrorsIn('title');
     get(route('books.create'))
         ->assertSee([
-            'value="' . $this->validBook['title']
+            'value="'.$this->validBook['title'],
         ], false);
 });
 
@@ -409,8 +406,8 @@ it('can handle multiple authors when validation fails', function () {
     ];
 
     $invalidBook['title'] = '';
-    $pattern1 = '/<input(.)*value="' . $invalidBook['author'][0] . '"(.)*>/';
-    $pattern2 = '/<input(.)*value="' . $invalidBook['author'][1] . '"(.)*>/';
+    $pattern1 = '/<input(.)*value="'.$invalidBook['author'][0].'"(.)*>/';
+    $pattern2 = '/<input(.)*value="'.$invalidBook['author'][1].'"(.)*>/';
     post(route('books.store', $invalidBook));
     $response = get(route('books.create'));
     $this->assertMatchesRegularExpression($pattern1, $response->content());

@@ -10,13 +10,13 @@ class BooksStoreController extends Controller
 {
     public function __invoke(BookFormRequest $request)
     {
-        $valid =  $request->validated();
+        $valid = $request->validated();
 
         if ($request->series_name === 'Standalone') {
             $valid['part'] = null;
         }
 
-        $book = Book::create(array_merge($valid,[
+        $book = Book::create(array_merge($valid, [
             'genre_id' => $request->getGenreId(),
             'format_id' => $request->getFormatId(),
             'series_id' => $request->getSeriesId(),
@@ -24,6 +24,7 @@ class BooksStoreController extends Controller
         ]));
 
         $book->authors()->attach($request->getAuthor());
+
         return redirect(route('books.index'));
     }
 }

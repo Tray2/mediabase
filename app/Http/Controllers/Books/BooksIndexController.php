@@ -16,7 +16,7 @@ class BooksIndexController extends Controller
                     ->orderBy('series')
                     ->orderBy('part')
                     ->orderBy('published_year')
-                    ->get()
+                    ->get(),
             ]);
     }
 }
