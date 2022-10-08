@@ -27,7 +27,6 @@ it('can show records.edit page', function () {
         ->assertOk();
 });
 
-
 it('has a form with the correct put action and method', function () {
     get(route('records.edit', $this->record))
         ->assertSee([
@@ -89,7 +88,6 @@ it('has a country_name field', function () {
         ], false);
 });
 
-
 it('has a release year field', function () {
     get(route('records.create'))
         ->assertSee([
@@ -146,12 +144,8 @@ it('loads a list of artists that is sorted in alphabetical order', function () {
     Artist::factory()
         ->count(2)
         ->sequence(
-            [
-                'name' => 'Public Enemy',
-            ],
-            [
-                'name' => 'Anthrax',
-            ]
+            ['name' => 'Public Enemy',],
+            ['name' => 'Anthrax',]
         )
         ->create();
 
@@ -249,7 +243,6 @@ it('loads a list of countries that is sorted in alphabetical order', function ()
             'Sweden',
         ]);
 });
-
 
 it('loads only formats that are record formats', function () {
     $bookFormat = Format::factory()->create([
