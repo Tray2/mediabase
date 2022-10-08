@@ -284,3 +284,68 @@ it('loads only genres that are record genres', function () {
         ->assertSee('value="' . $recordGenre->name . '"', false)
         ->assertDontSee('value="' . $bookGenre->name . '"', false);
 });
+
+it('has the title of the book in the title field', function () {
+    get(route('records.edit', $this->record))
+        ->assertSee([$this->record->title]);
+});
+
+it('has the release year int the release year field', function () {
+    get(route('records.edit', $this->record))
+        ->assertSee([$this->record->release_year]);
+});
+
+it('has the barcode in the barcode field', function () {
+    get(route('records.edit', $this->record))
+        ->assertSee([$this->record->barcode]);
+});
+
+it('has the spine code in the spine code field', function () {
+    get(route('records.edit', $this->record))
+        ->assertSee([$this->record->spine_code]);
+});
+
+it('has the format of the record in the format field', function () {
+    $pattern = '/<input(.)*value="' . $this->record->format->name . '"(.)*>/';
+    $response = get(route('records.edit', $this->record))
+        ->assertSee([
+            'value="' . $this->record->format->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+});
+
+it('has the genre of the records in the genre field', function () {
+    $pattern = '/<input(.)*value="' . $this->record->genre->name . '"(.)*>/';
+    $response = get(route('records.edit', $this->record))
+        ->assertSee([
+            'value="' . $this->record->genre->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+});
+
+it('has the record label of the record in the record label field', function () {
+    $pattern = '/<input(.)*value="' . $this->record->recordLabel->name . '"(.)*>/';
+    $response = get(route('records.edit', $this->record))
+        ->assertSee([
+            'value="' . $this->record->recordLabel->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+});
+
+it('has the artist of the record in the artist field', function () {
+    $pattern = '/<input(.)*value="' . $this->record->artist->name . '"(.)*>/';
+    $response = get(route('records.edit', $this->record))
+        ->assertSee([
+            'value="' . $this->record->artist->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+});
+
+it('has the country of the record in the country field', function () {
+    $pattern = '/<input(.)*value="' . $this->record->country->name . '"(.)*>/';
+    $response = get(route('records.edit', $this->record))
+        ->assertSee([
+            'value="' . $this->record->country->name . '"',
+        ], false);
+    $this->assertMatchesRegularExpression($pattern, $response->content());
+});
