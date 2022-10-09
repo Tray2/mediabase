@@ -7,13 +7,13 @@ use App\Http\Controllers\Books\BooksIndexController;
 use App\Http\Controllers\Books\BooksShowController;
 use App\Http\Controllers\Books\BooksStoreController;
 use App\Http\Controllers\Books\BooksUpdateController;
-use App\Http\Controllers\RecordsCreateController;
-use App\Http\Controllers\RecordsDeleteController;
-use App\Http\Controllers\RecordsEditController;
-use App\Http\Controllers\RecordsIndexController;
-use App\Http\Controllers\RecordsShowController;
-use App\Http\Controllers\RecordsStoreController;
-use App\Http\Controllers\RecordsUpdateController;
+use App\Http\Controllers\Records\RecordsCreateController;
+use App\Http\Controllers\Records\RecordsDeleteController;
+use App\Http\Controllers\Records\RecordsEditController;
+use App\Http\Controllers\Records\RecordsIndexController;
+use App\Http\Controllers\Records\RecordsShowController;
+use App\Http\Controllers\Records\RecordsStoreController;
+use App\Http\Controllers\Records\RecordsUpdateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {

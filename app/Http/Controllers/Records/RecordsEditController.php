@@ -1,19 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Records;
 
+use App\Http\Controllers\Controller;
 use App\Models\Artist;
 use App\Models\Country;
 use App\Models\RecordFormatView;
 use App\Models\RecordGenreView;
 use App\Models\RecordLabel;
+use App\Models\RecordShowView;
 
-class RecordsCreateController extends Controller
+class RecordsEditController extends Controller
 {
-    public function __invoke()
+    public function __invoke(RecordShowView $recordShowView)
     {
-        return view('records.create')
+        return view('records.edit')
             ->with([
+                'record' => $recordShowView,
                 'artists' => Artist::query()
                     ->orderBy('name')
                     ->get(),

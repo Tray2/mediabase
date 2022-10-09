@@ -26,7 +26,7 @@ it('can show records.edit page', function () {
         ->assertOk();
 });
 
-it('has a form with the correct put action and method', function () {
+it('has a form with the correct post action and method', function () {
     get(route('records.edit', $this->record))
         ->assertSee([
             'method="post"',
