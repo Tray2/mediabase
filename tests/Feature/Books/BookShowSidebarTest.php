@@ -107,3 +107,34 @@ it('does not show books by another author', function () {
             $book2->title,
         ]);
 });
+
+it('shows books from all authors of a book', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookId = MediaType::query()->where('name', 'book')->value('id');
+
+    [$author1, $author2] = Author::factory()
+        ->count(2)
+        ->has(Book::factory()
+            ->count(3)
+            ->for(Format::factory(['media_type_id' => $bookId]))
+            ->for(Genre::factory(['media_type_id' => $bookId]))
+        )
+        ->create();
+
+    $book = Book::factory()
+        ->for(Format::factory(['media_type_id' => $bookId]))
+        ->for(Genre::factory(['media_type_id' => $bookId]))
+        ->create();
+
+    $author1Books = $author1->books()->orderBy('published_year')->pluck('title')->toArray();
+    $author2Books = $author2->books()->orderBy('published_year')->pluck('title')->toArray();
+    $book->authors()->attach([
+        $author1->id,
+        $author2->id,
+    ]);
+
+    get(route('books.show', $book))
+        ->assertOk()
+        ->assertSeeInOrder($author1Books)
+        ->assertSeeInOrder($author2Books);
+});

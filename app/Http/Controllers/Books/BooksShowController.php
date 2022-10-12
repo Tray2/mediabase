@@ -12,10 +12,10 @@ class BooksShowController extends Controller
     {
         $otherBooksQuery = BookIndexView::query();
 
-        if($bookShowView->series === 'Standalone') {
-            $otherBooksQuery = $otherBooksQuery->whereNot('book_id', $bookShowView->book_id);
+        if($bookShowView->isStandalone()) {
+            $otherBooksQuery->whereNot('book_id', $bookShowView->book_id);
         } else {
-            $otherBooksQuery = $otherBooksQuery->whereNot('series_id', $bookShowView->series_id);
+            $otherBooksQuery->whereNot('series_id', $bookShowView->series_id);
         }
 
         return view('books.show')->with([
@@ -27,7 +27,8 @@ class BooksShowController extends Controller
                 ->orderBy('part')
                 ->get(),
             'other_books' => $otherBooksQuery
-                ->where('author_id', $bookShowView->author_id)
+                ->whereIn('author_id', explode(',', $bookShowView->author_id))
+                //->orderBy('author_id')
                 ->orderBy('series_started')
                 ->orderBy('published_year')
                 ->get()
