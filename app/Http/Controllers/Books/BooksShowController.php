@@ -20,15 +20,14 @@ class BooksShowController extends Controller
 
         return view('books.show')->with([
             'book' => $bookShowView,
-            'books_in_series' => BookIndexView::query()
+            'booksInSeries' => BookIndexView::query()
                 ->where('series_id', $bookShowView->series_id)
                 ->whereNot('book_id', $bookShowView->book_id)
                 ->whereNot('series', 'Standalone')
                 ->orderBy('part')
                 ->get(),
-            'other_books' => $otherBooksQuery
+            'otherBooks' => $otherBooksQuery
                 ->whereIn('author_id', explode(',', $bookShowView->author_id))
-                //->orderBy('author_id')
                 ->orderBy('series_started')
                 ->orderBy('published_year')
                 ->get()
