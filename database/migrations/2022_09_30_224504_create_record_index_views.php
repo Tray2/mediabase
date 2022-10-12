@@ -11,7 +11,9 @@ return new class extends Migration
                    r.title,
                    r.release_year,
                    g.name AS genre_name,
-                   f.name AS format_name
+                   f.name AS format_name,
+                   r.artist_id,
+                   r.id AS record_id
             FROM records r,
                  artists a,
                  genres g,

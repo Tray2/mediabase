@@ -7,3 +7,11 @@
 {{ $record->barcode }}
 {{ $record->country }}
 {{ $record->record_label }}
+
+@if($otherRecords->count() > 0)
+    <ul>
+        @foreach($otherRecords as $record)
+            {{ $record->title }}
+        @endforeach
+    </ul>
+@endif
