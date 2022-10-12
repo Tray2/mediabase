@@ -30,7 +30,8 @@ class CreateBookIndexViews extends Migration
                         END series_started,
                     f.name format,
                     g.name genre,
-                    s.name series
+                    s.name series,
+                    s.id series_id
                     FROM books b,
                          formats f,
                          genres g,

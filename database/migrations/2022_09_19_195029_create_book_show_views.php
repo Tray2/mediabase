@@ -28,6 +28,7 @@ class CreateBookShowViews extends Migration
                     f.name format,
                     g.name genre,
                     s.name series,
+                    s.id series_id,
                     p.name publisher
                     FROM books b,
                          formats f,
