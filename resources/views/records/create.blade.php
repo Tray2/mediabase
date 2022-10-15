@@ -43,6 +43,16 @@
             <option value="{{ $recordLabel->name }}"></option>
         @endforeach
     </datalist>
+    <label for="track_positions">Position:</label>
+    <input type="text" name="track_positions[]" id="track_positions">
+    <label for="track_artists">Artist:</label>
+    <input list="artists" name="track_artists[]" id="track_artists">
+    <label for="track_titles">Title:</label>
+    <input type="text" name="track_titles[]" id="track_titles">
+    <label for="track_durations">Duration:</label>
+    <input type="text" name="track_durations[]" id="track_durations">
+    <label for="track_mixes">Mix:</label>
+    <input type="text" name="track_mixes[]" id="track_mixes">
     <input type="submit">
 </form>
 @if ($errors->any())
