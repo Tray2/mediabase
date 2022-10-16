@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignIdFor(Artist::class)->nullable();
             $table->string('title');
             $table->string('duration');
-            $table->string('mix');
+            $table->string('mix')->nullable();
             $table->foreignIdFor(Record::class);
             $table->timestamps();
         });

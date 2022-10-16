@@ -34,6 +34,9 @@ beforeEach(function () {
         'format_name' => $this->format->name,
         'country_name' => $this->country->name,
         'record_label_name' => $this->record_label->name,
+        'track_positions' => ['01'],
+        'track_titles' => ['Some Track'],
+        'track_durations' => ['03:50'],
     ]);
     get(route('records.edit', $this->record));
 });

@@ -26,6 +26,16 @@ class RecordFormRequest extends FormRequest
             'genre_name' => 'required',
             'country_name' => 'required',
             'record_label_name' => 'required',
+            'track_positions' => 'required|array',
+            'track_positions.*' => 'required|numeric|min:1|max_digits:2',
+            'track_titles' => 'required|array',
+            'track_titles.*' => 'required',
+            'track_durations' => 'required|array',
+            'track_durations.*' => 'required|date_format:i:s',
+            'track_mixes' => 'sometimes|required|array',
+            'track_mixes.*' => 'sometimes',
+            'track_artists' => 'required_if:artist,Various Artists|array',
+            'track_artists.*' => 'required_if:artist,Various Artists',
         ];
     }
 
@@ -74,5 +84,17 @@ class RecordFormRequest extends FormRequest
     protected function getMediaType(): string
     {
         return Str::singular(explode('/', trim($this->getPathInfo(), '/'))[0]);
+    }
+
+    public function isVariousArtists(): bool
+    {
+        return $this->artist === 'Various Artists';
+    }
+
+    public function getTrackArtistId($track_artist)
+    {
+        return Artist::firstOrCreate(
+            ['name' => $track_artist]
+        )->value('id');
     }
 }
