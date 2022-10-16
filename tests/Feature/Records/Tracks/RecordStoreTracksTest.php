@@ -272,4 +272,57 @@ it('ignores the track artist if the record artist is not various artists', funct
     assertDatabaseCount('tracks', 1);
 });
 
+it('has the old track values if the validation fails', function () {
+    $invalidRecord = $this->record;
+    $invalidRecord['title'] = '';
+    post(route('records.store', array_merge($invalidRecord, $this->validTrack)))
+        ->assertRedirect(route('records.create'));
+    get(route('records.create'))
+        ->assertSee([
+            'value="01"',
+            'value="Some Track Title"',
+            'value="03:20"',
+            'value="Some Mix"',
+        ], false);
+});
 
+it('can handle old values for more than one track if validation fails', function () {
+    $invalidRecord = $this->record;
+    $invalidRecord['title'] = '';
+    $validTrack = $this->validTrack;
+    $validTrack['track_positions'][] = '02';
+    $validTrack['track_titles'][] = 'Another Track';
+    $validTrack['track_durations'][] = '03:50';
+    $validTrack['track_mixes'][] = '';
+
+    post(route('records.store', array_merge($invalidRecord, $validTrack)))
+        ->assertRedirect(route('records.create'));
+    get(route('records.create'))
+        ->assertSee([
+            'value="01"',
+            'value="Some Track Title"',
+            'value="03:20"',
+            'value="Some Mix"',
+            'value="02"',
+            'value="Another Track"',
+            'value="03:50"',
+        ], false);
+});
+
+it('shows the old value for the track artist if validation fails for a various artists record', function () {
+    $invalidRecord = $this->record;
+    $invalidRecord['artist'] = 'Various Artists';
+    $invalidRecord['title'] = '';
+    $track = $this->validTrack;
+    $track['track_artists'] = ['Public Enemy'];
+    post(route('records.store', array_merge($invalidRecord, $track)))
+        ->assertRedirect(route('records.create'));
+    get(route('records.create'))
+        ->assertSee([
+            'value="01"',
+            'value="Public Enemy"',
+            'value="Some Track Title"',
+            'value="03:20"',
+            'value="Some Mix"',
+        ], false);
+});
