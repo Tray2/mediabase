@@ -21,7 +21,7 @@
         @endforeach
     </datalist>
     <label for="format">Format:</label>
-    <input list="formats" id="format" name="format_name" placeholder="Format..." value="{{ old('format_name') }}">
+    <input list="formats" id="format" name="format_name" placeholder="Format..." value="{{ old('format_name') }}">˛˛
     <datalist id="formats">
         @foreach($formats as $format)
             <option value="{{ $format->name }}"></option>

@@ -7,6 +7,7 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\RecordLabel;
+use App\Models\Track;
 use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
@@ -19,6 +20,9 @@ beforeEach(function () {
         ->where('name', 'record')
         ->value('id');
     $this->record = Record::factory()->create();
+    $this->track = Track::factory()->create([
+        'record_id' => $this->record->id
+    ]);
 });
 
 it('can show records.edit page', function () {
@@ -277,7 +281,7 @@ it('loads only genres that are record genres', function () {
         ->assertDontSee('value="'.$bookGenre->name.'"', false);
 });
 
-it('has the title of the book in the title field', function () {
+it('has the title of the record in the title field', function () {
     get(route('records.edit', $this->record))
         ->assertSee([$this->record->title]);
 });

@@ -9,6 +9,7 @@ use App\Models\RecordFormatView;
 use App\Models\RecordGenreView;
 use App\Models\RecordLabel;
 use App\Models\RecordShowView;
+use App\Models\Track;
 
 class RecordsEditController extends Controller
 {
@@ -31,6 +32,10 @@ class RecordsEditController extends Controller
                     ->get(),
                 'countries' => Country::query()
                     ->orderBy('name')
+                    ->get(),
+                'tracks' => Track::query()
+                    ->where('record_id', $recordShowView->id)
+                    ->orderBy('position')
                     ->get(),
             ]);
     }

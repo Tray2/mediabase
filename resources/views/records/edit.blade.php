@@ -1,3 +1,4 @@
+dd($tracks);
 <form action="{{ route('records.update', $record) }}" method="post">
     @csrf
     @method('PUT')
@@ -44,6 +45,20 @@
             <option value="{{ $recordLabel->name }}"></option>
         @endforeach
     </datalist>
+
+    @foreach($tracks as $track)
+        <label for="track_positions">Position:</label>
+        <input type="text" name="track_positions[]" id="track_positions" value="{{ old('track_positions.' . $loop->index, $track->position) }}">
+        <label for="track_artists">Artist:</label>
+        <input list="artists" name="track_artists[]" id="track_artists" value="{{ old('track_artists.' . $loop->index , $track->artist) }}">
+        <label for="track_titles">Title:</label>
+        <input type="text" name="track_titles[]" id="track_titles" value="{{ old('track_titles.' . $loop->index, $track->title) }}">
+        <label for="track_durations">Duration:</label>
+        <input type="text" name="track_durations[]" id="track_durations" value="{{ old('track_durations.' . $loop->index, $track->duration) }}">
+        <label for="track_mixes">Mix:</label>
+        <input type="text" name="track_mixes[]" id="track_mixes" value="{{ old('track_mixes.' . $loop->index, $track->mix) }}">
+    @endforeach
+
     <input type="submit">
 </form>
 @if ($errors->any())
