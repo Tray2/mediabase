@@ -9,6 +9,8 @@ use App\Models\Publisher;
 use App\Models\Series;
 use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
+use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
@@ -26,153 +28,264 @@ it('can show books.edit page', function () {
         ->assertOk();
 });
 
-it('has a form with the correct post action and method', function () {
+it('contains an update form with the necessary parts for laravel', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'method="post"',
-            'action="'.route('books.update', $this->book).'"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->hasMethod('post')
+                ->hasAction(route('books.update', $this->book))
+                ->hasSpoofMethod('put')
+                ->hasCSRF();
+        });
 });
 
-it('has a method field with the action put', function () {
+it('contains a title field', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'name="_method"',
-            'value="PUT"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'title'
+            ])
+            ->containsInput([
+               'name' => 'title',
+               'id' => 'title',
+               'value' => $this->book->title
+            ]);
+        });
 });
 
-it('has a token field', function () {
+it('contains a published_year field', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'name="_token"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'published_year'
+            ])
+                ->containsInput([
+                    'name' => 'published_year',
+                    'id' => 'published_year',
+                    'value' => $this->book->published_year
+                ]);
+        });
 });
 
-it('has a title field', function () {
+it('contains an author field', function () {
+    $this->book->authors()->attach(Author::factory()->create());
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="title"',
-            'id="title"',
-            'name="title"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'author'
+            ])
+                ->containsInput([
+                    'name' => 'author[]',
+                    'id' => 'author',
+                    'list' => 'authors',
+                    'value' => $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name
+                ])
+                ->containsDatalist([
+                    'id' => 'authors'
+            ]);
+        });
 });
 
-it('has a published_year field', function () {
+it('contains a format field', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="published_year',
-            'id="published_year"',
-            'name="published_year"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'format'
+            ])
+                ->containsInput([
+                    'name' => 'format_name',
+                    'id' => 'format',
+                    'list' => 'formats',
+                    'value' => $this->book->format->name
+                ])
+                ->containsDatalist([
+                    'id' => 'formats'
+                ]);
+        });
 });
 
-it('has an author field', function () {
+it('contains a genre field', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="author',
-            'id="author"',
-            'name="author[]"',
-            'list="authors',
-            'datalist id="authors',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'genre'
+            ])
+                ->containsInput([
+                    'name' => 'genre_name',
+                    'id' => 'genre',
+                    'list' => 'genres',
+                    'value' => $this->book->genre->name
+                ])
+                ->containsDatalist([
+                    'id' => 'genres'
+                ]);
+        });
 });
 
-it('has a format field', function () {
+it('contains an isbn field', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="format',
-            'id="format"',
-            'name="format_name"',
-            'list="formats',
-            'datalist id="formats',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'isbn'
+            ])
+                ->containsInput([
+                    'name' => 'isbn',
+                    'id' => 'isbn',
+                    'value' => $this->book->isbn
+                ]);
+        });
 });
 
-it('has a genres field', function () {
+it('contains a blurb text area', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="genre',
-            'id="genre"',
-            'name="genre_name"',
-            'list="genres',
-            'datalist id="genres',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'blurb'
+            ])
+                ->containsTextarea([
+                    'name' => 'blurb',
+                    'id' => 'blurb',
+                    'value' => $this->book->blurb
+                ]);
+        });
 });
 
-it('has an isbn field', function () {
+it('contains a series field', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="isbn',
-            'id="isbn"',
-            'name="isbn"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'series'
+            ])
+                ->containsInput([
+                    'name' => 'series_name',
+                    'id' => 'series',
+                    'list' => 'series-list',
+                    'value' => $this->book->series->name
+                ])
+                ->containsDatalist([
+                    'id' => 'series-list'
+                ]);
+        });
 });
 
-it('has a blurb text area', function () {
+it('contains a part field', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="blurb',
-            'id="blurb"',
-            'name="blurb"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'part'
+            ])
+                ->containsInput([
+                    'name' => 'part',
+                    'id' => 'part',
+                    'value' => $this->book->part
+                ]);
+        });
 });
 
-it('has a series field', function () {
+it('contains a publishers field', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="series',
-            'id="series"',
-            'name="series_name"',
-            'list="series-list',
-            'datalist id="series-list',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'publisher'
+            ])
+                ->containsInput([
+                    'name' => 'publisher_name',
+                    'id' => 'publisher',
+                    'list' => 'publishers',
+                    'value' => $this->book->publisher->name
+                ])
+                ->containsDatalist([
+                    'id' => 'publishers'
+                ]);
+        });
 });
 
-it('has a part field', function () {
+it('contains buttons for adding and removing author inputs', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="part',
-            'id="part"',
-            'name="part"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+           $form->containsButton([
+               'title' => 'Add Author',
+           ])
+           ->containsButton([
+              'title' => 'Remove Author',
+           ]);
+        });
 });
 
-it('has a publishers field', function () {
+it('contains a submit button', function () {
     get(route('books.edit', $this->book))
-        ->assertSee([
-            'for="publisher',
-            'id="publisher"',
-            'name="publisher_name"',
-            'list="publishers',
-            'datalist id="publishers',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsInput([
+                'type' => 'submit',
+            ]);
+        });
 });
 
-it('loads a list of authors that is sorted in alphabetical order', function () {
+it('contains an author field for each author', function () {
+    $this->book->authors()->attach(Author::factory()->create());
+    $this->book->authors()->attach(Author::factory()->create());
+    get(route('books.edit', $this->book))
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'author'
+            ])
+                ->containsInput([
+                    'name' => 'author[]',
+                    'id' => 'author',
+                    'list' => 'authors',
+                    'value' => $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name
+                ])
+                ->containsInput([
+                    'name' => 'author[]',
+                    'id' => 'author',
+                    'list' => 'authors',
+                    'value' => $this->book->authors[1]->last_name . ', ' . $this->book->authors[1]->first_name
+                ])
+                ->containsDatalist([
+                    'id' => 'authors'
+                ]);
+        });
+});
+
+it('contains a list of authors', function () {
     Author::factory()
         ->count(2)
         ->sequence(
             [
-                'last_name' => 'Goodkind',
-                'first_name' => 'Terry',
+                'first_name' => 'David',
+                'last_name' => 'Eddings'
             ],
             [
-                'last_name' => 'Eddings',
-                'first_name' => 'David',
-            ]
-        )
-        ->create();
+                'first_name' => 'Terry',
+                'last_name' => 'Goodkind'
+            ])->create();
 
-    get(route('books.create'))
+    get(route('books.edit', $this->book))
         ->assertOk()
-        ->assertSeeInOrder([
-            'Eddings, David',
-            'Goodkind, Terry',
-        ]);
+        ->assertFormExists(function (AssertForm $form) {
+            $form->findDatalist('#authors', function (AssertDataList $datalist) {
+                $datalist->containsOptions(
+                    ['value' => 'Eddings, David'],
+                    ['value' => 'Goodkind, Terry']
+                );
+           });
+        });
 });
 
-it('loads a list of formats that is sorted in alphabetical order', function () {
+it('contains a list of formats', function () {
     Format::factory()
         ->count(2)
         ->sequence(
@@ -189,13 +302,17 @@ it('loads a list of formats that is sorted in alphabetical order', function () {
 
     get(route('books.create'))
         ->assertOk()
-        ->assertSeeInOrder([
-            'Hardcover',
-            'Pocket',
-        ]);
+        ->assertFormExists(function (AssertForm $form) {
+            $form->findDatalist('#formats', function (AssertDataList $datalist) {
+                $datalist->containsOptions(
+                    ['value' => 'Hardcover'],
+                    ['value' => 'Pocket']
+                );
+            });
+        });
 });
 
-it('loads a list of genres that is sorted in alphabetical order', function () {
+it('contains a list of genres', function () {
     Genre::factory()
         ->count(2)
         ->sequence(
@@ -212,13 +329,17 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
 
     get(route('books.create'))
         ->assertOk()
-        ->assertSeeInOrder([
-            'Crime',
-            'Fantasy',
-        ]);
+        ->assertFormExists(function (AssertForm $form) {
+            $form->findDatalist('#genres', function (AssertDataList $datalist) {
+                $datalist->containsOptions(
+                    ['value' => 'Crime'],
+                    ['value' => 'Fantasy']
+                );
+            });
+        });
 });
 
-it('loads a list of series that is sorted in alphabetical order', function () {
+it('contains a list of series', function () {
     Series::factory()
         ->count(2)
         ->sequence(
@@ -229,13 +350,17 @@ it('loads a list of series that is sorted in alphabetical order', function () {
 
     get(route('books.create'))
         ->assertOk()
-        ->assertSeeInOrder([
-            'The Sword Of Truth',
-            'The Wheel Of Time',
-        ]);
+        ->assertFormExists(function (AssertForm $form) {
+            $form->findDatalist('#series-list', function (AssertDataList $datalist) {
+                $datalist->containsOptions(
+                    ['value' => 'The Sword Of Truth'],
+                    ['value' => 'The Wheel Of Time']
+                );
+            });
+        });
 });
 
-it('loads a list of publishers that is sorted in alphabetical order', function () {
+it('contains a list of publishers', function () {
     Publisher::factory()
         ->count(2)
         ->sequence(
@@ -246,119 +371,12 @@ it('loads a list of publishers that is sorted in alphabetical order', function (
 
     get(route('books.create'))
         ->assertOk()
-        ->assertSeeInOrder([
-            'Ace Books',
-            'TOR',
-        ]);
-});
-
-it('has the title of the book in the title field', function () {
-    get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->title.'"',
-        ], false);
-});
-
-it('has the published year of the book in the published year field', function () {
-    get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->published_year.'"',
-        ], false);
-});
-
-it('has the isbn of the book in the isbn field', function () {
-    get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->isbn.'"',
-        ], false);
-});
-
-it('has the blurb of the book in the blurb field', function () {
-    get(route('books.edit', $this->book))
-        ->assertSee([
-            $this->book->blurb,
-        ], false);
-});
-
-it('has the part of the book in the part field', function () {
-    get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->part.'"',
-        ], false);
-});
-
-it('has the format of the book in the format field', function () {
-    $pattern = '/<input(.)*value="'.$this->book->format->name.'"(.)*>/';
-    $response = get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->format->name.'"',
-        ], false);
-    $this->assertMatchesRegularExpression($pattern, $response->content());
-});
-
-it('has the genre of the book in the genre field', function () {
-    $pattern = '/<input(.)*value="'.$this->book->genre->name.'"(.)*>/';
-    $response = get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->genre->name.'"',
-        ], false);
-    $this->assertMatchesRegularExpression($pattern, $response->content());
-});
-
-it('has the series of the book in the series field', function () {
-    $pattern = '/<input(.)*value="'.$this->book->series->name.'"(.)*>/';
-    $response = get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->series->name.'"',
-        ], false);
-    $this->assertMatchesRegularExpression($pattern, $response->content());
-});
-
-it('has the publisher of the book in the publisher field', function () {
-    $pattern = '/<input(.)*value="'.$this->book->publisher->name.'"(.)*>/';
-    $response = get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->publisher->name.'"',
-        ], false);
-    $this->assertMatchesRegularExpression($pattern, $response->content());
-});
-
-it('has the author of the book in the author field', function () {
-    $this->book->authors()->attach(Author::factory()->create());
-    $pattern = '/<input(.)*value="'.$this->book->authors[0]->last_name.', '.$this->book->authors[0]->first_name.'"(.)*>/';
-    $response = get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->authors[0]->last_name.', '.$this->book->authors[0]->first_name.'"',
-        ], false);
-    $this->assertMatchesRegularExpression($pattern, $response->content());
-});
-
-it('has the authors of a book in two author fields', function () {
-    $this->book->authors()->attach(Author::factory()->create());
-    $this->book->authors()->attach(Author::factory()->create());
-
-    $pattern1 = '/<input(.)*value="'.$this->book->authors[0]->last_name.', '.$this->book->authors[0]->first_name.'"(.)*>/';
-    $pattern2 = '/<input(.)*value="'.$this->book->authors[1]->last_name.', '.$this->book->authors[1]->first_name.'"(.)*>/';
-    $response = get(route('books.edit', $this->book))
-        ->assertSee([
-            'value="'.$this->book->authors[0]->last_name.', '.$this->book->authors[0]->first_name.'"',
-            'value="'.$this->book->authors[1]->last_name.', '.$this->book->authors[1]->first_name.'"',
-        ], false);
-    $this->assertMatchesRegularExpression($pattern1, $response->content());
-    $this->assertMatchesRegularExpression($pattern2, $response->content());
-});
-
-it('has an add author button', function () {
-    get(route('books.edit', $this->book))
-        ->assertSee('title="Add Author"', false);
-});
-
-it('has a delete author button', function () {
-    get(route('books.edit', $this->book))
-        ->assertSee('title="Remove Author"', false);
-});
-
-it('has a update button', function () {
-    get(route('books.edit', $this->book))
-        ->assertSee('<input type="submit">', false);
+        ->assertFormExists(function (AssertForm $form) {
+            $form->findDatalist('#publishers', function (AssertDataList $datalist) {
+                $datalist->containsOptions(
+                    ['value' => 'Ace Books'],
+                    ['value' => 'TOR']
+                );
+            });
+        });
 });
