@@ -14,7 +14,11 @@
         @foreach(explode(' & ', $book->author_name) as $author)
             <label for="author">Author:</label>
             <button title="Remove Author">X</button>
-            <input list="authors" value="{{ old('author.0', $author) }}" id="author" name="author[]" placeholder="Author...">
+            <input list="authors" value="{{ old('author.0', $author) }}"
+                   @if ($loop->first)
+                       id="author"
+                   @endif
+                   name="author[]" placeholder="Author...">
         @endforeach
     @endif
     <datalist id="authors">

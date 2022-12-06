@@ -152,7 +152,8 @@ it('contains a blurb text area', function () {
                 ->containsTextarea([
                     'name' => 'blurb',
                     'id' => 'blurb',
-                    'value' => $this->book->blurb
+                    'value' => $this->book->blurb,
+                    'text' => $this->book->blurb,
                 ]);
         });
 });
@@ -243,14 +244,15 @@ it('contains an author field for each author', function () {
                 'for' => 'author'
             ])
                 ->containsInput([
+                    'id' => 'author'
+                ], 1)
+                ->containsInput([
                     'name' => 'author[]',
-                    'id' => 'author',
                     'list' => 'authors',
                     'value' => $this->book->authors[0]->last_name . ', ' . $this->book->authors[0]->first_name
                 ])
                 ->containsInput([
                     'name' => 'author[]',
-                    'id' => 'author',
                     'list' => 'authors',
                     'value' => $this->book->authors[1]->last_name . ', ' . $this->book->authors[1]->first_name
                 ])
