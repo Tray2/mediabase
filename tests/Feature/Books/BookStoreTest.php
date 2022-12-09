@@ -364,7 +364,7 @@ it('has the old values in the form if the validation fails', function () {
     post(route('books.store', $invalidBook))
         ->assertRedirect(route('books.create'))
         ->assertSessionHasErrorsIn('title');
-    $response = get(route('books.create'))
+    get(route('books.create'))
         ->assertOk()
         ->assertSeeText('The title field is required.')
         ->assertFormExists(function (AssertForm $form) {
