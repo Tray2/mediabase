@@ -339,7 +339,7 @@ it('has the old values in the form if the validation fails', function () {
     $formatPattern = '/<input(.)*value="'.$invalidBook['format_name'].'"(.)*>/';
     $genrePattern = '/<input(.)*value="'.$invalidBook['genre_name'].'"(.)*>/';
     $seriesPattern = '/<input(.)*value="'.$invalidBook['series_name'].'"(.)*>/';
-    $publisherPattern = '/<input(.)*value="'.$invalidBook['publisher_name'].'"(.)*>/';
+    $publisherPattern = '/<input(.)*value="'.e($invalidBook['publisher_name']).'"(.)*>/';
     $authorPattern = '/<input(.)*value="'.$invalidBook['author'][0].'"(.)*>/';
 
     put(route('books.update', $this->book), $invalidBook)

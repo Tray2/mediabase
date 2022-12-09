@@ -1,4 +1,3 @@
-dd($tracks);
 <form action="{{ route('records.update', $record) }}" method="post">
     @csrf
     @method('PUT')
