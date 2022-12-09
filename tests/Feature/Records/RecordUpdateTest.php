@@ -10,6 +10,7 @@ use App\Models\RecordLabel;
 use Carbon\Carbon;
 use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
@@ -259,24 +260,36 @@ it('creates a new record label if the one passed does not exist in the database'
 it('has the old values in the form if the validation fails', function () {
     $invalidRecord = $this->validRecord;
     $invalidRecord['title'] = '';
-    $formatPattern = '/<input(.)*value="'.$invalidRecord['format_name'].'"(.)*>/';
-    $genrePattern = '/<input(.)*value="'.$invalidRecord['genre_name'].'"(.)*>/';
-    $recordLabelPattern = '/<input(.)*value="'.$invalidRecord['record_label_name'].'"(.)*>/';
-    $artistPattern = '/<input(.)*value="'.$invalidRecord['artist'].'"(.)*>/';
 
     put(route('records.update', $this->record), $invalidRecord)
         ->assertRedirect(route('records.edit', $this->record))
         ->assertSessionHasErrorsIn('title');
-    $response = get(route('records.edit', $this->record))
+    get(route('records.edit', $this->record))
         ->assertSeeText('The title field is required.')
-        ->assertSee([
-            'value="'.$this->validRecord['release_year'],
-        ], false);
-
-    $this->assertMatchesRegularExpression($artistPattern, $response->content());
-    $this->assertMatchesRegularExpression($formatPattern, $response->content());
-    $this->assertMatchesRegularExpression($genrePattern, $response->content());
-    $this->assertMatchesRegularExpression($recordLabelPattern, $response->content());
+        ->assertOk()
+        ->assertSeeText('The title field is required.')
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsInput([
+                'name' => 'release_year',
+                'value' => $this->validRecord['release_year']
+            ])
+                ->containsInput([
+                    'name' => 'artist',
+                    'value' => $this->validRecord['artist']
+                ])
+                ->containsInput([
+                    'name' => 'format_name',
+                    'value' => $this->validRecord['format_name']
+                ])
+                ->containsInput([
+                    'name' => 'genre_name',
+                    'value' => $this->validRecord['genre_name']
+                ])
+                ->containsInput([
+                    'name' => 'record_label_name',
+                    'value' => $this->validRecord['record_label_name']
+                ]);
+        });
 });
 
 it('has the old title value in the form if the validation fails', function () {
@@ -287,7 +300,11 @@ it('has the old title value in the form if the validation fails', function () {
         ->assertRedirect(route('records.edit', $this->record))
         ->assertSessionHasErrorsIn('title');
     get(route('records.edit', $this->record))
-        ->assertSee([
-            'value="'.$this->validRecord['title'],
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsInput([
+                'name' => 'title',
+                'value' => $this->validRecord['title']
+            ]);
+        });
 });
