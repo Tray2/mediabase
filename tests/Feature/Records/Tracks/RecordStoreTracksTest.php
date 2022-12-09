@@ -8,6 +8,7 @@ use App\Models\MediaType;
 use App\Models\RecordLabel;
 use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
@@ -271,19 +272,32 @@ it('ignores the track artist if the record artist is not various artists', funct
     assertDatabaseCount('records', 1);
     assertDatabaseCount('tracks', 1);
 });
-
+//Här ska det kodas
 it('has the old track values if the validation fails', function () {
     $invalidRecord = $this->record;
     $invalidRecord['title'] = '';
     post(route('records.store', array_merge($invalidRecord, $this->validTrack)))
         ->assertRedirect(route('records.create'));
     get(route('records.create'))
-        ->assertSee([
-            'value="01"',
-            'value="Some Track Title"',
-            'value="03:20"',
-            'value="Some Mix"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsInput([
+                    'name' => 'track_positions[]',
+                    'value' => $this->validTrack['track_positions'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_titles[]',
+                    'value' => $this->validTrack['track_titles'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_durations[]',
+                    'value' => $this->validTrack['track_durations'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_mixes[]',
+                    'value' => $this->validTrack['track_mixes'][0]
+                ]);
+        });
 });
 
 it('can handle old values for more than one track if validation fails', function () {
@@ -298,15 +312,41 @@ it('can handle old values for more than one track if validation fails', function
     post(route('records.store', array_merge($invalidRecord, $validTrack)))
         ->assertRedirect(route('records.create'));
     get(route('records.create'))
-        ->assertSee([
-            'value="01"',
-            'value="Some Track Title"',
-            'value="03:20"',
-            'value="Some Mix"',
-            'value="02"',
-            'value="Another Track"',
-            'value="03:50"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(fn (AssertForm $form) =>
+            $form->containsInput([
+                    'name' => 'track_positions[]',
+                    'value' => $this->validTrack['track_positions'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_titles[]',
+                    'value' => $this->validTrack['track_titles'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_durations[]',
+                    'value' => $this->validTrack['track_durations'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_mixes[]',
+                    'value' => $this->validTrack['track_mixes'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_positions[]',
+                    'value' => $validTrack['track_positions'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_titles[]',
+                    'value' => $validTrack['track_titles'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_durations[]',
+                    'value' => $validTrack['track_durations'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_mixes[]',
+                    'value' => $validTrack['track_mixes'][0]
+                ])
+        );
 });
 
 it('shows the old value for the track artist if validation fails for a various artists record', function () {
@@ -318,11 +358,27 @@ it('shows the old value for the track artist if validation fails for a various a
     post(route('records.store', array_merge($invalidRecord, $track)))
         ->assertRedirect(route('records.create'));
     get(route('records.create'))
-        ->assertSee([
-            'value="01"',
-            'value="Public Enemy"',
-            'value="Some Track Title"',
-            'value="03:20"',
-            'value="Some Mix"',
-        ], false);
+        ->assertOk()
+        ->assertFormExists(fn (AssertForm $form) =>
+            $form->containsInput([
+                    'name' => 'track_positions[]',
+                    'value' => $this->validTrack['track_positions'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_artists[]',
+                    'value' => $track['track_artists'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_titles[]',
+                    'value' => $this->validTrack['track_titles'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_durations[]',
+                    'value' => $this->validTrack['track_durations'][0]
+                ])
+                ->containsInput([
+                    'name' => 'track_mixes[]',
+                    'value' => $this->validTrack['track_mixes'][0]
+                ])
+        );
 });
