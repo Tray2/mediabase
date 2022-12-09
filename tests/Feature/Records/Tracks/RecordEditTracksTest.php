@@ -10,6 +10,7 @@ use App\Models\RecordLabel;
 use App\Models\Track;
 use Database\Seeders\MediaTypeSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\get;
 use function Pest\Laravel\put;
@@ -51,72 +52,76 @@ beforeEach(function() {
 
 it('has the position field', function() {
     get(route('records.edit', $this->record))
-        ->assertSee([
-            'for="track_positions"',
-            'id="track_positions"',
-            'name="track_positions[]"'
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'track_positions'
+             ])
+                ->containsInput([
+                    'id' => 'track_positions',
+                    'name' => 'track_positions[]',
+                    'value' => $this->validTrack['position']
+                ]);
+        });
 });
 
 it('has the track titles field', function() {
     get(route('records.edit', $this->record))
-        ->assertSee([
-            'for="track_titles"',
-            'id="track_titles"',
-            'name="track_titles[]"'
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'track_titles'
+             ])
+                ->containsInput([
+                    'id' => 'track_titles',
+                    'name' => 'track_titles[]',
+                    'value' => $this->validTrack['title']
+                ]);
+        });
 });
 
 it('has the track durations field', function() {
     get(route('records.edit', $this->record))
-        ->assertSee([
-            'for="track_durations"',
-            'id="track_durations"',
-            'name="track_durations[]"'
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'track_durations'
+             ])
+                ->containsInput([
+                    'id' => 'track_durations',
+                    'name' => 'track_durations[]',
+                    'value' => $this->validTrack['duration']
+                ]);
+        });
 });
 
 it('has the track artists field', function() {
     get(route('records.edit', $this->record))
-        ->assertSee([
-            'for="track_artists"',
-            'id="track_artists"',
-            'name="track_artists[]"'
-        ], false);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'track_artists'
+             ])
+                ->containsInput([
+                    'id' => 'track_artists',
+                    'name' => 'track_artists[]'
+                ]);
+        });
 });
 
 it('has the track mix field', function() {
     get(route('records.edit', $this->record))
-        ->assertSee([
-            'for="track_mixes"',
-            'id="track_mixes"',
-            'name="track_mixes[]"'
-        ], false);
-});
-
-it('has the track position value in the position field', function () {
-    get(route('records.edit', $this->record))
-        ->assertSee([$this->track->position]);
-});
-
-it('has the track title in the title field', function () {
-    get(route('records.edit', $this->record))
-        ->assertSee([$this->track->title]);
-});
-
-it('has the track duration in the durations field', function () {
-    get(route('records.edit', $this->record))
-        ->assertSee([$this->track->duration]);
-});
-
-it('has the track mix in the mixes field', function () {
-    get(route('records.edit', $this->record))
-        ->assertSee([$this->track->mix]);
-});
-
-it('has the track artist in the artists field', function () {
-    get(route('records.edit', $this->record))
-        ->assertSee([$this->track->artist]);
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'track_mixes'
+             ])
+                ->containsInput([
+                    'id' => 'track_mixes',
+                    'name' => 'track_mixes[]',
+                    'value' => $this->validTrack['mix']
+                ]);
+        });
 });
 
 it('handles multiple tracks', function () {
@@ -124,8 +129,15 @@ it('handles multiple tracks', function () {
     $validTrack['position'] = '02';
     $trackTwo = Track::create($validTrack);
     get(route('records.edit', $this->record))
-        ->assertSee([
-            $this->track->position,
-            $trackTwo->position,
-        ]);
+        ->assertOk()
+        ->assertFormExists(fn (AssertForm $form) =>
+            $form->containsInput([
+                    'name' => 'track_positions[]',
+                    'value' => $this->validTrack['position']
+                ])
+                ->containsInput([
+                    'name' => 'track_positions[]',
+                    'value' => $trackTwo->postion
+                ])
+        );
 });
