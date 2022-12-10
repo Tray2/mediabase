@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RecordFormRequest;
 use App\Models\Record;
 use App\Models\Track;
+use Illuminate\Support\Str;
 
 class RecordsUpdateController extends Controller
 {
@@ -24,12 +25,16 @@ class RecordsUpdateController extends Controller
             ->where('record_id', $record->id)
             ->get();
 
+        $i = 0;
+
         foreach ($tracks as $track) {
-            $i = 0;
-            $track->position = $valid['track_positions'][$i];
+            $track->position = Str::padLeft($valid['track_positions'][$i], 2, '0');
             $track->title = $valid['track_titles'][$i];
             $track->duration = $valid['track_durations'][$i];
             $track->mix = $valid['track_mixes'][$i];
+            if ($request->isVariousArtists()) {
+                $track->artist_id = $request->getTrackArtistId($valid['track_artists'][$i]);
+            }
             $track->save();
             $i++;
         }
