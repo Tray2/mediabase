@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Actor;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
@@ -42,5 +43,22 @@ it('shows all information about a movie', function () {
             $movie->genre->name,
             $movie->runtime,
             $movie->blurb
+        ]);
+});
+
+it('shows a list of the actors in the movie', function () {
+    $actor1 = Actor::factory()->create();
+    $actor2 = Actor::factory()->create();
+    $movie = Movie::factory()->create([
+        'genre_id' => $this->genre->id,
+        'format_id' => $this->format->id
+    ]);
+    $movie->actors()->attach([ $actor1->id, $actor2->id]);
+
+    get(route('movies.show', $movie))
+        ->assertOk()
+        ->assertSee([
+            $actor1->full_name,
+            $actor2->full_name
         ]);
 });
