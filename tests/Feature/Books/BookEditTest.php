@@ -8,12 +8,12 @@ use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
 use Database\Seeders\MediaTypeSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\get;
 
-uses(RefreshDatabase::class);
+uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);

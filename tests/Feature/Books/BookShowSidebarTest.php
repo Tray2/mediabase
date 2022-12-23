@@ -8,10 +8,10 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Series;
 use Database\Seeders\MediaTypeSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
 
-uses(RefreshDatabase::class);
+uses(FastRefreshDatabase::class);
 
 it('shows a list of books in the same series excluding the one being showed', function () {
     $this->seed(MediaTypeSeeder::class);

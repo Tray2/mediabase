@@ -13,7 +13,8 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->integer('release_year');
-            $table->string('length');
+            $table->string('runtime');
+            $table->text('blurb');
             $table->foreignIdFor(Format::class);
             $table->foreignIdFor(Genre::class);
             $table->timestamps();

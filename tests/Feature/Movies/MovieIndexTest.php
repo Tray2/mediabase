@@ -5,10 +5,10 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Movie;
 use Database\Seeders\MediaTypeSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
 
-uses(RefreshDatabase::class);
+uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);
@@ -30,7 +30,7 @@ it('lists movies', function () {
         ->create([
             'title' => 'Die Hard',
             'release_year' => 1990,
-            'length' => '1h 58m',
+            'runtime' => '1h 58m',
             'format_id' => $this->format->id,
             'genre_id' => $this->genre->id
         ]);
@@ -40,7 +40,7 @@ it('lists movies', function () {
         ->assertSee([
             $movie->title,
             $movie->release_year,
-            $movie->length,
+            $movie->runtime,
             $movie->genre->name,
             $movie->format->name
         ]);

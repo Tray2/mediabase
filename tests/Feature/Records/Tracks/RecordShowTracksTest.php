@@ -7,10 +7,10 @@ use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\Track;
 use Database\Seeders\MediaTypeSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
 
-uses(RefreshDatabase::class);
+uses(FastRefreshDatabase::class);
 
 it('shows a list of the records tracks', function () {
     $this->seed(MediaTypeSeeder::class);

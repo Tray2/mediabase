@@ -10,7 +10,8 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "nicebooks/isbn": "^0.3.32"
+        "nicebooks/isbn": "^0.3.32",
+        "plannr/laravel-fast-refresh-database": "^0.0.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

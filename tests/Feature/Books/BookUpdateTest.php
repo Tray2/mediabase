@@ -9,14 +9,14 @@ use App\Models\Publisher;
 use App\Models\Series;
 use Carbon\Carbon;
 use Database\Seeders\MediaTypeSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
 use function Pest\Laravel\put;
 
-uses(RefreshDatabase::class);
+uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $this->seed(MediaTypeSeeder::class);

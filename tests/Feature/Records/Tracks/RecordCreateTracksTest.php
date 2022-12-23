@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\get;
 
-uses(RefreshDatabase::class);
+uses(FastRefreshDatabase::class);
 
 
 it('has a track positions array field', function () {
