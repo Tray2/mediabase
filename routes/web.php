@@ -10,6 +10,7 @@ use App\Http\Controllers\Books\BooksUpdateController;
 use App\Http\Controllers\Movies\MoviesCreateController;
 use App\Http\Controllers\Movies\MoviesIndexController;
 use App\Http\Controllers\Movies\MoviesShowController;
+use App\Http\Controllers\Movies\MoviesStoreController;
 use App\Http\Controllers\Records\RecordsCreateController;
 use App\Http\Controllers\Records\RecordsDeleteController;
 use App\Http\Controllers\Records\RecordsEditController;
@@ -42,3 +43,4 @@ Route::delete('/records/{record}', RecordsDeleteController::class)->name('record
 Route::get('/movies', MoviesIndexController::class)->name('movies.index');
 Route::get('/movies/create', MoviesCreateController::class)->name('movies.create');
 Route::get('/movies/{movie}', MoviesShowController::class)->name('movies.show');
+Route::post('/movies', MoviesStoreController::class)->name('movies.store');
