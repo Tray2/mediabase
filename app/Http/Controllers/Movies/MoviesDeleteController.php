@@ -10,7 +10,7 @@ class MoviesDeleteController extends Controller
     public function __invoke(Movie $movie)
     {
         $movie->delete();
-        
+
         return redirect(route('movies.index'));
     }
 }
