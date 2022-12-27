@@ -11,6 +11,15 @@ class Movie extends Model
 {
     use hasFactory;
 
+    protected $fillable = [
+        'title',
+        'release_year',
+        'runtime',
+        'blurb',
+        'format_id',
+        'genre_id'
+    ];
+
     public function format(): BelongsTo
     {
         return $this->belongsTo(Format::class);

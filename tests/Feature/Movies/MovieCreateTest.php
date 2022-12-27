@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Actor;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
@@ -89,6 +90,25 @@ it('has a release blurb textarea', function () {
         });
 });
 
+it('has an actor field', function () {
+    get(route('movies.create'))
+        ->assertOk()
+        ->assertFormExists(function(AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'actor'
+            ])
+                ->containsInput([
+                    'name' => 'actor[]',
+                    'id' => 'actor',
+                    'list' => 'actors'
+                ])
+                ->containsDatalist([
+                    'id' => 'actors'
+                ]);
+        });
+});
+
+
 it('has a format field', function () {
     get(route('movies.create'))
         ->assertOk()
@@ -146,6 +166,33 @@ it('loads a list of formats that is sorted in alphabetical order', function () {
         });
 });
 
+it('loads a list of actors that is sorted in alphabetical order', function () {
+    Actor::factory()
+        ->count(2)
+        ->sequence(
+            [
+                'last_name' => 'Goodkind',
+                'first_name' => 'Terry',
+            ],
+            [
+                'last_name' => 'Eddings',
+                'first_name' => 'David',
+            ]
+        )
+        ->create();
+
+    get(route('movies.create'))
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->findDatalist('#actors', function (AssertDataList $datalist) {
+                $datalist->containsOptions(
+                    ['value' => 'David Eddings'],
+                    ['value' => 'Terry Goodkind']
+                );
+            });
+        });
+});
+
 it('loads a list of genres that is sorted in alphabetical order', function () {
     Genre::factory()
         ->count(2)
@@ -179,6 +226,16 @@ it('has a submit button', function () {
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
                 'type' => 'submit'
+            ]);
+        });
+});
+
+it('has a add actor button', function () {
+    get(route('movies.create'))
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsButton([
+                'title' => 'Add Actor',
             ]);
         });
 });
