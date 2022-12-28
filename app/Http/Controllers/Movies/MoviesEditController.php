@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Movies;
 
 use App\Http\Controllers\Controller;
+use App\Models\Actor;
 use App\Models\Movie;
 use App\Models\MovieFormatView;
 use App\Models\MovieGenreView;
@@ -19,6 +20,10 @@ class MoviesEditController extends Controller
                     ->get(),
                 'genres' => MovieGenreView::query()
                     ->orderBy('name')
+                    ->get(),
+                'actors' => Actor::query()
+                    ->orderBy('first_name')
+                    ->orderBy('last_name')
                     ->get()
             ]);
     }

@@ -147,7 +147,7 @@ it('shows an error if the isbn is missing', function () {
 
     put(route('books.update', $this->book), $invalidBook)
         ->assertRedirect(route('books.edit', $this->book))
-        ->assertSessionHasErrorsIn('published_year');
+        ->assertSessionHasErrorsIn('isbn');
     get(route('books.edit', $this->book))
         ->assertSeeText('The isbn field is required.');
 });
@@ -158,7 +158,7 @@ it('shows an error if the isbn is not a valid isbn10 or isbn13', function () {
 
     put(route('books.update', $this->book), $invalidBook)
         ->assertRedirect(route('books.edit', $this->book))
-        ->assertSessionHasErrorsIn('published_year');
+        ->assertSessionHasErrorsIn('isbn');
     get(route('books.edit', $this->book))
         ->assertSeeText('The isbn must be a valid ISBN10 or ISBN13.');
 });
@@ -169,7 +169,7 @@ it('shows an error if the blurb is missing', function () {
 
     put(route('books.update', $this->book), $invalidBook)
         ->assertRedirect(route('books.edit', $this->book))
-        ->assertSessionHasErrorsIn('published_year');
+        ->assertSessionHasErrorsIn('blurb');
     get(route('books.edit', $this->book))
         ->assertSeeText('The blurb field is required.');
 });
@@ -180,7 +180,7 @@ it('shows an error if the blurb word count is less than three', function () {
 
     put(route('books.update', $this->book), $invalidBook)
         ->assertRedirect(route('books.edit', $this->book))
-        ->assertSessionHasErrorsIn('published_year');
+        ->assertSessionHasErrorsIn('blurb');
     get(route('books.edit', $this->book))
         ->assertSeeText('The blurb must be at least 3 words.');
 });
@@ -191,7 +191,7 @@ it('shows an error if the part is missing and the book is not standalone', funct
 
     put(route('books.update', $this->book), $invalidBook)
         ->assertRedirect(route('books.edit', $this->book))
-        ->assertSessionHasErrorsIn('published_year');
+        ->assertSessionHasErrorsIn('part');
     get(route('books.edit', $this->book))
         ->assertSeeText('The part is required when book belongs to a series.');
 });
