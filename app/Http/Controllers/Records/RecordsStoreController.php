@@ -6,37 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RecordFormRequest;
 use App\Models\Record;
 use App\Models\Track;
+use App\Services\ForeignKeyService;
+use App\Services\TracksService;
 use Illuminate\Support\Str;
 
 class RecordsStoreController extends Controller
 {
-    public function __invoke(RecordFormRequest $request)
+    public function __invoke(RecordFormRequest $request, TracksService $tracksService, ForeignKeyService $foreignKeyService)
     {
         $valid = $request->validated();
         $record = Record::create(array_merge($valid, [
-            'genre_id' => $request->getGenreId(),
-            'format_id' => $request->getFormatId(),
-            'artist_id' => $request->getArtistId(),
-            'country_id' => $request->getCountryId(),
-            'record_label_id' => $request->getRecordLabelId(),
+            'genre_id' => $foreignKeyService->getGenreId($request->genre_name, 'record'),
+            'format_id' => $foreignKeyService->getFormatId($request->format_name, 'record'),
+            'artist_id' => $foreignKeyService->getArtistId($request->artist),
+            'country_id' => $foreignKeyService->getCountryId($request->country_name),
+            'record_label_id' => $foreignKeyService->getRecordLabelId($request->record_label_name),
         ]));
 
-        $tracks = count($valid['track_positions']);
+        $tracksService->storeTracks([
+            'track_count' => count($valid['track_positions']),
+            'track_positions' => $valid['track_positions'],
+            'track_titles' => $valid['track_titles'],
+            'track_durations' => $valid['track_durations'],
+            'track_mixes' => $valid['track_mixes'] ?? null,
+            'track_artists' => $valid['track_artists'] ?? null,
+            'record_id' => $record->id,
+            'record_artist' => $request->artist
+        ], $foreignKeyService);
 
-        for($i = 0; $i < $tracks; $i++)
-        {
-          $track = [
-              'position' => Str::padLeft($valid['track_positions'][$i], 2, '0'),
-              'title' => $valid['track_titles'][$i],
-              'duration' => $valid['track_durations'][$i],
-              'mix' => $valid['track_mixes'][$i] ?? null,
-              'record_id' => $record->id,
-          ];
-          if ($request->isVariousArtists()) {
-              $track['artist_id'] = $request->getTrackArtistId($valid['track_artists'][$i]);
-          }
-          Track::create($track);
-        }
         return redirect(route('records.index'));
     }
 }

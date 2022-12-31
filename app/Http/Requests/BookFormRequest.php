@@ -13,7 +13,6 @@ use App\Rules\MinWords;
 use App\Rules\RequiredIfNotStandalone;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 
 class BookFormRequest extends FormRequest
 {
@@ -32,59 +31,5 @@ class BookFormRequest extends FormRequest
             'part' => [new RequiredIfNotStandalone($this->series_name)],
 
         ];
-    }
-
-    public function getSeriesId(): int
-    {
-        return Series::firstOrCreate(['name' => $this->series_name])
-            ->value('id');
-    }
-
-    public function getFormatId(): int
-    {
-        return Format::firstOrCreate(
-            ['name' => $this->format_name],
-            ['media_type_id' => MediaType::query()
-                ->where('name', $this->getMediaType())
-                ->value('id'),
-            ])
-            ->value('id');
-    }
-
-    public function getGenreId(): int
-    {
-        return Genre::FirstOrCreate(
-            ['name' => $this->genre_name],
-            ['media_type_id' => MediaType::query()
-                ->where('name', $this->getMediaType())
-                ->value('id'),
-            ])
-            ->value('id');
-    }
-
-    public function getAuthor(): array
-    {
-        $authors = [];
-
-        foreach ($this->author as $author) {
-            [$lastName, $firstName] = explode(', ', $author);
-            $authors[] = Author::firstOrCreate(
-                ['last_name' => $lastName],
-                ['first_name' => $firstName]
-            )->value('id');
-        }
-
-        return $authors;
-    }
-
-    public function getPublisherId(): int
-    {
-        return Publisher::firstOrCreate(['name' => $this->publisher_name])
-            ->value('id');
-    }
-
-    protected function getMediaType(): string
-    {
-        return Str::singular(explode('/', trim($this->getPathInfo(), '/'))[0]);
     }
 }

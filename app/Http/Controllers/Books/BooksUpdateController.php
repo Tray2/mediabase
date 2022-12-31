@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Books;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookFormRequest;
 use App\Models\Book;
+use App\Services\ForeignKeyService;
 
 class BooksUpdateController extends Controller
 {
-    public function __invoke(Book $book, BookFormRequest $request)
+    public function __invoke(Book $book, BookFormRequest $request, ForeignKeyService $foreignKeyService)
     {
         $valid = $request->validated();
 
@@ -17,13 +18,13 @@ class BooksUpdateController extends Controller
         }
 
         $book->update(array_merge($valid, [
-            'genre_id' => $request->getGenreId(),
-            'format_it' => $request->getFormatId(),
-            'series_id' => $request->getSeriesId(),
-            'publisher_id' => $request->getPublisherId(),
+            'genre_id' => $foreignKeyService->getGenreId($request->genre_name, 'book'),
+            'format_it' => $foreignKeyService->getFormatId($request->format_name, 'book'),
+            'series_id' => $foreignKeyService->getSeriesId($request->series_name),
+            'publisher_id' => $foreignKeyService->getPublisherId($request->publisher_name),
         ]));
 
-        $book->authors()->sync($request->getAuthor());
+        $book->authors()->sync($foreignKeyService->getAuthorIds($request->author));
 
         return redirect(route('books.index'));
     }
