@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Records;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RecordFormRequest;
 use App\Models\Record;
-use App\Models\Track;
 use App\Services\ForeignKeyService;
 use App\Services\TracksService;
-use Illuminate\Support\Str;
 
 class RecordsStoreController extends Controller
 {
@@ -31,7 +29,7 @@ class RecordsStoreController extends Controller
             'track_mixes' => $valid['track_mixes'] ?? null,
             'track_artists' => $valid['track_artists'] ?? null,
             'record_id' => $record->id,
-            'record_artist' => $request->artist
+            'record_artist' => $request->artist,
         ], $foreignKeyService);
 
         return redirect(route('records.index'));

@@ -2,12 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Author;
-use App\Models\Format;
-use App\Models\Genre;
-use App\Models\MediaType;
-use App\Models\Publisher;
-use App\Models\Series;
 use App\Rules\Isbn;
 use App\Rules\MinWords;
 use App\Rules\RequiredIfNotStandalone;

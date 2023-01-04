@@ -15,7 +15,7 @@ class MediaTypeSeeder extends Seeder
                 ['name' => 'book'],
                 ['name' => 'record'],
                 ['name' => 'movie'],
-                ['name' => 'game']
+                ['name' => 'game'],
             )->create();
     }
 }

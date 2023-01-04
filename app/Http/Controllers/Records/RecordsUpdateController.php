@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Records;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RecordFormRequest;
 use App\Models\Record;
-use App\Models\Track;
 use App\Services\ForeignKeyService;
 use App\Services\TracksService;
-use Illuminate\Support\Str;
 
 class RecordsUpdateController extends Controller
 {
@@ -20,7 +18,7 @@ class RecordsUpdateController extends Controller
             'format_it' => $foreignKeyService->getFormatId($request->format_name, 'record'),
             'country_id' => $foreignKeyService->getCountryId($request->country_name),
             'record_label_id' => $foreignKeyService->getRecordLabelId($request->record_label_name),
-            'artist_id' => $foreignKeyService->getArtistId($request->artist)
+            'artist_id' => $foreignKeyService->getArtistId($request->artist),
         ]));
 
         $tracksService->updateTracks([
@@ -30,7 +28,7 @@ class RecordsUpdateController extends Controller
             'track_mixes' => $valid['track_mixes'] ?? null,
             'track_artists' => $valid['track_artists'] ?? null,
             'record_id' => $record->id,
-            'record_artist' => $request->artist
+            'record_artist' => $request->artist,
         ], $foreignKeyService);
 
         return redirect(route('records.index'));

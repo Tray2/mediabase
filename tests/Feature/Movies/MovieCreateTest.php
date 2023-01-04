@@ -4,16 +4,14 @@ use App\Models\Actor;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
-use Database\Seeders\MediaTypeSeeder;
+use function Pest\Laravel\get;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-use function Pest\Laravel\get;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'movie')
         ->value('id');
@@ -39,11 +37,11 @@ it('has a title field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'title'
+                'for' => 'title',
             ])
                 ->containsInput([
                     'id' => 'title',
-                    'name' => 'title'
+                    'name' => 'title',
                 ]);
         });
 });
@@ -53,12 +51,12 @@ it('has a release year field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'release_year'
+                'for' => 'release_year',
             ])
                 ->containsInput([
                     'id' => 'release_year',
-                    'name' => 'release_year'
-                ]) ;
+                    'name' => 'release_year',
+                ]);
         });
 });
 
@@ -67,12 +65,12 @@ it('has a runtime field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'runtime'
+                'for' => 'runtime',
             ])
                 ->containsInput([
                     'id' => 'runtime',
-                    'name' => 'runtime'
-                ]) ;
+                    'name' => 'runtime',
+                ]);
         });
 });
 
@@ -81,45 +79,44 @@ it('has a release blurb textarea', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'blurb'
+                'for' => 'blurb',
             ])
                 ->containsTextarea([
                     'id' => 'blurb',
-                    'name' => 'blurb'
-                ]) ;
+                    'name' => 'blurb',
+                ]);
         });
 });
 
 it('has an actor field', function () {
     get(route('movies.create'))
         ->assertOk()
-        ->assertFormExists(function(AssertForm $form) {
+        ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'actor'
+                'for' => 'actor',
             ])
                 ->containsInput([
                     'name' => 'actor[]',
                     'id' => 'actor',
-                    'list' => 'actors'
+                    'list' => 'actors',
                 ])
                 ->containsDatalist([
-                    'id' => 'actors'
+                    'id' => 'actors',
                 ]);
         });
 });
-
 
 it('has a format field', function () {
     get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'format'
+                'for' => 'format',
             ])
                 ->containsInput([
                     'id' => 'format',
                     'name' => 'format_name',
-                    'list' => 'formats'
+                    'list' => 'formats',
                 ]);
         });
 });
@@ -129,12 +126,12 @@ it('has a genres field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'genre'
+                'for' => 'genre',
             ])
                 ->containsInput([
                     'id' => 'genre',
                     'name' => 'genre_name',
-                    'list' => 'genres'
+                    'list' => 'genres',
                 ]);
         });
 });
@@ -225,7 +222,7 @@ it('has a submit button', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
-                'type' => 'submit'
+                'type' => 'submit',
             ]);
         });
 });
@@ -254,17 +251,15 @@ it('loads only formats that are movie formats', function () {
 
     get(route('movies.create'))
         ->assertOk()
-        ->assertFormExists(fn (AssertForm $form) =>
-        $form->findDatalist('#formats', fn (AssertDataList $datalist) =>
-        $datalist->containsOptions([
-            'value' => $movieFormat->name
+        ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#formats', fn (AssertDataList $datalist) => $datalist->containsOptions([
+            'value' => $movieFormat->name,
         ])
             ->doesntContainOptions([
-                'value' => $recordFormat->name
+                'value' => $recordFormat->name,
             ])
         )
         );
-    });
+});
 
 it('loads only genres that are movie genres', function () {
     $movieGenre = Genre::factory()->create([
@@ -279,13 +274,11 @@ it('loads only genres that are movie genres', function () {
     ]);
 
     get(route('movies.create'))
-        ->assertFormExists(fn (AssertForm $form) =>
-        $form->findDatalist('#genres', fn (AssertDataList $datalist) =>
-        $datalist->containsOptions([
-            'value' => $movieGenre->name
+        ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#genres', fn (AssertDataList $datalist) => $datalist->containsOptions([
+            'value' => $movieGenre->name,
         ])
             ->doesntContainOptions([
-                'value' => $recordGenre->name
+                'value' => $recordGenre->name,
             ])
         )
         );

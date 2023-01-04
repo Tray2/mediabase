@@ -6,14 +6,12 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\Track;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 uses(FastRefreshDatabase::class);
 
 it('shows a list of the records tracks', function () {
-    $this->seed(MediaTypeSeeder::class);
     $mediaId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
@@ -24,10 +22,10 @@ it('shows a list of the records tracks', function () {
         ->has(Track::factory()
             ->count(4)
             ->sequence(
-                ['position' => '01', 'title' => 'Track 1', 'duration' => '2:00',],
-                ['position' => '02', 'title' => 'Track 2', 'duration' => '2:03',],
+                ['position' => '01', 'title' => 'Track 1', 'duration' => '2:00'],
+                ['position' => '02', 'title' => 'Track 2', 'duration' => '2:03'],
                 ['position' => '03', 'title' => 'Track 3', 'duration' => '2:05', 'mix' => 'Track 3 Remix'],
-                ['position' => '04', 'title' => 'Track 4', 'duration' => '2:08',]
+                ['position' => '04', 'title' => 'Track 4', 'duration' => '2:08']
             ), 'tracks')
         ->create();
 
@@ -42,7 +40,6 @@ it('shows a list of the records tracks', function () {
 });
 
 it('displays the track artist if it is a various artist compilation record', function () {
-    $this->seed(MediaTypeSeeder::class);
     $mediaId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
@@ -58,7 +55,7 @@ it('displays the track artist if it is a various artist compilation record', fun
                 'position' => '01',
                 'artist_id' => $trackArtist->id,
                 'title' => 'Track 1',
-                'duration' => '2:00',]
+                'duration' => '2:00', ]
             ))
         ->create();
 
@@ -66,5 +63,5 @@ it('displays the track artist if it is a various artist compilation record', fun
         ->assertOk()
         ->assertSeeInOrder([
             '01', 'Public Enemy', 'Track 1', '2:00',
-    ]);
+        ]);
 });

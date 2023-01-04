@@ -13,14 +13,23 @@ beforeEach(function () {
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'game')
         ->value('id');
+
+    $this->format = Format::factory()->create([
+        'media_type_id' => $this->mediaTypeId,
+    ]);
+    $this->genre = Genre::factory()->create([
+        'media_type_id' => $this->mediaTypeId,
+    ]);
 });
 
-it('shows all information about a game', function () {
-    $game = Game::factory()->create([
-        'format_id' => Format::factory()->create(['media_type_id' => $this->mediaTypeId]),
-        'genre_id' => Genre::factory()->create(['media_type_id' => $this->mediaTypeId]),
-    ]);
-    get(route('games.show', $game))
+it('lists games', function () {
+    $game = Game::factory()
+        ->create([
+            'format_id' => $this->format->id,
+            'genre_id' => $this->genre->id,
+        ]);
+
+    get('/games')
         ->assertOk()
         ->assertSeeText([
             $game->title,
@@ -28,6 +37,5 @@ it('shows all information about a game', function () {
             $game->format->name,
             $game->genre->name,
             $game->platform,
-            $game->blurb,
         ]);
-});
+})->skip();

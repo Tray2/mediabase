@@ -2,15 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Artist;
-use App\Models\Country;
-use App\Models\Format;
-use App\Models\Genre;
-use App\Models\MediaType;
-use App\Models\RecordLabel;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 
 class RecordFormRequest extends FormRequest
 {

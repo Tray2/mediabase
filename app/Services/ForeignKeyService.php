@@ -39,14 +39,14 @@ class ForeignKeyService
     public function getSeriesId(string $seriesName): int
     {
         return Series::firstOrCreate([
-            'name' => $seriesName
+            'name' => $seriesName,
         ])->value('id');
     }
 
     public function getPublisherId(string $publisherName): int
     {
         return Publisher::firstOrCreate([
-            'name' => $publisherName
+            'name' => $publisherName,
         ])->value('id');
     }
 
@@ -68,21 +68,21 @@ class ForeignKeyService
     public function getArtistId(string $artist): int
     {
         return Artist::firstOrCreate([
-            'name' => $artist
+            'name' => $artist,
         ])->value('id');
     }
 
     public function getCountryId(string $countryName): int
     {
         return Country::firstOrCreate([
-            'name' => $countryName
+            'name' => $countryName,
         ])->value('id');
     }
 
     public function getRecordLabelId(string $recordLabelName): int
     {
         return RecordLabel::firstOrCreate([
-            'name' => $recordLabelName
+            'name' => $recordLabelName,
         ])->value('id');
     }
 }

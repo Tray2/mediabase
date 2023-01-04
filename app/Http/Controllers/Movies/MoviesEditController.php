@@ -24,7 +24,7 @@ class MoviesEditController extends Controller
                 'actors' => Actor::query()
                     ->orderBy('first_name')
                     ->orderBy('last_name')
-                    ->get()
+                    ->get(),
             ]);
     }
 }

@@ -8,22 +8,20 @@ use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\RecordLabel;
 use App\Models\Track;
-use Database\Seeders\MediaTypeSeeder;
+use function Pest\Laravel\get;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-use function Pest\Laravel\get;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
     $this->record = Record::factory()->create();
     $this->track = Track::factory()->create([
-        'record_id' => $this->record->id
+        'record_id' => $this->record->id,
     ]);
 });
 
@@ -46,14 +44,14 @@ it('has a form with the correct post action and method', function () {
 it('has a title field', function () {
     get(route('records.edit', $this->record))
         ->assertOk()
-        ->assertFormExists(function(AssertForm $form) {
+        ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'title'
+                'for' => 'title',
             ])
                 ->containsInput([
                     'name' => 'title',
                     'id' => 'title',
-                    'value' => $this->record->title
+                    'value' => $this->record->title,
                 ]);
         });
 });
@@ -63,12 +61,12 @@ it('has a barcode field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'barcode'
-             ])
+                'for' => 'barcode',
+            ])
                 ->containsInput([
                     'id' => 'barcode',
                     'name' => 'barcode',
-                    'value' => $this->record->barcode
+                    'value' => $this->record->barcode,
                 ]);
         });
 });
@@ -78,12 +76,12 @@ it('has a spine_code field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'spine_code'
-             ])
+                'for' => 'spine_code',
+            ])
                 ->containsInput([
                     'id' => 'spine_code',
                     'name' => 'spine_code',
-                    'value' => $this->record->spine_code
+                    'value' => $this->record->spine_code,
                 ]);
         });
 });
@@ -93,13 +91,13 @@ it('has a country_name field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'country_name'
-             ])
+                'for' => 'country_name',
+            ])
                 ->containsInput([
                     'id' => 'country_name',
                     'name' => 'country_name',
                     'list' => 'countries',
-                    'value' => $this->record->country_name
+                    'value' => $this->record->country_name,
                 ]);
         });
 });
@@ -109,12 +107,12 @@ it('has a release year field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'release_year'
-             ])
+                'for' => 'release_year',
+            ])
                 ->containsInput([
                     'id' => 'release_year',
                     'name' => 'release_year',
-                    'value' => $this->record->release_year
+                    'value' => $this->record->release_year,
                 ]);
         });
 });
@@ -124,13 +122,13 @@ it('has an artist field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'artist'
-             ])
+                'for' => 'artist',
+            ])
                 ->containsInput([
                     'id' => 'artist',
                     'name' => 'artist',
                     'list' => 'artists',
-                    'value' => $this->record->artist->name
+                    'value' => $this->record->artist->name,
                 ]);
         });
 });
@@ -140,13 +138,13 @@ it('has a format field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'format'
-             ])
+                'for' => 'format',
+            ])
                 ->containsInput([
                     'id' => 'format',
                     'name' => 'format_name',
                     'list' => 'formats',
-                    'value' => $this->record->format->name
+                    'value' => $this->record->format->name,
                 ]);
         });
 });
@@ -156,13 +154,13 @@ it('has a genres field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'genre'
-             ])
+                'for' => 'genre',
+            ])
                 ->containsInput([
                     'id' => 'genre',
                     'name' => 'genre_name',
                     'list' => 'genres',
-                    'value' => $this->record->genre->name
+                    'value' => $this->record->genre->name,
                 ]);
         });
 });
@@ -172,13 +170,13 @@ it('has a record label field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'record_label'
-             ])
+                'for' => 'record_label',
+            ])
                 ->containsInput([
                     'id' => 'record_label',
                     'name' => 'record_label_name',
                     'list' => 'record_labels',
-                    'value' => $this->record->recordLabel->name
+                    'value' => $this->record->recordLabel->name,
                 ]);
         });
 });
@@ -283,9 +281,9 @@ it('has a submit button', function () {
     get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
-                $form->containsInput([
-                    'type' => 'submit'
-                ]);
+            $form->containsInput([
+                'type' => 'submit',
+            ]);
         });
 });
 
@@ -324,9 +322,7 @@ it('loads only formats that are record formats', function () {
 
     get(route('records.edit', $this->record))
         ->assertOk()
-        ->assertFormExists(fn (AssertForm $form) =>
-            $form->findDatalist('#formats', fn (AssertDataList $datalist) =>
-                $datalist->containsOptions(
+        ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#formats', fn (AssertDataList $datalist) => $datalist->containsOptions(
                     ['value' => $recordFormat->name],
                 )
                     ->doesntContainsOptions(
@@ -350,9 +346,7 @@ it('loads only genres that are record genres', function () {
 
     get(route('records.edit', $this->record))
         ->assertOk()
-        ->assertFormExists(fn (AssertForm $form) =>
-        $form->findDatalist('#genres', fn (AssertDataList $datalist) =>
-        $datalist->containsOptions(
+        ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#genres', fn (AssertDataList $datalist) => $datalist->containsOptions(
             ['value' => $recordGenre->name],
         )
             ->doesntContainsOptions(

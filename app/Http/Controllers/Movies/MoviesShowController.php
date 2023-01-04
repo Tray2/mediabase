@@ -11,7 +11,7 @@ class MoviesShowController extends Controller
     {
         return view('movies.show')
             ->with([
-                'movie' => $movie
+                'movie' => $movie,
             ]);
     }
 }

@@ -9,14 +9,13 @@ class TracksService
 {
     public function storeTracks(array $tracks, ForeignKeyService $foreignKeyService): void
     {
-        for($i = 0; $i < $tracks['track_count']; $i++)
-        {
+        for ($i = 0; $i < $tracks['track_count']; $i++) {
             $track = [
                 'position' => Str::padLeft($tracks['track_positions'][$i], 2, '0'),
                 'title' => $tracks['track_titles'][$i],
                 'duration' => $tracks['track_durations'][$i],
                 'mix' => $tracks['track_mixes'][$i] ?? null,
-                'record_id' => $tracks['record_id']
+                'record_id' => $tracks['record_id'],
             ];
             if ($this->isVariousArtists($tracks['record_artist'])) {
                 $track['artist_id'] = $foreignKeyService->getArtistId($tracks['track_artists'][$i]);
@@ -49,6 +48,5 @@ class TracksService
             $track->save();
             $i++;
         }
-
     }
 }

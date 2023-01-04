@@ -6,14 +6,12 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Series;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'book')
         ->value('id');

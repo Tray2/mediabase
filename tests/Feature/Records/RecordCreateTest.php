@@ -6,16 +6,14 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\RecordLabel;
-use Database\Seeders\MediaTypeSeeder;
+use function Pest\Laravel\get;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-use function Pest\Laravel\get;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
@@ -40,13 +38,13 @@ it('has a title field', function () {
     get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
-           $form->containsLabel([
-               'for' => 'title'
-           ])
-            ->containsInput([
-                'id' => 'title',
-                'name' => 'title'
-            ]);
+            $form->containsLabel([
+                'for' => 'title',
+            ])
+             ->containsInput([
+                 'id' => 'title',
+                 'name' => 'title',
+             ]);
         });
 });
 
@@ -55,11 +53,11 @@ it('has a barcode field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'barcode'
+                'for' => 'barcode',
             ])
                 ->containsInput([
                     'id' => 'barcode',
-                    'name' => 'barcode'
+                    'name' => 'barcode',
                 ]);
         });
 });
@@ -68,13 +66,13 @@ it('has a spine_code field', function () {
     get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
-           $form->containsLabel([
-               'for' => 'spine_code'
-           ])
-               ->containsInput([
-                   'id' => 'spine_code',
-                   'name' => 'spine_code'
-               ]);
+            $form->containsLabel([
+                'for' => 'spine_code',
+            ])
+                ->containsInput([
+                    'id' => 'spine_code',
+                    'name' => 'spine_code',
+                ]);
         });
 });
 
@@ -83,7 +81,7 @@ it('has a country_name field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'country_name'
+                'for' => 'country_name',
             ])
                 ->containsInput([
                     'id' => 'country_name',
@@ -98,12 +96,12 @@ it('has a release year field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'release_year'
+                'for' => 'release_year',
             ])
                 ->containsInput([
                     'id' => 'release_year',
-                    'name' => 'release_year'
-                ]) ;
+                    'name' => 'release_year',
+                ]);
         });
 });
 
@@ -112,8 +110,8 @@ it('has an artist field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'artist'
-             ])
+                'for' => 'artist',
+            ])
                 ->containsInput([
                     'id' => 'artist',
                     'name' => 'artist',
@@ -127,12 +125,12 @@ it('has a format field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'format'
-             ])
+                'for' => 'format',
+            ])
                 ->containsInput([
                     'id' => 'format',
                     'name' => 'format_name',
-                    'list' => 'formats'
+                    'list' => 'formats',
                 ]);
         });
 });
@@ -142,12 +140,12 @@ it('has a genres field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'genre'
-             ])
+                'for' => 'genre',
+            ])
                 ->containsInput([
                     'id' => 'genre',
                     'name' => 'genre_name',
-                    'list' => 'genres'
+                    'list' => 'genres',
                 ]);
         });
 });
@@ -157,12 +155,12 @@ it('has a record label field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'record_label'
-             ])
+                'for' => 'record_label',
+            ])
                 ->containsInput([
                     'id' => 'record_label',
                     'name' => 'record_label_name',
-                    'list' => 'record_labels'
+                    'list' => 'record_labels',
                 ]);
         });
 });
@@ -272,8 +270,8 @@ it('has a submit button', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
-                'type' => 'submit'
-             ]);
+                'type' => 'submit',
+            ]);
         });
 });
 
@@ -312,13 +310,11 @@ it('loads only formats that are record formats', function () {
 
     get(route('records.create'))
         ->assertOk()
-        ->assertFormExists(fn (AssertForm $form) =>
-            $form->findDatalist('#formats', fn (AssertDataList $datalist) =>
-                $datalist->containsOptions([
-                    'value' => $recordFormat->name
-                ])
+        ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#formats', fn (AssertDataList $datalist) => $datalist->containsOptions([
+            'value' => $recordFormat->name,
+        ])
                 ->doesntContainOptions([
-                    'value' => $bookFormat->name
+                    'value' => $bookFormat->name,
                 ])
             )
         );
@@ -337,13 +333,11 @@ it('loads only genres that are record genres', function () {
     ]);
 
     get(route('records.create'))
-        ->assertFormExists(fn (AssertForm $form) =>
-        $form->findDatalist('#genres', fn (AssertDataList $datalist) =>
-        $datalist->containsOptions([
-            'value' => $recordGenre->name
+        ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#genres', fn (AssertDataList $datalist) => $datalist->containsOptions([
+            'value' => $recordGenre->name,
         ])
             ->doesntContainOptions([
-                'value' => $bookGenre->name
+                'value' => $bookGenre->name,
             ])
         )
         );

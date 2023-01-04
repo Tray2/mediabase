@@ -1,15 +1,13 @@
 <?php
 
 use App\Models\Record;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\delete;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 uses(FastRefreshDatabase::class);
 
 it('deletes a record', function () {
-    $this->seed(MediaTypeSeeder::class);
     $record = Record::factory()->create();
     assertDatabaseCount(Record::class, 1);
 

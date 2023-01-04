@@ -5,18 +5,16 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use Carbon\Carbon;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
+use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $mediaTypeId = MediaType::query()
         ->where('name', 'movie')
         ->value('id');
@@ -35,14 +33,12 @@ beforeEach(function () {
     get(route('movies.create'));
 });
 
-
 it('stores a valid movie', function () {
     post(route('movies.store', $this->validMovie))
         ->assertRedirect(route('movies.index'));
     assertDatabaseCount('movies', 1);
     assertDatabaseCount('actor_movie', 1);
 });
-
 
 it('stores a valid movie with multiple actors', function () {
     $actor = Actor::factory()->create();
@@ -300,27 +296,27 @@ it('has the old values in the form if the validation fails', function () {
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
                 'name' => 'release_year',
-                'value' => $this->validMovie['release_year']
+                'value' => $this->validMovie['release_year'],
             ])
                 ->containsInput([
                     'name' => 'runtime',
-                    'value' => $this->validMovie['runtime']
+                    'value' => $this->validMovie['runtime'],
                 ])
-                ->contains('textarea',[
+                ->contains('textarea', [
                     'name' => 'blurb',
-                    'value' => $this->validMovie['blurb']
+                    'value' => $this->validMovie['blurb'],
                 ])
                 ->containsInput([
                     'name' => 'format_name',
-                    'value' => $this->validMovie['format_name']
+                    'value' => $this->validMovie['format_name'],
                 ])
                 ->containsInput([
                     'name' => 'actor[]',
-                    'value' => $this->validMovie['actor'][0]
+                    'value' => $this->validMovie['actor'][0],
                 ])
                 ->containsInput([
                     'name' => 'genre_name',
-                    'value' => $this->validMovie['genre_name']
+                    'value' => $this->validMovie['genre_name'],
                 ]);
         });
 });
@@ -337,7 +333,7 @@ it('has the old title value in the form if the validation fails', function () {
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
                 'name' => 'title',
-                'value' => $this->validMovie['title']
+                'value' => $this->validMovie['title'],
             ]);
         });
 });
@@ -354,15 +350,13 @@ it('can handle multiple actors when validation fails', function () {
     post(route('movies.store', $invalidMovie));
     get(route('movies.create'))
         ->assertOk()
-        ->assertFormExists(fn (AssertForm $form) =>
-        $form->containsInput([
+        ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
             'name' => 'actor[]',
-            'value' => $invalidMovie['actor'][0]
+            'value' => $invalidMovie['actor'][0],
         ])
             ->containsInput([
                 'name' => 'actor[]',
-                'value' => $invalidMovie['actor'][1]
+                'value' => $invalidMovie['actor'][1],
             ])
         );
 });
-

@@ -7,14 +7,12 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\RecordLabel;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'record')
         ->value('id');

@@ -66,5 +66,4 @@ class MovieFormRequest extends FormRequest
     {
         return Str::singular(explode('/', trim($this->getPathInfo(), '/'))[0]);
     }
-
 }

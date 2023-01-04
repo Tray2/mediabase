@@ -13,7 +13,7 @@ class ActorFactory extends Factory
     {
         return [
             'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName()
+            'last_name' => $this->faker->lastName(),
         ];
     }
 }

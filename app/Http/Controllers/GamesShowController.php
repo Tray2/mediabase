@@ -10,7 +10,7 @@ class GamesShowController extends Controller
     {
         return view('games.show')
             ->with([
-                'game' => $game
+                'game' => $game,
             ]);
     }
 }

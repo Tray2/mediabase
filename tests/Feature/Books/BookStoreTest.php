@@ -7,18 +7,16 @@ use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
 use Carbon\Carbon;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
+use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $mediaTypeId = MediaType::query()
         ->where('name', 'book')
         ->value('id');
@@ -369,40 +367,40 @@ it('has the old values in the form if the validation fails', function () {
         ->assertSeeText('The title field is required.')
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
-                    'name' => 'published_year',
-                    'value' => $this->validBook['published_year']
-                ])
+                'name' => 'published_year',
+                'value' => $this->validBook['published_year'],
+            ])
                 ->containsInput([
                     'name' => 'isbn',
-                    'value' => $this->validBook['isbn']
+                    'value' => $this->validBook['isbn'],
                 ])
                 ->containsInput([
                     'name' => 'part',
-                    'value' => $this->validBook['part']
+                    'value' => $this->validBook['part'],
                 ])
-                ->contains('textarea',[
+                ->contains('textarea', [
                     'name' => 'blurb',
-                    'value' => $this->validBook['blurb']
+                    'value' => $this->validBook['blurb'],
                 ])
                 ->containsInput([
                     'name' => 'format_name',
-                    'value' => $this->validBook['format_name']
+                    'value' => $this->validBook['format_name'],
                 ])
                 ->containsInput([
                     'name' => 'author[]',
-                    'value' => $this->validBook['author'][0]
+                    'value' => $this->validBook['author'][0],
                 ])
                 ->containsInput([
                     'name' => 'genre_name',
-                    'value' => $this->validBook['genre_name']
+                    'value' => $this->validBook['genre_name'],
                 ])
                 ->containsInput([
                     'name' => 'series_name',
-                    'value' => $this->validBook['series_name']
+                    'value' => $this->validBook['series_name'],
                 ])
                 ->containsInput([
                     'name' => 'publisher_name',
-                    'value' => $this->validBook['publisher_name']
+                    'value' => $this->validBook['publisher_name'],
                 ]);
         });
 });
@@ -418,9 +416,9 @@ it('has the old title value in the form if the validation fails', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
-                    'name' => 'title',
-                    'value' => $this->validBook['title']
-                ]);
+                'name' => 'title',
+                'value' => $this->validBook['title'],
+            ]);
         });
 });
 
@@ -436,14 +434,13 @@ it('can handle multiple authors when validation fails', function () {
     post(route('books.store', $invalidBook));
     get(route('books.create'))
     ->assertOk()
-    ->assertFormExists(fn (AssertForm $form) =>
-        $form->containsInput([
-                'name' => 'author[]',
-                'value' => $invalidBook['author'][0]
-            ])
+    ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
+        'name' => 'author[]',
+        'value' => $invalidBook['author'][0],
+    ])
             ->containsInput([
                 'name' => 'author[]',
-                'value' => $invalidBook['author'][1]
+                'value' => $invalidBook['author'][1],
             ])
     );
 });

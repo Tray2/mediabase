@@ -14,7 +14,7 @@ class MoviesIndexController extends Controller
                 'movies' => Movie::query()
                     ->orderBy('title')
                     ->orderBy('release_year')
-                    ->get()
+                    ->get(),
             ]);
     }
 }

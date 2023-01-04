@@ -12,10 +12,10 @@ class TrackFactory extends Factory
     public function definition(): array
     {
         return [
-            'position' => '0' . $this->faker->randomNumber(1, 9),
+            'position' => '0'.$this->faker->randomNumber(1, 9),
             'title' => $this->faker->jobTitle(),
             'duration' => $this->faker->time('i:s'),
-            'mix' => ''
+            'mix' => '',
         ];
     }
 }

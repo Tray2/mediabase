@@ -1,15 +1,13 @@
 <?php
 
 use App\Models\Movie;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\delete;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 uses(FastRefreshDatabase::class);
 
 it('deletes a movie', function () {
-    $this->seed(MediaTypeSeeder::class);
     $movie = Movie::factory()->create();
     assertDatabaseCount(Movie::class, 1);
 
@@ -17,5 +15,4 @@ it('deletes a movie', function () {
         ->assertRedirect(route('movies.index'));
 
     assertDatabaseCount(Movie::class, 0);
-
 });

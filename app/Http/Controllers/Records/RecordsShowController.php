@@ -22,7 +22,7 @@ class RecordsShowController extends Controller
                     ->where('artist_id', $recordShowView->artist_id)
                     ->whereNot('record_id', $recordShowView->id)
                     ->orderBy('release_year')
-                    ->get()
+                    ->get(),
             ]);
     }
 }

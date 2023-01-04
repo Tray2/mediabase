@@ -6,16 +6,14 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
-use Database\Seeders\MediaTypeSeeder;
+use function Pest\Laravel\get;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-use function Pest\Laravel\get;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'book')
         ->value('id');
@@ -29,7 +27,7 @@ it('can show books.create page', function () {
 it('has a form with the correct post action and method', function () {
     get(route('books.create'))
         ->assertOk()
-        ->assertFormExists(function(AssertForm $form) {
+        ->assertFormExists(function (AssertForm $form) {
             $form->hasMethod('post')
                 ->hasAction(route('books.store'))
                 ->hasCSRF();
@@ -39,9 +37,9 @@ it('has a form with the correct post action and method', function () {
 it('has a title field', function () {
     get(route('books.create'))
         ->assertOk()
-        ->assertFormExists(function(AssertForm $form) {
+        ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'title'
+                'for' => 'title',
             ])
                 ->containsInput([
                     'name' => 'title',
@@ -53,9 +51,9 @@ it('has a title field', function () {
 it('has a published_year field', function () {
     get(route('books.create'))
         ->assertOk()
-        ->assertFormExists(function(AssertForm $form) {
+        ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'published_year'
+                'for' => 'published_year',
             ])
                 ->containsInput([
                     'name' => 'published_year',
@@ -67,51 +65,51 @@ it('has a published_year field', function () {
 it('has an author field', function () {
     get(route('books.create'))
         ->assertOk()
-        ->assertFormExists(function(AssertForm $form) {
-           $form->containsLabel([
-               'for' => 'author'
-           ])
-               ->containsInput([
-                  'name' => 'author[]',
-                   'id' => 'author',
-                   'list' => 'authors'
-               ])
-               ->containsDatalist([
-                   'id' => 'authors'
-               ]);
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'author',
+            ])
+                ->containsInput([
+                    'name' => 'author[]',
+                    'id' => 'author',
+                    'list' => 'authors',
+                ])
+                ->containsDatalist([
+                    'id' => 'authors',
+                ]);
         });
 });
 
 it('has a format field', function () {
     get(route('books.create'))
-        ->assertFormExists(function(AssertForm $form) {
+        ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'format'
+                'for' => 'format',
             ])
                 ->containsInput([
                     'name' => 'format_name',
                     'id' => 'format',
-                    'list' => 'formats'
+                    'list' => 'formats',
                 ])
                 ->containsDatalist([
-                    'id' => 'formats'
+                    'id' => 'formats',
                 ]);
         });
 });
 
 it('has a genres field', function () {
     get(route('books.create'))
-        ->assertFormExists(function(AssertForm $form) {
+        ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'genre'
+                'for' => 'genre',
             ])
                 ->containsInput([
                     'name' => 'genre_name',
                     'id' => 'genre',
-                    'list' => 'genres'
+                    'list' => 'genres',
                 ])
                 ->containsDatalist([
-                    'id' => 'genres'
+                    'id' => 'genres',
                 ]);
         });
 });
@@ -121,11 +119,11 @@ it('has an isbn field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'isbn'
+                'for' => 'isbn',
             ])
                 ->containsInput([
                     'id' => 'isbn',
-                    'name' => 'isbn'
+                    'name' => 'isbn',
                 ]);
         });
 });
@@ -135,11 +133,11 @@ it('has a blurb text area', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'blurb'
+                'for' => 'blurb',
             ])
                 ->containsTextArea([
                     'id' => 'blurb',
-                    'name' => 'blurb'
+                    'name' => 'blurb',
                 ]);
         });
 });
@@ -149,15 +147,15 @@ it('has a series field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'series'
+                'for' => 'series',
             ])
                 ->containsInput([
                     'id' => 'series',
                     'name' => 'series_name',
-                    'list' => 'series-list'
+                    'list' => 'series-list',
                 ])
                 ->containsDatalist([
-                    'id' => 'series-list'
+                    'id' => 'series-list',
                 ]);
         });
 });
@@ -166,11 +164,11 @@ it('has a part field', function () {
     get(route('books.create'))
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'part'
+                'for' => 'part',
             ])
                 ->containsInput([
                     'name' => 'part',
-                    'id' => 'part'
+                    'id' => 'part',
                 ]);
         });
 });
@@ -180,15 +178,15 @@ it('has a publishers field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'publisher'
+                'for' => 'publisher',
             ])
                 ->containsInput([
                     'id' => 'publisher',
                     'name' => 'publisher_name',
-                    'list' => 'publishers'
+                    'list' => 'publishers',
                 ])
                 ->containsDatalist([
-                    'id' => 'publishers'
+                    'id' => 'publishers',
                 ]);
         });
 });
@@ -353,10 +351,10 @@ it('loads only formats that are book formats', function () {
         ->assertFormExists(function (AssertForm $form) use ($bookFormat, $recordFormat) {
             $form->findDatalist('#formats', function (AssertDatalist $datalist) use ($bookFormat, $recordFormat) {
                 $datalist->doesntContainOption([
-                    'value' => $recordFormat->name
+                    'value' => $recordFormat->name,
                 ])
                     ->containsOptions([
-                        'value' => $bookFormat->name
+                        'value' => $bookFormat->name,
                     ]);
             });
         });
@@ -379,15 +377,14 @@ it('loads only genres that are book genres', function () {
         ->assertFormExists(function (AssertForm $form) use ($bookGenre, $recordGenre) {
             $form->findDatalist('#genres', function (AssertDatalist $datalist) use ($bookGenre, $recordGenre) {
                 $datalist->doesntContainOption([
-                    'value' => $recordGenre->name
+                    'value' => $recordGenre->name,
                 ])
                     ->containsOptions([
-                        'value' => $bookGenre->name
+                        'value' => $bookGenre->name,
                     ]);
             });
         });
 });
-
 
 it('loads only genres that are book genres arrow', function () {
     $bookGenre = Genre::factory()->create([
@@ -403,13 +400,11 @@ it('loads only genres that are book genres arrow', function () {
 
     get(route('books.create'))
         ->assertOk()
-        ->assertFormExists(fn (AssertForm $form) =>
-            $form->findDatalist('#genres', fn (AssertDatalist $datalist) =>
-                $datalist->doesntContainOption([
-                    'value' => $recordGenre->name
-                ])
+        ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#genres', fn (AssertDatalist $datalist) => $datalist->doesntContainOption([
+            'value' => $recordGenre->name,
+        ])
                     ->containsOptions([
-                        'value' => $bookGenre->name
+                        'value' => $bookGenre->name,
                     ])
             )
         );

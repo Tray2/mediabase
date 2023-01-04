@@ -5,14 +5,12 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Movie;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'movie')
         ->value('id');
@@ -32,7 +30,7 @@ it('shows all information about a movie', function () {
         'runtime' => 104,
         'format_id' => $this->format->id,
         'genre_id' => $this->genre->id,
-        'blurb' => 'An expedition on its way...'
+        'blurb' => 'An expedition on its way...',
     ]);
     get(route('movies.show', $movie))
         ->assertOk()
@@ -42,7 +40,7 @@ it('shows all information about a movie', function () {
             $movie->format->name,
             $movie->genre->name,
             $movie->runtime,
-            $movie->blurb
+            $movie->blurb,
         ]);
 });
 
@@ -51,14 +49,14 @@ it('shows a list of the actors in the movie', function () {
     $actor2 = Actor::factory()->create();
     $movie = Movie::factory()->create([
         'genre_id' => $this->genre->id,
-        'format_id' => $this->format->id
+        'format_id' => $this->format->id,
     ]);
-    $movie->actors()->attach([ $actor1->id, $actor2->id]);
+    $movie->actors()->attach([$actor1->id, $actor2->id]);
 
     get(route('movies.show', $movie))
         ->assertOk()
         ->assertSee([
             $actor1->full_name,
-            $actor2->full_name
+            $actor2->full_name,
         ]);
 });

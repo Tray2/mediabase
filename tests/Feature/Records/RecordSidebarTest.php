@@ -5,14 +5,12 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Record;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 uses(FastRefreshDatabase::class);
 
-it('shows a list of the artists records excluding the one showing', function() {
-    $this->seed(MediaTypeSeeder::class);
+it('shows a list of the artists records excluding the one showing', function () {
     $recordId = MediaType::query()
         ->where('name', 'Record')
         ->value('id');

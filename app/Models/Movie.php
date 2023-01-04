@@ -17,7 +17,7 @@ class Movie extends Model
         'runtime',
         'blurb',
         'format_id',
-        'genre_id'
+        'genre_id',
     ];
 
     public function format(): BelongsTo

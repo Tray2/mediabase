@@ -6,19 +6,17 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\RecordLabel;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
+use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 uses(FastRefreshDatabase::class);
 
-beforeEach(function() {
-    $this->seed(MediaTypeSeeder::class);
+beforeEach(function () {
     $mediaTypeId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
@@ -40,10 +38,10 @@ beforeEach(function() {
     ];
 
     $this->validTrack = [
-      'track_positions' => ['01'],
-      'track_titles' => ['Some Track Title'],
-      'track_durations' => ['03:20'],
-      'track_mixes' => ['Some Mix'],
+        'track_positions' => ['01'],
+        'track_titles' => ['Some Track Title'],
+        'track_durations' => ['03:20'],
+        'track_mixes' => ['Some Mix'],
     ];
     get(route('records.create'));
 });
@@ -54,8 +52,8 @@ it('stores a valid track without mix', function () {
     post(route('records.store', array_merge($this->record, $validTrack)))
         ->assertRedirect(route('records.index'))
         ->assertSessionDoesntHaveErrors();
-        assertDatabaseCount('records', 1);
-        assertDatabaseCount('tracks', 1);
+    assertDatabaseCount('records', 1);
+    assertDatabaseCount('tracks', 1);
 });
 
 it('stores a valid track with mix', function () {
@@ -234,7 +232,6 @@ it('redirects and shows an error if the mix is not an array', function () {
     assertDatabaseCount('tracks', 0);
     get(route('records.create'))
         ->assertSee('The track mixes field is required.');
-
 });
 
 it('redirects shows an error if the track artists is not an array  on a various artists record', function () {
@@ -282,20 +279,20 @@ it('has the old track values if the validation fails', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
-                    'name' => 'track_positions[]',
-                    'value' => $this->validTrack['track_positions'][0]
-                ])
+                'name' => 'track_positions[]',
+                'value' => $this->validTrack['track_positions'][0],
+            ])
                 ->containsInput([
                     'name' => 'track_titles[]',
-                    'value' => $this->validTrack['track_titles'][0]
+                    'value' => $this->validTrack['track_titles'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_durations[]',
-                    'value' => $this->validTrack['track_durations'][0]
+                    'value' => $this->validTrack['track_durations'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_mixes[]',
-                    'value' => $this->validTrack['track_mixes'][0]
+                    'value' => $this->validTrack['track_mixes'][0],
                 ]);
         });
 });
@@ -313,38 +310,37 @@ it('can handle old values for more than one track if validation fails', function
         ->assertRedirect(route('records.create'));
     get(route('records.create'))
         ->assertOk()
-        ->assertFormExists(fn (AssertForm $form) =>
-            $form->containsInput([
-                    'name' => 'track_positions[]',
-                    'value' => $this->validTrack['track_positions'][0]
-                ])
+        ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
+            'name' => 'track_positions[]',
+            'value' => $this->validTrack['track_positions'][0],
+        ])
                 ->containsInput([
                     'name' => 'track_titles[]',
-                    'value' => $this->validTrack['track_titles'][0]
+                    'value' => $this->validTrack['track_titles'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_durations[]',
-                    'value' => $this->validTrack['track_durations'][0]
+                    'value' => $this->validTrack['track_durations'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_mixes[]',
-                    'value' => $this->validTrack['track_mixes'][0]
+                    'value' => $this->validTrack['track_mixes'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_positions[]',
-                    'value' => $validTrack['track_positions'][0]
+                    'value' => $validTrack['track_positions'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_titles[]',
-                    'value' => $validTrack['track_titles'][0]
+                    'value' => $validTrack['track_titles'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_durations[]',
-                    'value' => $validTrack['track_durations'][0]
+                    'value' => $validTrack['track_durations'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_mixes[]',
-                    'value' => $validTrack['track_mixes'][0]
+                    'value' => $validTrack['track_mixes'][0],
                 ])
         );
 });
@@ -359,26 +355,25 @@ it('shows the old value for the track artist if validation fails for a various a
         ->assertRedirect(route('records.create'));
     get(route('records.create'))
         ->assertOk()
-        ->assertFormExists(fn (AssertForm $form) =>
-            $form->containsInput([
-                    'name' => 'track_positions[]',
-                    'value' => $this->validTrack['track_positions'][0]
-                ])
+        ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
+            'name' => 'track_positions[]',
+            'value' => $this->validTrack['track_positions'][0],
+        ])
                 ->containsInput([
                     'name' => 'track_artists[]',
-                    'value' => $track['track_artists'][0]
+                    'value' => $track['track_artists'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_titles[]',
-                    'value' => $this->validTrack['track_titles'][0]
+                    'value' => $this->validTrack['track_titles'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_durations[]',
-                    'value' => $this->validTrack['track_durations'][0]
+                    'value' => $this->validTrack['track_durations'][0],
                 ])
                 ->containsInput([
                     'name' => 'track_mixes[]',
-                    'value' => $this->validTrack['track_mixes'][0]
+                    'value' => $this->validTrack['track_mixes'][0],
                 ])
         );
 });

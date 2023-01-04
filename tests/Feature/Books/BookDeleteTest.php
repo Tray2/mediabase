@@ -2,15 +2,13 @@
 
 use App\Models\Author;
 use App\Models\Book;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\delete;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
 uses(FastRefreshDatabase::class);
 
 it('deletes a book', function () {
-    $this->seed(MediaTypeSeeder::class);
     $book = Book::factory()->create();
     $book->authors()->attach(Author::factory()->create());
     assertDatabaseCount(Book::class, 1);

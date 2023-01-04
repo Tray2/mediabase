@@ -17,7 +17,7 @@ class MovieFactory extends Factory
             'format_id' => 1,
             'genre_id' => 1,
             'runtime' => '1h 50m',
-            'blurb' => $this->faker->sentence
+            'blurb' => $this->faker->sentence,
         ];
     }
 }

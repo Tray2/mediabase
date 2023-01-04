@@ -7,18 +7,16 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\RecordLabel;
 use Carbon\Carbon;
-use Database\Seeders\MediaTypeSeeder;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-use Sinnbeck\DomAssertions\Asserts\AssertForm;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
+use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(MediaTypeSeeder::class);
     $mediaTypeId = MediaType::query()
         ->where('name', 'record')
         ->value('id');
@@ -268,24 +266,24 @@ it('has the old values in the form if the validation fails', function () {
         ->assertSeeText('The title field is required.')
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
-                    'name' => 'release_year',
-                    'value' => $this->validRecord['release_year']
+                'name' => 'release_year',
+                'value' => $this->validRecord['release_year'],
             ])
                 ->containsInput([
                     'name' => 'artist',
-                    'value' => $this->validRecord['artist']
+                    'value' => $this->validRecord['artist'],
                 ])
                 ->containsInput([
                     'name' => 'format_name',
-                    'value' => $this->validRecord['format_name']
+                    'value' => $this->validRecord['format_name'],
                 ])
                 ->containsInput([
                     'name' => 'genre_name',
-                    'value' => $this->validRecord['genre_name']
+                    'value' => $this->validRecord['genre_name'],
                 ])
                 ->containsInput([
                     'name' => 'record_label_name',
-                    'value' => $this->validRecord['record_label_name']
+                    'value' => $this->validRecord['record_label_name'],
                 ]);
         });
 });
@@ -301,8 +299,8 @@ it('has the old title value in the form if the validation fails', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
-                    'name' => 'title',
-                    'value' => $this->validRecord['title']
-                ]);
+                'name' => 'title',
+                'value' => $this->validRecord['title'],
+            ]);
         });
 });
