@@ -38,4 +38,50 @@ it('lists games', function () {
             $game->genre->name,
             $game->platform,
         ]);
-})->skip();
+});
+
+it('sorts the games by title', function () {
+    Game::factory()
+        ->create([
+            'title' => 'Zelda',
+            'genre_id' => $this->genre->id,
+            'format_id' => $this->format->id
+        ]);
+    Game::factory()
+        ->create([
+            'title' => 'Bazooka Bill',
+            'genre_id' => $this->genre->id,
+            'format_id' => $this->format->id
+        ]);
+
+    get(route('games.index'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            'Bazooka Bill',
+            'Zelda'
+        ]);
+});
+
+it('sorts the games with the same title by year', function () {
+    Game::factory()
+        ->create([
+            'title' => 'Bazooka Bill',
+            'released_year' => 1988,
+            'genre_id' => $this->genre->id,
+            'format_id' => $this->format->id
+        ]);
+    Game::factory()
+        ->create([
+            'title' => 'Bazooka Bill',
+            'released_year' => 1986,
+            'genre_id' => $this->genre->id,
+            'format_id' => $this->format->id
+        ]);
+
+    get(route('games.index'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            1986,
+            1988
+        ]);
+});

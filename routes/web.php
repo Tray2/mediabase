@@ -7,6 +7,7 @@ use App\Http\Controllers\Books\BooksIndexController;
 use App\Http\Controllers\Books\BooksShowController;
 use App\Http\Controllers\Books\BooksStoreController;
 use App\Http\Controllers\Books\BooksUpdateController;
+use App\Http\Controllers\GamesIndexController;
 use App\Http\Controllers\GamesShowController;
 use App\Http\Controllers\Movies\MoviesCreateController;
 use App\Http\Controllers\Movies\MoviesDeleteController;
@@ -52,4 +53,5 @@ Route::get('movies/edit/{movie}', MoviesEditController::class)->name('movies.edi
 Route::put('movies/{movie}', MoviesUpdateController::class)->name('movies.update');
 Route::delete('/movies/{movie}', MoviesDeleteController::class)->name('movies.delete');
 
+Route::get('/games', GamesIndexController::class)->name('games.index');
 Route::get('/games/{game}', GamesShowController::class)->name('games.show');
