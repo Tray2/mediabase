@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Actor;
 use App\Models\Artist;
 use App\Models\Author;
 use App\Models\Country;
@@ -92,5 +93,20 @@ class ForeignKeyService
         return Platform::firstOrCreate([
             'name' => $platformName,
         ])->value('id');
+    }
+
+    public function getActorIds(array $actors): array
+    {
+        $actorIds = [];
+
+        foreach ($actors as $actor) {
+            [$firstName, $lastName] = explode(' ', $actor);
+            $actorIds[] = Actor::firstOrCreate(
+                ['last_name' => $lastName],
+                ['first_name' => $firstName]
+            )->value('id');
+        }
+
+        return $actorIds;
     }
 }
