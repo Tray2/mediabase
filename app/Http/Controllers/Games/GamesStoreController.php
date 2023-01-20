@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Games;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\GameFormRequest;
 use App\Models\Game;
 use App\Services\ForeignKeyService;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Games;
 
+use App\Http\Controllers\Controller;
 use App\Models\Game;
 
 class GamesDeleteController extends Controller
