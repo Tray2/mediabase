@@ -12,7 +12,7 @@ class GamesIndexController extends Controller
             ->with([
                 'games' => Game::query()
                     ->orderBy('title')
-                    ->orderBy('released_year')
+                    ->orderBy('release_year')
                     ->get()
             ]);
     }

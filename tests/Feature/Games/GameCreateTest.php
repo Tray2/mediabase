@@ -3,6 +3,7 @@
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
+use App\Models\Platform;
 use function Pest\Laravel\get;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
@@ -103,6 +104,21 @@ it('has a genres field', function () {
         });
 });
 
+it('has a platform field', function () {
+    get(route('games.create'))
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->containsLabel([
+                'for' => 'platform',
+            ])
+                ->containsInput([
+                    'id' => 'platform',
+                    'name' => 'platform_name',
+                    'list' => 'platforms',
+                ]);
+        });
+});
+
 it('loads a list of formats that is sorted in alphabetical order', function () {
     Format::factory()
         ->count(2)
@@ -152,6 +168,31 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
                 $datalist->containsOptions(
                     ['value' => 'Crime'],
                     ['value' => 'Fantasy']
+                );
+            });
+        });
+});
+
+it('loads a list of platforms that is sorted in alphabetical order', function () {
+    Platform::factory()
+        ->count(2)
+        ->sequence(
+            [
+                'name' => 'Pocket',
+            ],
+            [
+                'name' => 'Hardcover',
+            ]
+        )
+        ->create();
+
+    get(route('games.create'))
+        ->assertOk()
+        ->assertFormExists(function (AssertForm $form) {
+            $form->findDatalist('#platforms', function (AssertDataList $datalist) {
+                $datalist->containsOptions(
+                    ['value' => 'Hardcover'],
+                    ['value' => 'Pocket']
                 );
             });
         });

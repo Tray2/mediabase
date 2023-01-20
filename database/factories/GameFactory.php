@@ -13,7 +13,7 @@ class GameFactory extends Factory
     {
         return [
             'title' => $this->faker->word(),
-            'released_year' => 1991,
+            'release_year' => 1991,
             'format_id' => 1,
             'genre_id' => 1,
             'platform_id' => 1,

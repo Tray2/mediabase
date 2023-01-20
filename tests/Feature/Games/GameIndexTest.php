@@ -4,6 +4,7 @@ use App\Models\Format;
 use App\Models\Game;
 use App\Models\Genre;
 use App\Models\MediaType;
+use App\Models\Platform;
 use function Pest\Laravel\get;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 
@@ -20,6 +21,10 @@ beforeEach(function () {
     $this->genre = Genre::factory()->create([
         'media_type_id' => $this->mediaTypeId,
     ]);
+
+    $this->platform = Platform::factory()->create([
+        'name' => 'PS5'
+    ]);
 });
 
 it('lists games', function () {
@@ -27,16 +32,17 @@ it('lists games', function () {
         ->create([
             'format_id' => $this->format->id,
             'genre_id' => $this->genre->id,
+            'platform_id' => $this->platform->id,
         ]);
 
     get('/games')
         ->assertOk()
         ->assertSeeText([
             $game->title,
-            $game->released_year,
+            $game->release_year,
             $game->format->name,
             $game->genre->name,
-            $game->platform,
+            $game->platform->name,
         ]);
 });
 
@@ -66,14 +72,14 @@ it('sorts the games with the same title by year', function () {
     Game::factory()
         ->create([
             'title' => 'Bazooka Bill',
-            'released_year' => 1988,
+            'release_year' => 1988,
             'genre_id' => $this->genre->id,
             'format_id' => $this->format->id
         ]);
     Game::factory()
         ->create([
             'title' => 'Bazooka Bill',
-            'released_year' => 1986,
+            'release_year' => 1986,
             'genre_id' => $this->genre->id,
             'format_id' => $this->format->id
         ]);

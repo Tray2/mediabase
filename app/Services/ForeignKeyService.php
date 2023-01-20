@@ -8,6 +8,7 @@ use App\Models\Country;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
+use App\Models\Platform;
 use App\Models\Publisher;
 use App\Models\RecordLabel;
 use App\Models\Series;
@@ -83,6 +84,13 @@ class ForeignKeyService
     {
         return RecordLabel::firstOrCreate([
             'name' => $recordLabelName,
+        ])->value('id');
+    }
+
+    public function getPlatformId(string $platformName): int
+    {
+        return Platform::firstOrCreate([
+            'name' => $platformName,
         ])->value('id');
     }
 }

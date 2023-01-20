@@ -7,6 +7,13 @@
     <input type="text" name="released_year" id="released_year" value="{{ $game->released_year }}">
     <label for="blurb">Blurb:</label>
     <textarea name="blurb" id="blurb" >{{ $game->blurb }}</textarea>
+    <label for="platform">Platform</label>
+    <input list="platforms" name="platform_name" id="platform" value="{{ old('platform_name', $game->platform) }}">
+    <datalist id="platforms">
+        @foreach($platforms as $platform)
+            <option value="{{ $platform->name }}"></option>
+        @endforeach
+    </datalist>
     <label for="format">Format</label>
     <input list="formats" name="format_name" id="format" value="{{ old('format_name', $game->format) }}">
     <datalist id="formats">

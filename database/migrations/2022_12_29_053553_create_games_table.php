@@ -14,7 +14,7 @@ class CreateGamesTable extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('released_year');
+            $table->integer('release_year');
             $table->foreignIdFor(Format::class);
             $table->foreignIdFor(Genre::class);
             $table->foreignIdFor(Platform::class);
