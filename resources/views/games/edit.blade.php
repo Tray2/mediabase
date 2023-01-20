@@ -2,9 +2,9 @@
     @csrf
     @method('PUT');
     <label for="title">Title:</label>
-    <input type="text" name="title" id="title" value="{{ $game->title }}">
-    <label for="released_year">Release Year:</label>
-    <input type="text" name="released_year" id="released_year" value="{{ $game->released_year }}">
+    <input type="text" name="title" id="title" value="{{ old('title', $game->title) }}">
+    <label for="release_year">Release Year:</label>
+    <input type="text" name="release_year" id="release_year" value="{{ old('release_year', $game->release_year) }}">
     <label for="blurb">Blurb:</label>
     <textarea name="blurb" id="blurb" >{{ $game->blurb }}</textarea>
     <label for="platform">Platform</label>
@@ -30,3 +30,12 @@
     </datalist>
     <input type="submit" value="Submit">
 </form>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif

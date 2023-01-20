@@ -55,12 +55,12 @@ it('has a release year field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'released_year',
+                'for' => 'release_year',
             ])
                 ->containsInput([
-                    'id' => 'released_year',
-                    'name' => 'released_year',
-                    'value' => $this->game->released_year,
+                    'id' => 'release_year',
+                    'name' => 'release_year',
+                    'value' => $this->game->release_year,
                 ]);
         });
 });
