@@ -4,16 +4,17 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class RequiredIfNotStandalone implements Rule
+class NumericIfNotStandalone implements Rule
 {
     protected string $series;
     protected bool $isArray = false;
+
     public function __construct($series)
     {
         if (is_array($series)) {
             $this->isArray = true;
         }else if ($series === null) {
-            $series = '';
+            $this->series = '';
         } else {
             $this->series = $series;
         }
@@ -24,19 +25,14 @@ class RequiredIfNotStandalone implements Rule
         if ($this->isArray) {
             return false;
         }
-        if ($this->series === '') {
-            return false;
+        if ($this->series === 'Standalone') {
+            return true;
         }
-
-        if ($value === null) {
-            return $this->series === 'Standalone';
-        }
-
-        return true;
+        return is_numeric($value);
     }
 
     public function message(): string
     {
-        return 'The part is required when book belongs to a series.';
+        return 'The part must be a number.';
     }
 }

@@ -74,7 +74,7 @@ it('stores a valid standalone book', function () {
         'name' => 'Standalone',
     ]);
     $validBook = $this->validBook;
-    $validBook['part'] = '';
+    $validBook['part'] = null;
     $validBook['series_name'] = $standalone->name;
 
     post(route('books.store', $validBook))

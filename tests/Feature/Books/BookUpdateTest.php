@@ -74,11 +74,12 @@ it('can update a book with multiple authors into on author', function () {
 });
 
 it('updates a valid standalone book', function () {
+    $this->withoutExceptionHandling();
     $standalone = Series::create([
         'name' => 'Standalone',
     ]);
     $validBook = $this->validBook;
-    $validBook['part'] = '';
+    $validBook['part'] = null;
     $validBook['series_name'] = $standalone->name;
 
     put(route('books.update', $this->book), $validBook)

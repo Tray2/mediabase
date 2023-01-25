@@ -91,6 +91,13 @@ it('fails if the isbn is not a valid isbn10 or isbn13' , function () {
         ->assertValidationMessages(['The isbn must be a valid ISBN10 or ISBN13.']);
 });
 
+it('fails if the isbn is not a string', function () {
+    $this->formRequest(BookFormRequest::class)
+        ->post(['isbn' => ['9781492041214']])
+        ->assertValidationFailed()
+        ->assertValidationMessages(['The isbn must be a string.']);
+});
+
 it('fails if the part is missing and the book belongs to a series' , function () {
     $this->formRequest(BookFormRequest::class)
         ->post(['part' => null, 'series_name' => 'The Wheel Of Time'])
@@ -98,11 +105,26 @@ it('fails if the part is missing and the book belongs to a series' , function ()
         ->assertValidationMessages(['The part is required when book belongs to a series.']);
 });
 
+it('fails if the part is not numeric' , function () {
+    $this->formRequest(BookFormRequest::class)
+        ->post(['part' => 'ten', 'series_name' => 'The Wheel Of Time'])
+        ->assertValidationFailed()
+        ->assertValidationMessages(['The part must be a number.']);
+});
+
+
 it('fails if the author is missing' , function () {
     $this->formRequest(BookFormRequest::class)
         ->post(['author' => ''])
         ->assertValidationFailed()
         ->assertValidationMessages(['The author field is required.']);
+});
+
+it('fails if the author is not an array' , function () {
+    $this->formRequest(BookFormRequest::class)
+        ->post(['author' => 'Jordan, Robert'])
+        ->assertValidationFailed()
+        ->assertValidationMessages(['The author must be an array.']);
 });
 
 it('fails if the genre is missing' , function () {
@@ -112,11 +134,25 @@ it('fails if the genre is missing' , function () {
         ->assertValidationMessages(['The genre name field is required.']);
 });
 
+it('fails if the genre is not a string' , function () {
+    $this->formRequest(BookFormRequest::class)
+        ->post(['genre_name' => ['Some genre']])
+        ->assertValidationFailed()
+        ->assertValidationMessages(['The genre name must be a string.']);
+});
+
 it('fails if the format is missing' , function () {
     $this->formRequest(BookFormRequest::class)
         ->post(['format_name' => ''])
         ->assertValidationFailed()
         ->assertValidationMessages(['The format name field is required.']);
+});
+
+it('fails if the format is not a string' , function () {
+    $this->formRequest(BookFormRequest::class)
+        ->post(['format_name' => ['Some format']])
+        ->assertValidationFailed()
+        ->assertValidationMessages(['The format name must be a string.']);
 });
 
 it('fails if the serie is missing' , function () {
@@ -126,6 +162,13 @@ it('fails if the serie is missing' , function () {
         ->assertValidationMessages(['The series name field is required.']);
 });
 
+it('fails if the series is not a string' , function () {
+    $this->formRequest(BookFormRequest::class)
+        ->post(['series_name' => ['Some Series'], 'part' => 1])
+        ->assertValidationFailed()
+        ->assertValidationMessages(['The series name must be a string.']);
+});
+
 it('fails if the publisher is missing' , function () {
     $this->formRequest(BookFormRequest::class)
         ->post(['publisher_name' => ''])
@@ -133,3 +176,9 @@ it('fails if the publisher is missing' , function () {
         ->assertValidationMessages(['The publisher name field is required.']);
 });
 
+it('fails if the publisher is not a string' , function () {
+    $this->formRequest(BookFormRequest::class)
+        ->post(['publisher_name' => ['Some publisher']])
+        ->assertValidationFailed()
+        ->assertValidationMessages(['The publisher name must be a string.']);
+});
