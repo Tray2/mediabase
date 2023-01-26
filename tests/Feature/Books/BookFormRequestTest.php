@@ -2,10 +2,9 @@
 
 use App\Http\Requests\BookFormRequest;
 use Carbon\Carbon;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use MohammedManssour\FormRequestTester\TestsFormRequests;
 
-uses(FastRefreshDatabase::class, TestsFormRequests::class);
+uses(TestsFormRequests::class);
 
 it('fails if the title is missing', function() {
    $this->formRequest(BookFormRequest::class)
