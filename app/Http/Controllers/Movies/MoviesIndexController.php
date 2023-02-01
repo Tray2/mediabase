@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Movies;
 
 use App\Http\Controllers\Controller;
-use App\Models\Movie;
+use App\Models\MovieIndexView;
 
 class MoviesIndexController extends Controller
 {
@@ -11,7 +11,7 @@ class MoviesIndexController extends Controller
     {
         return view('movies.index')
             ->with([
-                'movies' => Movie::query()
+                'movies' => MovieIndexView::query()
                     ->orderBy('title')
                     ->orderBy('release_year')
                     ->get(),

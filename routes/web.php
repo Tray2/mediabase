@@ -52,16 +52,16 @@ Route::delete('/records/{record}', RecordsDeleteController::class)->name('record
 
 Route::get('/movies', MoviesIndexController::class)->name('movies.index');
 Route::get('/movies/create', MoviesCreateController::class)->name('movies.create');
-Route::get('/movies/{movie}', MoviesShowController::class)->name('movies.show');
+Route::get('/movies/{movieShowView}', MoviesShowController::class)->name('movies.show');
 Route::post('/movies', MoviesStoreController::class)->name('movies.store');
-Route::get('movies/edit/{movie}', MoviesEditController::class)->name('movies.edit');
-Route::put('movies/{movie}', MoviesUpdateController::class)->name('movies.update');
+Route::get('/movies/edit/{movieShowView}', MoviesEditController::class)->name('movies.edit');
+Route::put('/movies/{movie}', MoviesUpdateController::class)->name('movies.update');
 Route::delete('/movies/{movie}', MoviesDeleteController::class)->name('movies.delete');
 
 Route::get('/games', GamesIndexController::class)->name('games.index');
 Route::get('/games/create', GamesCreateController::class)->name('games.create');
-Route::get('/games/{game}', GamesShowController::class)->name('games.show');
+Route::get('/games/{gameShowView}', GamesShowController::class)->name('games.show');
 Route::post('/games', GamesStoreController::class)->name('games.store');
-Route::get('games/edit/{game}', GamesEditController::class)->name('games.edit');
+Route::get('games/edit/{gameShowView}', GamesEditController::class)->name('games.edit');
 Route::put('games/{game}', GamesUpdateController::class)->name('games.update');
 Route::delete('/games/{game}', GamesDeleteController::class)->name('games.delete');

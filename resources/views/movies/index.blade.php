@@ -2,6 +2,6 @@
     {{ $movie->title }}
     {{ $movie->release_year }}
     {{ $movie->runtime }}
-    {{ $movie->format->name }}
-    {{ $movie->genre->name }}
+    {{ $movie->format }}
+    {{ $movie->genre }}
 @endforeach

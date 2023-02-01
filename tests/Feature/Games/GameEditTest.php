@@ -20,6 +20,7 @@ beforeEach(function () {
 });
 
 it('can show games.edit view', function () {
+    $this->withoutExceptionHandling();
     get(route('games.edit', $this->game))
         ->assertOk();
 });
@@ -92,7 +93,7 @@ it('has a format field', function () {
                     'id' => 'format',
                     'name' => 'format_name',
                     'list' => 'formats',
-                    'value' => $this->game->format,
+                    'value' => $this->game->format->name,
                 ]);
         });
 });
@@ -108,7 +109,7 @@ it('has a genres field', function () {
                     'id' => 'genre',
                     'name' => 'genre_name',
                     'list' => 'genres',
-                    'value' => $this->game->genre,
+                    'value' => $this->game->genre->name,
                 ]);
         });
 });
@@ -124,7 +125,7 @@ it('has a platforms field', function () {
                     'id' => 'platform',
                     'name' => 'platform_name',
                     'list' => 'platforms',
-                    'value' => $this->game->platform,
+                    'value' => $this->game->platform->name,
                 ]);
         });
 });

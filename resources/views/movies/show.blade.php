@@ -5,6 +5,6 @@
 {{ $movie->format }}
 {{ $movie->genre }}
 
-@foreach($movie->actors as $actor)
+@foreach($actors as $actor)
     {{ $actor->full_name }}
 @endforeach

@@ -1,6 +1,6 @@
 {{ $game->title }}
 {{ $game->released_year }}
-{{ $game->format->name }}
-{{ $game->genre->name }}
+{{ $game->format }}
+{{ $game->genre }}
 {{ $game->platform }}
 {{ $game->blurb }}

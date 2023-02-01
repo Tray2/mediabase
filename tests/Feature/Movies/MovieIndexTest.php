@@ -27,7 +27,7 @@ it('lists movies', function () {
         ->create([
             'title' => 'Die Hard',
             'release_year' => 1990,
-            'runtime' => '1h 58m',
+            'runtime' => 118,
             'format_id' => $this->format->id,
             'genre_id' => $this->genre->id,
         ]);

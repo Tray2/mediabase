@@ -10,15 +10,15 @@ class RecordFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'artist' => 'required',
-            'title' => 'required',
-            'barcode' => 'required',
-            'spine_code' => 'required',
+            'artist' => ['required', 'string'],
+            'title' => ['required', 'string'],
+            'barcode' => ['required', 'string'],
+            'spine_code' => ['required', 'string'],
             'release_year' => ['required', 'numeric', 'min_digits:4', 'max_digits:4', 'between:1800,'.Carbon::now()->addYear(1)->year],
-            'format_name' => 'required',
-            'genre_name' => 'required',
-            'country_name' => 'required',
-            'record_label_name' => 'required',
+            'format_name' => ['required', 'string'],
+            'genre_name' => ['required', 'string'],
+            'country_name' => ['required', 'string'],
+            'record_label_name' => ['required', 'string'],
             'track_positions' => 'required|array',
             'track_positions.*' => 'required|numeric|min:1|max_digits:2',
             'track_titles' => 'required|array',

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Games;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game;
+use App\Models\GameIndexView;
 
 class GamesIndexController extends Controller
 {
@@ -11,7 +11,7 @@ class GamesIndexController extends Controller
     {
         return view('games.index')
             ->with([
-                'games' => Game::query()
+                'games' => GameIndexView::query()
                     ->orderBy('title')
                     ->orderBy('release_year')
                     ->get()

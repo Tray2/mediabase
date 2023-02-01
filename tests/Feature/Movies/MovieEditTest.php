@@ -105,7 +105,7 @@ it('has a format field', function () {
                     'id' => 'format',
                     'name' => 'format_name',
                     'list' => 'formats',
-                    'value' => $this->movie->format,
+                    'value' => $this->movie->format->name,
                 ]);
         });
 });
@@ -121,7 +121,7 @@ it('has a genres field', function () {
                     'id' => 'genre',
                     'name' => 'genre_name',
                     'list' => 'genres',
-                    'value' => $this->movie->genre,
+                    'value' => $this->movie->genre->name,
                 ]);
         });
 });
