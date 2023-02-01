@@ -1,10 +1,7 @@
 <?php
 
 use function Pest\Laravel\get;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-
-uses(FastRefreshDatabase::class);
 
 it('has a track positions array field', function () {
     get(route('records.create'))

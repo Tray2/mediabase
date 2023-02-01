@@ -5,9 +5,6 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Movie;
 use function Pest\Laravel\get;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-
-uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $this->mediaTypeId = MediaType::query()

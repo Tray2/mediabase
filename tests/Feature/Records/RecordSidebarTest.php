@@ -6,9 +6,6 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Record;
 use function Pest\Laravel\get;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-
-uses(FastRefreshDatabase::class);
 
 it('shows a list of the artists records excluding the one showing', function () {
     $recordId = MediaType::query()

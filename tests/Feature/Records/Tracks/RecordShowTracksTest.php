@@ -7,9 +7,6 @@ use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\Track;
 use function Pest\Laravel\get;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-
-uses(FastRefreshDatabase::class);
 
 it('shows a list of the records tracks', function () {
     $mediaId = MediaType::query()

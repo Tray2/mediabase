@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Books\BooksCreateController;
 use App\Http\Controllers\Books\BooksDeleteController;
 use App\Http\Controllers\Books\BooksEditController;
@@ -21,6 +20,7 @@ use App\Http\Controllers\Movies\MoviesIndexController;
 use App\Http\Controllers\Movies\MoviesShowController;
 use App\Http\Controllers\Movies\MoviesStoreController;
 use App\Http\Controllers\Movies\MoviesUpdateController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Records\RecordsCreateController;
 use App\Http\Controllers\Records\RecordsDeleteController;
 use App\Http\Controllers\Records\RecordsEditController;
@@ -65,3 +65,15 @@ Route::post('/games', GamesStoreController::class)->name('games.store');
 Route::get('games/edit/{gameShowView}', GamesEditController::class)->name('games.edit');
 Route::put('games/{game}', GamesUpdateController::class)->name('games.update');
 Route::delete('/games/{game}', GamesDeleteController::class)->name('games.delete');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

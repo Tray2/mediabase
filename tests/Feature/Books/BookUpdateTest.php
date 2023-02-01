@@ -7,15 +7,11 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
-use Carbon\Carbon;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
 use function Pest\Laravel\put;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-
-uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $mediaTypeId = MediaType::query()

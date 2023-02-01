@@ -8,9 +8,6 @@ use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\RecordLabel;
 use function Pest\Laravel\get;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-
-uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $this->mediaTypeId = MediaType::query()

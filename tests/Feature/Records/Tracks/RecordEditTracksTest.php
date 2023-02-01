@@ -9,10 +9,7 @@ use App\Models\Record;
 use App\Models\RecordLabel;
 use App\Models\Track;
 use function Pest\Laravel\get;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-
-uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $mediaTypeId = MediaType::query()

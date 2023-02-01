@@ -10,10 +10,7 @@ use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-
-uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $mediaTypeId = MediaType::query()

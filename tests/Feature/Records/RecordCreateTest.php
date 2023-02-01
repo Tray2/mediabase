@@ -7,11 +7,8 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\RecordLabel;
 use function Pest\Laravel\get;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-
-uses(FastRefreshDatabase::class);
 
 beforeEach(function () {
     $this->mediaTypeId = MediaType::query()

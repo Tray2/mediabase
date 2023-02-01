@@ -4,9 +4,6 @@ use App\Models\Author;
 use App\Models\Book;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\delete;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-
-uses(FastRefreshDatabase::class);
 
 it('deletes a book', function () {
     $book = Book::factory()->create();

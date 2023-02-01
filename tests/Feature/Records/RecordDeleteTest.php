@@ -3,9 +3,6 @@
 use App\Models\Record;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\delete;
-use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
-
-uses(FastRefreshDatabase::class);
 
 it('deletes a record', function () {
     $record = Record::factory()->create();

@@ -1,5 +1,8 @@
 <?php
 
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
+use Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,7 +14,7 @@
 |
 */
 
-uses(Tests\TestCase::class)->in('Feature');
+uses(TestCase::class, FastRefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
