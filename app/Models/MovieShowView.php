@@ -11,5 +11,4 @@ class MovieShowView extends Model
     {
         return $this->belongsToMany(Actor::class, 'actor_movie', 'movie_id');
     }
-
 }

@@ -8,7 +8,7 @@ use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\RecordLabel;
 use App\Models\Track;
-use function Pest\Laravel\get;
+use App\Models\User;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
@@ -20,15 +20,16 @@ beforeEach(function () {
     $this->track = Track::factory()->create([
         'record_id' => $this->record->id,
     ]);
+    $this->user = User::factory()->create();
 });
 
 it('can show records.edit page', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk();
 });
 
 it('has a form with the correct post action and method', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->hasMethod('post')
@@ -39,7 +40,7 @@ it('has a form with the correct post action and method', function () {
 });
 
 it('has a title field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -54,7 +55,7 @@ it('has a title field', function () {
 });
 
 it('has a barcode field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -69,7 +70,7 @@ it('has a barcode field', function () {
 });
 
 it('has a spine_code field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -84,7 +85,7 @@ it('has a spine_code field', function () {
 });
 
 it('has a country_name field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -100,7 +101,7 @@ it('has a country_name field', function () {
 });
 
 it('has a release year field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -115,7 +116,7 @@ it('has a release year field', function () {
 });
 
 it('has an artist field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -131,7 +132,7 @@ it('has an artist field', function () {
 });
 
 it('has a format field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -147,7 +148,7 @@ it('has a format field', function () {
 });
 
 it('has a genres field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -163,7 +164,7 @@ it('has a genres field', function () {
 });
 
 it('has a record label field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -187,7 +188,7 @@ it('loads a list of artists that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#artists', function (AssertDataList $datalist) {
@@ -214,7 +215,7 @@ it('loads a list of formats that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#formats', function (AssertDataList $datalist) {
@@ -241,7 +242,7 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#genres', function (AssertDataList $datalist) {
@@ -262,7 +263,7 @@ it('loads a list of record labels that is sorted in alphabetical order', functio
         )
         ->create();
 
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#record_labels', function (AssertDataList $datalist) {
@@ -275,7 +276,7 @@ it('loads a list of record labels that is sorted in alphabetical order', functio
 });
 
 it('has a submit button', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
@@ -293,7 +294,7 @@ it('loads a list of countries that is sorted in alphabetical order', function ()
         )
         ->create();
 
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#countries', function (AssertDataList $datalist) {
@@ -317,15 +318,15 @@ it('loads only formats that are record formats', function () {
             ->value('id'),
     ]);
 
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#formats', fn (AssertDataList $datalist) => $datalist->containsOptions(
-                    ['value' => $recordFormat->name],
-                )
+            ['value' => $recordFormat->name],
+        )
                     ->doesntContainsOptions(
                         ['value' => $bookFormat->name]
                     )
-            )
+        )
         );
 });
 
@@ -341,7 +342,7 @@ it('loads only genres that are record genres', function () {
             ->value('id'),
     ]);
 
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#genres', fn (AssertDataList $datalist) => $datalist->containsOptions(
             ['value' => $recordGenre->name],

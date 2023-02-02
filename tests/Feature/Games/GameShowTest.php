@@ -17,7 +17,7 @@ it('shows all information about a game', function () {
     $game = Game::factory()->create([
         'format_id' => Format::factory()->create(['media_type_id' => $this->mediaTypeId]),
         'genre_id' => Genre::factory()->create(['media_type_id' => $this->mediaTypeId]),
-        'platform_id' => Platform::factory()->create(['name' => 'PS5'])
+        'platform_id' => Platform::factory()->create(['name' => 'PS5']),
     ]);
 
     get(route('games.show', $game))

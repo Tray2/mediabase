@@ -12,7 +12,7 @@ class Isbn implements InvokableRule
         $tools = new IsbnTools();
         if (is_array($value)) {
             $fail('The :attribute must be a string.');
-        } else if (! $tools->isValidIsbn($value)) {
+        } elseif (! $tools->isValidIsbn($value)) {
             $fail('The :attribute must be a valid ISBN10 or ISBN13.');
         }
     }

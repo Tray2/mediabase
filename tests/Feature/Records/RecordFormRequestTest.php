@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Requests\RecordFormRequest;
 use Carbon\Carbon;
 use MohammedManssour\FormRequestTester\TestsFormRequests;
@@ -79,7 +80,7 @@ it('fails is the release year is more than a year into the future', function () 
     $this->formRequest(RecordFormRequest::class)
         ->post(['release_year' => Carbon::now()->addYear(2)->year])
         ->assertValidationFailed()
-        ->assertValidationMessages(['The release year must be between 1800 and '. Carbon::now()->addYear(1)->year . '.']);
+        ->assertValidationMessages(['The release year must be between 1800 and '.Carbon::now()->addYear(1)->year.'.']);
 });
 
 it('fails if the genre is missing', function () {

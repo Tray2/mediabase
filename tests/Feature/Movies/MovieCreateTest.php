@@ -4,7 +4,7 @@ use App\Models\Actor;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
-use function Pest\Laravel\get;
+use App\Models\User;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
@@ -12,15 +12,16 @@ beforeEach(function () {
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'movie')
         ->value('id');
+    $this->user = User::factory()->create();
 });
 
 it('can show movies.create view', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk();
 });
 
 it('has a form with the correct post action and method', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->hasMethod('post')
@@ -30,7 +31,7 @@ it('has a form with the correct post action and method', function () {
 });
 
 it('has a title field', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -44,7 +45,7 @@ it('has a title field', function () {
 });
 
 it('has a release year field', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -58,7 +59,7 @@ it('has a release year field', function () {
 });
 
 it('has a runtime field', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -72,7 +73,7 @@ it('has a runtime field', function () {
 });
 
 it('has a release blurb textarea', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -86,7 +87,7 @@ it('has a release blurb textarea', function () {
 });
 
 it('has an actor field', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -104,7 +105,7 @@ it('has an actor field', function () {
 });
 
 it('has a format field', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -119,7 +120,7 @@ it('has a format field', function () {
 });
 
 it('has a genres field', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -148,7 +149,7 @@ it('loads a list of formats that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#formats', function (AssertDataList $datalist) {
@@ -175,7 +176,7 @@ it('loads a list of actors that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#actors', function (AssertDataList $datalist) {
@@ -202,7 +203,7 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#genres', function (AssertDataList $datalist) {
@@ -215,7 +216,7 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
 });
 
 it('has a submit button', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
@@ -225,7 +226,7 @@ it('has a submit button', function () {
 });
 
 it('has a add actor button', function () {
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsButton([
@@ -246,7 +247,7 @@ it('loads only formats that are movie formats', function () {
             ->value('id'),
     ]);
 
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#formats', fn (AssertDataList $datalist) => $datalist->containsOptions([
             'value' => $movieFormat->name,
@@ -270,7 +271,7 @@ it('loads only genres that are movie genres', function () {
             ->value('id'),
     ]);
 
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#genres', fn (AssertDataList $datalist) => $datalist->containsOptions([
             'value' => $movieGenre->name,
         ])

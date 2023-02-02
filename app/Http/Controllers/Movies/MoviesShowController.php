@@ -12,7 +12,7 @@ class MoviesShowController extends Controller
         return view('movies.show')
             ->with([
                 'movie' => $movieShowView,
-                'actors' => $movieShowView->actors
+                'actors' => $movieShowView->actors,
             ]);
     }
 }

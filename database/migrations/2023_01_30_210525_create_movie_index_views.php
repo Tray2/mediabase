@@ -6,7 +6,7 @@ class CreateMovieIndexViews extends Migration
 {
     public function up(): void
     {
-        DB::statement("CREATE OR REPLACE VIEW movie_index_views AS
+        DB::statement('CREATE OR REPLACE VIEW movie_index_views AS
             SELECT m.title,
                    m.release_year,
                    m.runtime,
@@ -17,7 +17,7 @@ class CreateMovieIndexViews extends Migration
                  formats f
             WHERE m.format_id = f.id
             AND m.genre_id = g.id
-        ");
+        ');
     }
 
     public function down(): void

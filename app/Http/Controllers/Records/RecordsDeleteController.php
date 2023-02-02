@@ -7,6 +7,11 @@ use App\Models\Record;
 
 class RecordsDeleteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(Record $record)
     {
         $record->delete();

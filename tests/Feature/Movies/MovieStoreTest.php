@@ -4,10 +4,9 @@ use App\Models\Actor;
 use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
+use App\Models\User;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\get;
-use function Pest\Laravel\post;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 beforeEach(function () {
@@ -26,11 +25,12 @@ beforeEach(function () {
         'format_name' => $this->format->name,
         'actor' => ["{$this->actor->first_name} {$this->actor->last_name}"],
     ];
-    get(route('movies.create'));
+    $this->user = User::factory()->create();
+    actingAs($this->user)->get(route('movies.create'));
 });
 
 it('stores a valid movie', function () {
-    post(route('movies.store', $this->validMovie))
+    actingAs($this->user)->post(route('movies.store', $this->validMovie))
         ->assertRedirect(route('movies.index'));
     assertDatabaseCount('movies', 1);
     assertDatabaseCount('actor_movie', 1);
@@ -44,7 +44,7 @@ it('stores a valid movie with multiple actors', function () {
         "{$actor->first_name} {$actor->last_name}",
     ];
 
-    post(route('movies.store', $validMovie))
+    actingAs($this->user)->post(route('movies.store', $validMovie))
         ->assertRedirect(route('movies.index'));
     assertDatabaseCount('movies', 1);
     assertDatabaseCount('actor_movie', 2);
@@ -54,7 +54,7 @@ it('creates a new actor if the one passed does not exist in the database', funct
     $validMovie = $this->validMovie;
     $validMovie['actor'] = ['Robert Jordan'];
 
-    post(route('movies.store', $validMovie))
+    actingAs($this->user)->post(route('movies.store', $validMovie))
         ->assertRedirect(route('movies.index'));
     assertDatabaseCount('movies', 1);
     assertDatabaseCount('actor_movie', 1);
@@ -65,7 +65,7 @@ it('creates a new genre if the one passed does not exist in the database', funct
     $validMovie = $this->validMovie;
     $validMovie['genre_name'] = 'Fantasy';
 
-    post(route('movies.store', $validMovie))
+    actingAs($this->user)->post(route('movies.store', $validMovie))
         ->assertRedirect(route('movies.index'));
     assertDatabaseCount('movies', 1);
     assertDatabaseCount('actor_movie', 1);
@@ -76,7 +76,7 @@ it('creates a new format if the one passed does not exist in the database', func
     $validMovie = $this->validMovie;
     $validMovie['format_name'] = 'Hardcover';
 
-    post(route('movies.store', $validMovie))
+    actingAs($this->user)->post(route('movies.store', $validMovie))
         ->assertRedirect(route('movies.index'));
     assertDatabaseCount('movies', 1);
     assertDatabaseCount('actor_movie', 1);
@@ -87,10 +87,10 @@ it('has the old values in the form if the validation fails', function () {
     $invalidMovie = $this->validMovie;
     $invalidMovie['title'] = '';
 
-    post(route('movies.store', $invalidMovie))
+    actingAs($this->user)->post(route('movies.store', $invalidMovie))
         ->assertRedirect(route('movies.create'))
         ->assertSessionHasErrorsIn('title');
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertSeeText('The title field is required.')
         ->assertFormExists(function (AssertForm $form) {
@@ -125,10 +125,10 @@ it('has the old title value in the form if the validation fails', function () {
     $invalidMovie = $this->validMovie;
     $invalidMovie['blurb'] = '';
 
-    post(route('movies.store', $invalidMovie))
+    actingAs($this->user)->post(route('movies.store', $invalidMovie))
         ->assertRedirect(route('movies.create'))
         ->assertSessionHasErrorsIn('title');
-    get(route('movies.create'))
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
@@ -147,8 +147,8 @@ it('can handle multiple actors when validation fails', function () {
     ];
 
     $invalidMovie['title'] = '';
-    post(route('movies.store', $invalidMovie));
-    get(route('movies.create'))
+    actingAs($this->user)->post(route('movies.store', $invalidMovie));
+    actingAs($this->user)->get(route('movies.create'))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
             'name' => 'actor[]',

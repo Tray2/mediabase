@@ -9,6 +9,11 @@ use App\Services\ForeignKeyService;
 
 class GamesStoreController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(GameFormRequest $request, ForeignKeyService $foreignKeyService)
     {
         $valid = $request->validated();
@@ -18,6 +23,7 @@ class GamesStoreController extends Controller
             'format_id' => $foreignKeyService->getFormatId($request->format_name, 'game'),
             'platform_id' => $foreignKeyService->getPlatformId($request->platform_name),
         ]));
+
         return redirect(route('games.index'));
     }
 }

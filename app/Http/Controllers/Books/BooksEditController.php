@@ -12,6 +12,11 @@ use App\Models\Series;
 
 class BooksEditController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(BookShowView $bookShowView)
     {
         return view('books.edit')->with([

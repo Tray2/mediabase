@@ -13,6 +13,11 @@ use App\Models\Track;
 
 class RecordsEditController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(RecordShowView $recordShowView)
     {
         return view('records.edit')

@@ -6,10 +6,9 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
+use App\Models\User;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\get;
-use function Pest\Laravel\post;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 beforeEach(function () {
@@ -33,11 +32,12 @@ beforeEach(function () {
         'series_name' => $this->series->name,
         'publisher_name' => $this->publisher->name,
     ];
-    get(route('books.create'));
+    $this->user = User::factory()->create();
+    actingAs($this->user)->get(route('books.create'));
 });
 
 it('stores a valid book', function () {
-    post(route('books.store', $this->validBook))
+    actingAs($this->user)->post(route('books.store', $this->validBook))
     ->assertRedirect(route('books.index'));
     assertDatabaseCount('books', 1);
     assertDatabaseCount('author_book', 1);
@@ -51,7 +51,7 @@ it('stores a valid book with multiple authors', function () {
         "{$author->last_name}, {$author->first_name}",
     ];
 
-    post(route('books.store', $validBook))
+    actingAs($this->user)->post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
     assertDatabaseCount('books', 1);
     assertDatabaseCount('author_book', 2);
@@ -60,9 +60,9 @@ it('stores a valid book with multiple authors', function () {
 it('shows an error if the validation fails', function () {
     $invalidBook = $this->validBook;
     $invalidBook['title'] = '';
-    post(route('books.store', $invalidBook))
+    actingAs($this->user)->post(route('books.store', $invalidBook))
         ->assertRedirect(route('books.create'));
-    get(route('books.create'))
+    actingAs($this->user)->get(route('books.create'))
         ->assertSeeText('The title field is required.');
 });
 
@@ -74,7 +74,7 @@ it('stores a valid standalone book', function () {
     $validBook['part'] = null;
     $validBook['series_name'] = $standalone->name;
 
-    post(route('books.store', $validBook))
+    actingAs($this->user)->post(route('books.store', $validBook))
         ->assertRedirect('/books')
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('books', 1);
@@ -88,7 +88,7 @@ it('removes the part if the book is a standalone', function () {
     $validBook = $this->validBook;
     $validBook['series_name'] = $standalone->name;
 
-    post(route('books.store', $validBook))
+    actingAs($this->user)->post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'))
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('books', 1);
@@ -100,7 +100,7 @@ it('creates a new author if the one passed does not exist in the database', func
     $validBook = $this->validBook;
     $validBook['author'] = ['Jordan, Robert'];
 
-    post(route('books.store', $validBook))
+    actingAs($this->user)->post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
     assertDatabaseCount('books', 1);
     assertDatabaseCount('author_book', 1);
@@ -111,7 +111,7 @@ it('creates a new genre if the one passed does not exist in the database', funct
     $validBook = $this->validBook;
     $validBook['genre_name'] = 'Fantasy';
 
-    post(route('books.store', $validBook))
+    actingAs($this->user)->post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
     assertDatabaseCount('books', 1);
     assertDatabaseCount('author_book', 1);
@@ -122,7 +122,7 @@ it('creates a new format if the one passed does not exist in the database', func
     $validBook = $this->validBook;
     $validBook['format_name'] = 'Hardcover';
 
-    post(route('books.store', $validBook))
+    actingAs($this->user)->post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
     assertDatabaseCount('books', 1);
     assertDatabaseCount('author_book', 1);
@@ -133,7 +133,7 @@ it('creates a new serie if the one passed does not exist in the database', funct
     $validBook = $this->validBook;
     $validBook['series_name'] = 'The Great';
 
-    post(route('books.store', $validBook))
+    actingAs($this->user)->post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
     assertDatabaseCount('books', 1);
     assertDatabaseCount('author_book', 1);
@@ -144,7 +144,7 @@ it('creates a new publisher if the one passed does not exist in the database', f
     $validBook = $this->validBook;
     $validBook['publisher_name'] = 'TOR';
 
-    post(route('books.store', $validBook))
+    actingAs($this->user)->post(route('books.store', $validBook))
         ->assertRedirect(route('books.index'));
     assertDatabaseCount('books', 1);
     assertDatabaseCount('author_book', 1);
@@ -155,10 +155,10 @@ it('has the old values in the form if the validation fails', function () {
     $invalidBook = $this->validBook;
     $invalidBook['title'] = '';
 
-    post(route('books.store', $invalidBook))
+    actingAs($this->user)->post(route('books.store', $invalidBook))
         ->assertRedirect(route('books.create'))
         ->assertSessionHasErrorsIn('title');
-    get(route('books.create'))
+    actingAs($this->user)->get(route('books.create'))
         ->assertOk()
         ->assertSeeText('The title field is required.')
         ->assertFormExists(function (AssertForm $form) {
@@ -205,10 +205,10 @@ it('has the old title value in the form if the validation fails', function () {
     $invalidBook = $this->validBook;
     $invalidBook['blurb'] = '';
 
-    post(route('books.store', $invalidBook))
+    actingAs($this->user)->post(route('books.store', $invalidBook))
         ->assertRedirect(route('books.create'))
         ->assertSessionHasErrorsIn('title');
-    get(route('books.create'))
+    actingAs($this->user)->get(route('books.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
@@ -227,8 +227,8 @@ it('can handle multiple authors when validation fails', function () {
     ];
 
     $invalidBook['title'] = '';
-    post(route('books.store', $invalidBook));
-    get(route('books.create'))
+    actingAs($this->user)->post(route('books.store', $invalidBook));
+    actingAs($this->user)->get(route('books.create'))
     ->assertOk()
     ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
         'name' => 'author[]',

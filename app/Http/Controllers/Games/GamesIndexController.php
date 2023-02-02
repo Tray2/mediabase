@@ -14,7 +14,7 @@ class GamesIndexController extends Controller
                 'games' => GameIndexView::query()
                     ->orderBy('title')
                     ->orderBy('release_year')
-                    ->get()
+                    ->get(),
             ]);
     }
 }

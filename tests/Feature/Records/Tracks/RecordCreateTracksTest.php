@@ -1,10 +1,14 @@
 <?php
 
-use function Pest\Laravel\get;
+use App\Models\User;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
+beforeEach(function () {
+    $this->user = User::factory()->create();
+});
+
 it('has a track positions array field', function () {
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -18,7 +22,7 @@ it('has a track positions array field', function () {
 });
 
 it('has a track titles array field', function () {
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -32,7 +36,7 @@ it('has a track titles array field', function () {
 });
 
 it('has a track durations array field', function () {
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -46,7 +50,7 @@ it('has a track durations array field', function () {
 });
 
 it('has a track mixes array field', function () {
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -60,7 +64,7 @@ it('has a track mixes array field', function () {
 });
 
 it('has a track artists array field', function () {
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([

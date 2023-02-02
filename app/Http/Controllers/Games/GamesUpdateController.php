@@ -9,13 +9,18 @@ use App\Services\ForeignKeyService;
 
 class GamesUpdateController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(Game $game, GameFormRequest $request, ForeignKeyService $foreignKeyService)
     {
         $valid = $request->validated();
 
         $game->update(array_merge($valid, [
             'genre_id' => $foreignKeyService->getGenreId($request->genre_name, 'game'),
-            'format_id' => $foreignKeyService->getFormatId($request->format_name,'game'),
+            'format_id' => $foreignKeyService->getFormatId($request->format_name, 'game'),
             'platform_id' => $foreignKeyService->getPlatformId($request->platform_name),
         ]));
 

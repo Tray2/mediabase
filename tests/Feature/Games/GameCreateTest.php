@@ -4,7 +4,7 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Platform;
-use function Pest\Laravel\get;
+use App\Models\User;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
@@ -12,15 +12,16 @@ beforeEach(function () {
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'game')
         ->value('id');
+    $this->user = User::factory()->create();
 });
 
 it('can show games.create view', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk();
 });
 
 it('has a form with the correct post action and method', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->hasMethod('post')
@@ -30,7 +31,7 @@ it('has a form with the correct post action and method', function () {
 });
 
 it('has a title field', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -44,7 +45,7 @@ it('has a title field', function () {
 });
 
 it('has a release year field', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -58,7 +59,7 @@ it('has a release year field', function () {
 });
 
 it('has a release blurb textarea', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -72,7 +73,7 @@ it('has a release blurb textarea', function () {
 });
 
 it('has a format field', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -87,7 +88,7 @@ it('has a format field', function () {
 });
 
 it('has a genres field', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -102,7 +103,7 @@ it('has a genres field', function () {
 });
 
 it('has a platform field', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -131,7 +132,7 @@ it('loads a list of formats that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#formats', function (AssertDataList $datalist) {
@@ -158,7 +159,7 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#genres', function (AssertDataList $datalist) {
@@ -183,7 +184,7 @@ it('loads a list of platforms that is sorted in alphabetical order', function ()
         )
         ->create();
 
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#platforms', function (AssertDataList $datalist) {
@@ -196,7 +197,7 @@ it('loads a list of platforms that is sorted in alphabetical order', function ()
 });
 
 it('has a submit button', function () {
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
@@ -217,7 +218,7 @@ it('loads only formats that are game formats', function () {
             ->value('id'),
     ]);
 
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#formats', fn (AssertDataList $datalist) => $datalist->containsOptions([
             'value' => $gameFormat->name,
@@ -241,7 +242,7 @@ it('loads only genres that are game genres', function () {
             ->value('id'),
     ]);
 
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#genres', fn (AssertDataList $datalist) => $datalist->containsOptions([
             'value' => $gameGenre->name,
         ])

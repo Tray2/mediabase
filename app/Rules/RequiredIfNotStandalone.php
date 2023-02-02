@@ -7,12 +7,14 @@ use Illuminate\Contracts\Validation\Rule;
 class RequiredIfNotStandalone implements Rule
 {
     protected string $series;
+
     protected bool $isArray = false;
+
     public function __construct($series)
     {
         if (is_array($series)) {
             $this->isArray = true;
-        }else if ($series === null) {
+        } elseif ($series === null) {
             $series = '';
         } else {
             $this->series = $series;

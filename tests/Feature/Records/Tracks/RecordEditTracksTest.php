@@ -8,7 +8,7 @@ use App\Models\MediaType;
 use App\Models\Record;
 use App\Models\RecordLabel;
 use App\Models\Track;
-use function Pest\Laravel\get;
+use App\Models\User;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 beforeEach(function () {
@@ -41,10 +41,11 @@ beforeEach(function () {
         'record_id' => $this->record->id,
     ];
     $this->track = Track::create($this->validTrack);
+    $this->user = User::factory()->create();
 });
 
 it('has the position field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -59,7 +60,7 @@ it('has the position field', function () {
 });
 
 it('has the track titles field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -74,7 +75,7 @@ it('has the track titles field', function () {
 });
 
 it('has the track durations field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -89,7 +90,7 @@ it('has the track durations field', function () {
 });
 
 it('has the track artists field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -103,7 +104,7 @@ it('has the track artists field', function () {
 });
 
 it('has the track mix field', function () {
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -121,7 +122,7 @@ it('handles multiple tracks', function () {
     $validTrack = $this->validTrack;
     $validTrack['position'] = '02';
     $trackTwo = Track::create($validTrack);
-    get(route('records.edit', $this->record))
+    actingAs($this->user)->get(route('records.edit', $this->record))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
             'name' => 'track_positions[]',

@@ -10,6 +10,11 @@ use App\Services\TracksService;
 
 class RecordsStoreController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(RecordFormRequest $request, TracksService $tracksService, ForeignKeyService $foreignKeyService)
     {
         $valid = $request->validated();

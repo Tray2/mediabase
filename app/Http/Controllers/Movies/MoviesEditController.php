@@ -10,6 +10,11 @@ use App\Models\MovieShowView;
 
 class MoviesEditController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(MovieShowView $movieShowView)
     {
         return view('movies.edit')

@@ -1,14 +1,15 @@
 <?php
 
 use App\Models\Movie;
+use App\Models\User;
 use function Pest\Laravel\assertDatabaseCount;
-use function Pest\Laravel\delete;
 
 it('deletes a movie', function () {
+    $this->user = User::factory()->create();
     $movie = Movie::factory()->create();
     assertDatabaseCount(Movie::class, 1);
 
-    delete(route('movies.delete', $movie))
+    actingAs($this->user)->delete(route('movies.delete', $movie))
         ->assertRedirect(route('movies.index'));
 
     assertDatabaseCount(Movie::class, 0);

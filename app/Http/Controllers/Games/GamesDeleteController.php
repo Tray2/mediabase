@@ -7,6 +7,11 @@ use App\Models\Game;
 
 class GamesDeleteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(Game $game)
     {
         $game->delete();

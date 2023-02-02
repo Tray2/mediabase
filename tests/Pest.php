@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Tests\TestCase;
 
@@ -42,7 +43,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function actingAs(Authenticatable $user, string $driver = null): TestCase
 {
-    // ..
+    return test()->actingAs($user, $driver);
 }

@@ -6,11 +6,10 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\RecordLabel;
+use App\Models\User;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
-use function Pest\Laravel\get;
-use function Pest\Laravel\post;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 beforeEach(function () {
@@ -40,13 +39,15 @@ beforeEach(function () {
         'track_durations' => ['03:20'],
         'track_mixes' => ['Some Mix'],
     ];
-    get(route('records.create'));
+
+    $this->user = User::factory()->create();
+    actingAs($this->user)->get(route('records.create'));
 });
 
 it('stores a valid track without mix', function () {
     $validTrack = $this->validTrack;
     $validTrack['track_mixes'][0] = '';
-    post(route('records.store', array_merge($this->record, $validTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $validTrack)))
         ->assertRedirect(route('records.index'))
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('records', 1);
@@ -55,7 +56,7 @@ it('stores a valid track without mix', function () {
 
 it('stores a valid track with mix', function () {
     $validTrack = $this->validTrack;
-    post(route('records.store', array_merge($this->record, $validTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $validTrack)))
         ->assertRedirect(route('records.index'))
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('records', 1);
@@ -67,7 +68,7 @@ it('stores a valid track with for a various artist record', function () {
     $validRecord = $this->record;
     $validRecord['artist'] = 'Various Artists';
     $validTrack['track_artists'] = ['Some Artist'];
-    post(route('records.store', array_merge($validRecord, $validTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($validRecord, $validTrack)))
         ->assertRedirect(route('records.index'))
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('records', 1);
@@ -82,7 +83,7 @@ it('stores multiple valid tracks', function () {
     $validTrack['track_mixes'][] = '';
     $validRecord = $this->record;
 
-    post(route('records.store', array_merge($validRecord, $validTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($validRecord, $validTrack)))
         ->assertRedirect(route('records.index'))
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('records', 1);
@@ -92,43 +93,43 @@ it('stores multiple valid tracks', function () {
 it('redirects and shows an error if the track position is not an array', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_positions'] = '';
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_positions');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track positions field is required.');
 });
 
 it('redirects and shows an error if the track position is an empty array', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_positions'] = [];
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_positions');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track positions field is required.');
 });
 
 it('redirects and shows an error if the track position is not numeric', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_positions'] = ['One'];
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_positions');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track_positions.0 must be a number.');
 });
 
 it('adds a leading zero if the track position is a single digit (1-9)', function () {
     $validTrack = $this->validTrack;
     $validTrack['track_positions'][0] = '1';
-    post(route('records.store', array_merge($this->record, $validTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $validTrack)))
         ->assertRedirect(route('records.index'))
         ->assertSessionDoesntHaveErrors();
     assertDatabaseCount('records', 1);
@@ -138,96 +139,96 @@ it('adds a leading zero if the track position is a single digit (1-9)', function
 it('redirects and shows an error if the track position is less than one ', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_positions'] = ['00'];
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_positions');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track_positions.0 must be at least 1.');
 });
 
 it('redirects and shows an error if the track position is more than two digits', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_positions'] = ['100'];
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_positions');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track_positions.0 must not have more than 2 digits.');
 });
 
 it('redirects and shows an error if the track title is not an array', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_titles'] = '';
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_titles');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track titles field is required.');
 });
 
 it('redirects and shows an error if the track title is an empty array', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_titles'] = '';
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_titles');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track titles field is required.');
 });
 
 it('redirects and shows an error if the duration is not an array', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_durations'] = '';
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_durations');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track durations field is required.');
 });
 
 it('redirects and shows an error if the duration is an empty array', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_durations'] = '';
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_durations');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track durations field is required.');
 });
 
 it('redirects and shows an error if the duration is not in the format minutes:seconds (00:00)', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_durations'] = ['45'];
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_durations');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track_durations.0 does not match the format i:s.');
 });
 
 it('redirects and shows an error if the mix is not an array', function () {
     $invalidTrack = $this->validTrack;
     $invalidTrack['track_mixes'] = '';
-    post(route('records.store', array_merge($this->record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_mixes');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track mixes field is required.');
 });
 
@@ -236,12 +237,12 @@ it('redirects shows an error if the track artists is not an array  on a various 
     $record = $this->record;
     $record['artist'] = 'Various Artists';
     $invalidTrack['track_artists'] = '';
-    post(route('records.store', array_merge($record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_artists');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track artists field is required when artist is Various Artists.');
 });
 
@@ -250,17 +251,17 @@ it('redirects shows an error if the track artists is an empty array  on a variou
     $record = $this->record;
     $record['artist'] = 'Various Artists';
     $invalidTrack['track_artists'] = [];
-    post(route('records.store', array_merge($record, $invalidTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($record, $invalidTrack)))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('track_artists');
     assertDatabaseCount('records', 0);
     assertDatabaseCount('tracks', 0);
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertSee('The track artists field is required when artist is Various Artists.');
 });
 
 it('ignores the track artist if the record artist is not various artists', function () {
-    post(route('records.store', array_merge($this->record, $this->validTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($this->record, $this->validTrack)))
         ->assertRedirect(route('records.index'))
         ->assertSessionHasNoErrors();
     assertDatabaseCount('records', 1);
@@ -270,9 +271,9 @@ it('ignores the track artist if the record artist is not various artists', funct
 it('has the old track values if the validation fails', function () {
     $invalidRecord = $this->record;
     $invalidRecord['title'] = '';
-    post(route('records.store', array_merge($invalidRecord, $this->validTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($invalidRecord, $this->validTrack)))
         ->assertRedirect(route('records.create'));
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
@@ -303,9 +304,9 @@ it('can handle old values for more than one track if validation fails', function
     $validTrack['track_durations'][] = '03:50';
     $validTrack['track_mixes'][] = '';
 
-    post(route('records.store', array_merge($invalidRecord, $validTrack)))
+    actingAs($this->user)->post(route('records.store', array_merge($invalidRecord, $validTrack)))
         ->assertRedirect(route('records.create'));
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
             'name' => 'track_positions[]',
@@ -348,9 +349,9 @@ it('shows the old value for the track artist if validation fails for a various a
     $invalidRecord['title'] = '';
     $track = $this->validTrack;
     $track['track_artists'] = ['Public Enemy'];
-    post(route('records.store', array_merge($invalidRecord, $track)))
+    actingAs($this->user)->post(route('records.store', array_merge($invalidRecord, $track)))
         ->assertRedirect(route('records.create'));
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->containsInput([
             'name' => 'track_positions[]',

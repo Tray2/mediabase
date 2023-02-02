@@ -9,6 +9,11 @@ use App\Services\ForeignKeyService;
 
 class MoviesStoreController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(MovieFormRequest $request, ForeignKeyService $foreignKeyService)
     {
         $valid = $request->validated();

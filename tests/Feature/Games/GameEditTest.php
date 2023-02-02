@@ -1,11 +1,11 @@
 <?php
 
 use App\Models\Format;
+use App\Models\Game;
 use App\Models\Genre;
 use App\Models\MediaType;
-use App\Models\Game;
 use App\Models\Platform;
-use function Pest\Laravel\get;
+use App\Models\User;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
@@ -14,16 +14,16 @@ beforeEach(function () {
         ->where('name', 'game')
         ->value('id');
     $this->game = Game::factory()->create();
+    $this->user = User::factory()->create();
 });
 
 it('can show games.edit view', function () {
-    $this->withoutExceptionHandling();
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk();
 });
 
 it('has a form with the correct post action and method', function () {
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->hasMethod('post')
@@ -34,7 +34,7 @@ it('has a form with the correct post action and method', function () {
 });
 
 it('has a title field', function () {
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -49,7 +49,7 @@ it('has a title field', function () {
 });
 
 it('has a release year field', function () {
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -63,9 +63,8 @@ it('has a release year field', function () {
         });
 });
 
-
 it('has a blurb textarea', function () {
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -80,7 +79,7 @@ it('has a blurb textarea', function () {
 });
 
 it('has a format field', function () {
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -96,7 +95,7 @@ it('has a format field', function () {
 });
 
 it('has a genres field', function () {
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -112,7 +111,7 @@ it('has a genres field', function () {
 });
 
 it('has a platforms field', function () {
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -142,7 +141,7 @@ it('loads a list of formats that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#formats', function (AssertDataList $datalist) {
@@ -169,7 +168,7 @@ it('loads a list of genres that is sorted in alphabetical order', function () {
         )
         ->create();
 
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#genres', function (AssertDataList $datalist) {
@@ -194,7 +193,7 @@ it('loads a list of platforms that is sorted in alphabetical order', function ()
         )
         ->create();
 
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#platforms', function (AssertDataList $datalist) {
@@ -207,7 +206,7 @@ it('loads a list of platforms that is sorted in alphabetical order', function ()
 });
 
 it('has a submit button', function () {
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
@@ -228,7 +227,7 @@ it('loads only formats that are game formats', function () {
             ->value('id'),
     ]);
 
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#formats', fn (AssertDataList $datalist) => $datalist->containsOptions([
             'value' => $gameFormat->name,
@@ -252,7 +251,7 @@ it('loads only genres that are game genres', function () {
             ->value('id'),
     ]);
 
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertFormExists(fn (AssertForm $form) => $form->findDatalist('#genres', fn (AssertDataList $datalist) => $datalist->containsOptions([
             'value' => $gameGenre->name,
         ])

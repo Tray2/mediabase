@@ -7,6 +7,11 @@ use App\Models\Movie;
 
 class MoviesDeleteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(Movie $movie)
     {
         $movie->delete();

@@ -9,6 +9,11 @@ use App\Services\ForeignKeyService;
 
 class BooksUpdateController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(Book $book, BookFormRequest $request, ForeignKeyService $foreignKeyService)
     {
         $valid = $request->validated();

@@ -1,14 +1,13 @@
 <?php
 
 use App\Models\Format;
+use App\Models\Game;
 use App\Models\Genre;
 use App\Models\MediaType;
-use App\Models\Game;
 use App\Models\Platform;
+use App\Models\User;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\get;
-use function Pest\Laravel\put;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 beforeEach(function () {
@@ -27,20 +26,22 @@ beforeEach(function () {
         'blurb' => 'Some boring text',
     ]);
     $this->platform = Platform::factory()->create([
-        'name' => 'PS5'
+        'name' => 'PS5',
     ]);
     $this->validGame = array_merge($this->game->toArray(), [
         'genre_name' => $this->genre->name,
         'format_name' => $this->format->name,
         'platform_name' => $this->platform->name,
     ]);
-    get(route('games.edit', $this->game));
+
+    $this->user = User::factory()->create();
+    actingAs($this->user)->get(route('games.edit', $this->game));
 });
 
 it('updates a valid game', function () {
     $validGame = $this->validGame;
     $validGame['title'] = 'Some New Title';
-    put(route('games.update', $this->game), $validGame)
+    actingAs($this->user)->put(route('games.update', $this->game), $validGame)
         ->assertRedirect(route('games.index'));
     assertDatabaseHas('games', ['title' => 'Some New Title']);
     assertDatabaseCount('games', 1);
@@ -50,7 +51,7 @@ it('creates a new platform if the one passed does not exist in the database', fu
     $validGame = $this->validGame;
     $validGame['platform_name'] = 'Fantasy';
 
-    put(route('games.update', $this->game), $validGame)
+    actingAs($this->user)->put(route('games.update', $this->game), $validGame)
         ->assertRedirect(route('games.index'));
     assertDatabaseCount('games', 1);
     assertDatabaseHas('platforms', ['name' => 'Fantasy']);
@@ -60,7 +61,7 @@ it('creates a new genre if the one passed does not exist in the database', funct
     $validGame = $this->validGame;
     $validGame['genre_name'] = 'Fantasy';
 
-    put(route('games.update', $this->game), $validGame)
+    actingAs($this->user)->put(route('games.update', $this->game), $validGame)
         ->assertRedirect(route('games.index'));
     assertDatabaseCount('games', 1);
     assertDatabaseHas('genres', ['name' => 'Fantasy']);
@@ -70,7 +71,7 @@ it('creates a new format if the one passed does not exist in the database', func
     $validGame = $this->validGame;
     $validGame['format_name'] = 'Hardcover';
 
-    put(route('games.update', $this->game), $validGame)
+    actingAs($this->user)->put(route('games.update', $this->game), $validGame)
         ->assertRedirect(route('games.index'));
     assertDatabaseCount('games', 1);
     assertDatabaseHas('formats', ['name' => 'Hardcover']);
@@ -79,10 +80,10 @@ it('creates a new format if the one passed does not exist in the database', func
 it('has the old values in the form if the validation fails', function () {
     $invalidGame = $this->validGame;
     $invalidGame['title'] = '';
-    put(route('games.update', $this->game), $invalidGame)
+    actingAs($this->user)->put(route('games.update', $this->game), $invalidGame)
         ->assertRedirect(route('games.edit', $this->game))
         ->assertSessionHasErrorsIn('title');
-    get(route('games.edit', $this->game))
+    actingAs($this->user)->get(route('games.edit', $this->game))
         ->assertOk()
         ->assertSeeText('The title field is required.')
         ->assertFormExists(function (AssertForm $form) {
@@ -113,11 +114,11 @@ it('has the old title value in the form if the validation fails', function () {
     $invalidGame = $this->validGame;
     $invalidGame['blurb'] = '';
 
-    put(route('games.update', $this->game), $invalidGame)
+    actingAs($this->user)->put(route('games.update', $this->game), $invalidGame)
         ->assertRedirect(route('games.edit', $this->game))
         ->assertSessionHasErrorsIn('blurb');
 
-    get(route('games.create'))
+    actingAs($this->user)->get(route('games.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([

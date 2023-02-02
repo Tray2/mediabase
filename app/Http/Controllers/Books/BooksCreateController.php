@@ -11,6 +11,11 @@ use App\Models\Series;
 
 class BooksCreateController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke()
     {
         return view('books.create')

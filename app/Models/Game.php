@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Game extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'title',
         'release_year',
         'blurb',
         'format_id',
         'genre_id',
-        'platform_id'
+        'platform_id',
     ];
 
     public function format(): BelongsTo

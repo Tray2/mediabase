@@ -10,6 +10,11 @@ use App\Models\Platform;
 
 class GamesEditController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke(GameShowView $gameShowView)
     {
         return view('games.edit')

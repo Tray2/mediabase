@@ -18,6 +18,7 @@ class MinWords implements Rule
         if (is_array($value)) {
             return false;
         }
+
         return str_word_count($value) >= $this->minWordCount;
     }
 

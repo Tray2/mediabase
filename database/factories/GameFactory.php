@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class GameFactory extends Factory
 {
     protected $model = Game::class;
+
     protected int $mediaTypeId;
 
     protected function getMediaTypeId(): void
@@ -24,6 +25,7 @@ class GameFactory extends Factory
     public function definition(): array
     {
         $this->getMediaTypeId();
+
         return [
             'title' => $this->faker->word(),
             'release_year' => 1991,

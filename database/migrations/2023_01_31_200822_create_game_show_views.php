@@ -6,7 +6,7 @@ class CreateGameShowViews extends Migration
 {
     public function up(): void
     {
-        DB::statement("CREATE OR REPLACE VIEW game_show_views AS
+        DB::statement('CREATE OR REPLACE VIEW game_show_views AS
             SELECT m.id id,
                    m.title,
                    m.release_year,
@@ -21,7 +21,7 @@ class CreateGameShowViews extends Migration
             WHERE m.genre_id = g.id
             AND m.format_id = f.id
             AND m.platform_id = p.id;
-        ");
+        ');
     }
 
     public function down(): void

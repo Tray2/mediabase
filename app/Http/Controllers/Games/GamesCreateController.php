@@ -9,6 +9,11 @@ use App\Models\Platform;
 
 class GamesCreateController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function __invoke()
     {
         return view('games.create')

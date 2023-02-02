@@ -7,25 +7,25 @@ use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Publisher;
 use App\Models\Series;
-use function Pest\Laravel\get;
+use App\Models\User;
 use Sinnbeck\DomAssertions\Asserts\AssertDatalist;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
-
 
 beforeEach(function () {
     $this->mediaTypeId = MediaType::query()
         ->where('name', 'book')
         ->value('id');
     $this->book = Book::factory()->create();
+    $this->user = User::factory()->create();
 });
 
 it('can show books.edit page', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk();
 });
 
 it('contains an update form with the necessary parts for laravel', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->hasMethod('post')
@@ -36,7 +36,7 @@ it('contains an update form with the necessary parts for laravel', function () {
 });
 
 it('contains a title field', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -51,7 +51,7 @@ it('contains a title field', function () {
 });
 
 it('contains a published_year field', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -67,7 +67,7 @@ it('contains a published_year field', function () {
 
 it('contains an author field', function () {
     $this->book->authors()->attach(Author::factory()->create());
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -86,7 +86,7 @@ it('contains an author field', function () {
 });
 
 it('contains a format field', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -105,7 +105,7 @@ it('contains a format field', function () {
 });
 
 it('contains a genre field', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -124,7 +124,7 @@ it('contains a genre field', function () {
 });
 
 it('contains an isbn field', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -139,7 +139,7 @@ it('contains an isbn field', function () {
 });
 
 it('contains a blurb text area', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -155,7 +155,7 @@ it('contains a blurb text area', function () {
 });
 
 it('contains a series field', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -174,7 +174,7 @@ it('contains a series field', function () {
 });
 
 it('contains a part field', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -189,7 +189,7 @@ it('contains a part field', function () {
 });
 
 it('contains a publishers field', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -208,7 +208,7 @@ it('contains a publishers field', function () {
 });
 
 it('contains buttons for adding and removing author inputs', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsButton([
@@ -221,7 +221,7 @@ it('contains buttons for adding and removing author inputs', function () {
 });
 
 it('contains a submit button', function () {
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([
@@ -233,7 +233,7 @@ it('contains a submit button', function () {
 it('contains an author field for each author', function () {
     $this->book->authors()->attach(Author::factory()->create());
     $this->book->authors()->attach(Author::factory()->create());
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
@@ -271,7 +271,7 @@ it('contains a list of authors', function () {
                 'last_name' => 'Goodkind',
             ])->create();
 
-    get(route('books.edit', $this->book))
+    actingAs($this->user)->get(route('books.edit', $this->book))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#authors', function (AssertDataList $datalist) {
@@ -298,7 +298,7 @@ it('contains a list of formats', function () {
         )
         ->create();
 
-    get(route('books.create'))
+    actingAs($this->user)->get(route('books.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#formats', function (AssertDataList $datalist) {
@@ -325,7 +325,7 @@ it('contains a list of genres', function () {
         )
         ->create();
 
-    get(route('books.create'))
+    actingAs($this->user)->get(route('books.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#genres', function (AssertDataList $datalist) {
@@ -346,7 +346,7 @@ it('contains a list of series', function () {
         )
         ->create();
 
-    get(route('books.create'))
+    actingAs($this->user)->get(route('books.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#series-list', function (AssertDataList $datalist) {
@@ -367,7 +367,7 @@ it('contains a list of publishers', function () {
         )
         ->create();
 
-    get(route('books.create'))
+    actingAs($this->user)->get(route('books.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->findDatalist('#publishers', function (AssertDataList $datalist) {

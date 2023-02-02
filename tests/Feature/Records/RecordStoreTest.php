@@ -6,10 +6,9 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\RecordLabel;
+use App\Models\User;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\get;
-use function Pest\Laravel\post;
 use Sinnbeck\DomAssertions\Asserts\AssertForm;
 
 beforeEach(function () {
@@ -35,21 +34,21 @@ beforeEach(function () {
         'track_titles' => ['Some Track'],
         'track_durations' => ['03:50'],
     ];
-    get(route('records.create'));
+    $this->user = User::factory()->create();
+    actingAs($this->user)->get(route('records.create'));
 });
 
 it('stores a valid record', function () {
-    post(route('records.store', $this->validRecord))
+    actingAs($this->user)->post(route('records.store', $this->validRecord))
         ->assertRedirect(route('records.index'));
     assertDatabaseCount('records', 1);
 });
-
 
 it('creates a new artist if the one passed does not exist in the database', function () {
     $validRecord = $this->validRecord;
     $validRecord['artist'] = 'Public Enemy';
 
-    post(route('records.store', $validRecord))
+    actingAs($this->user)->post(route('records.store', $validRecord))
         ->assertRedirect(route('records.index'));
     assertDatabaseCount('records', 1);
 });
@@ -58,7 +57,7 @@ it('creates a new genre if the one passed does not exist in the database', funct
     $validRecord = $this->validRecord;
     $validRecord['genre_name'] = 'Fantasy';
 
-    post(route('records.store', $validRecord))
+    actingAs($this->user)->post(route('records.store', $validRecord))
         ->assertRedirect(route('records.index'));
     assertDatabaseCount('records', 1);
     assertDatabaseHas('genres', ['name' => 'Fantasy']);
@@ -68,18 +67,17 @@ it('creates a new country if the one passed does not exist in the database', fun
     $validRecord = $this->validRecord;
     $validRecord['country_name'] = 'Fantasy';
 
-    post(route('records.store', $validRecord))
+    actingAs($this->user)->post(route('records.store', $validRecord))
         ->assertRedirect(route('records.index'));
     assertDatabaseCount('records', 1);
     assertDatabaseHas('countries', ['name' => 'Fantasy']);
 });
 
-
 it('creates a new format if the one passed does not exist in the database', function () {
     $validRecord = $this->validRecord;
     $validRecord['format_name'] = 'Hardcover';
 
-    post(route('records.store', $validRecord))
+    actingAs($this->user)->post(route('records.store', $validRecord))
         ->assertRedirect(route('records.index'));
     assertDatabaseCount('records', 1);
     assertDatabaseHas('formats', ['name' => 'Hardcover']);
@@ -89,7 +87,7 @@ it('creates a new record label if the one passed does not exist in the database'
     $validRecord = $this->validRecord;
     $validRecord['record_label_name'] = 'TOR';
 
-    post(route('records.store', $validRecord))
+    actingAs($this->user)->post(route('records.store', $validRecord))
         ->assertRedirect(route('records.index'));
     assertDatabaseCount('records', 1);
     assertDatabaseHas('record_labels', ['name' => 'TOR']);
@@ -99,10 +97,10 @@ it('has the old values in the form if the validation fails', function () {
     $invalidRecord = $this->validRecord;
     $invalidRecord['title'] = '';
 
-    post(route('records.store', $invalidRecord))
+    actingAs($this->user)->post(route('records.store', $invalidRecord))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('title');
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertSeeText('The title field is required.')
         ->assertFormExists(function (AssertForm $form) {
@@ -133,10 +131,10 @@ it('has the old title value in the form if the validation fails', function () {
     $invalidRecord = $this->validRecord;
     $invalidRecord['release_year'] = '';
 
-    post(route('records.store', $invalidRecord))
+    actingAs($this->user)->post(route('records.store', $invalidRecord))
         ->assertRedirect(route('records.create'))
         ->assertSessionHasErrorsIn('title');
-    get(route('records.create'))
+    actingAs($this->user)->get(route('records.create'))
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsInput([

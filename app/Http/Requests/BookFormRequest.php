@@ -20,7 +20,7 @@ class BookFormRequest extends FormRequest
                 'numeric',
                 'min_digits:4',
                 'max_digits:4',
-                'between:1800,'.Carbon::now()->addYear(1)->year
+                'between:1800,'.Carbon::now()->addYear(1)->year,
             ],
             'isbn' => ['required', new Isbn()],
             'blurb' => ['required', 'string', new MinWords(3)],
@@ -31,7 +31,7 @@ class BookFormRequest extends FormRequest
             'publisher_name' => ['required', 'string'],
             'part' => [
                 new RequiredIfNotStandalone($this->series_name),
-                new NumericIfNotStandalone($this->series_name)
+                new NumericIfNotStandalone($this->series_name),
             ],
         ];
     }
