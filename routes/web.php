@@ -7,8 +7,7 @@ routesForModel('books');
 routesForModel('games');
 routesForModel('movies');
 routesForModel('records');
-
-require __DIR__.'/auth.php';
+authRoutes();
 
 Route::get('/dashboard', function () {
     return view('dashboard');
