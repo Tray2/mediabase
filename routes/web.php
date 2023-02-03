@@ -3,10 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__.'/Models/books.php';
-require __DIR__.'/Models/games.php';
-require __DIR__.'/Models/movies.php';
-require __DIR__.'/Models/records.php';
+routesForModel('books');
+routesForModel('games');
+routesForModel('movies');
+routesForModel('records');
+
 require __DIR__.'/auth.php';
 
 Route::get('/dashboard', function () {
