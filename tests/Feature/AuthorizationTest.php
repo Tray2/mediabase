@@ -17,6 +17,7 @@ it('redirects to login if a guest tries to access the Create and Edit routes', f
     'movies.edit',
     'records.create',
     'records.edit',
+    'profile.edit'
 ]);
 
 it('redirects to login if a guest tries to access the Store routes', function ($route) {
@@ -37,6 +38,7 @@ it('redirects to login if a guest tries to access the Update routes', function (
     'games.update',
     'movies.update',
     'records.update',
+    'profile.update'
 ]);
 
 it('redirects to login if a guest tries to access the Delete routes', function ($route) {
@@ -47,4 +49,5 @@ it('redirects to login if a guest tries to access the Delete routes', function (
     'games.delete',
     'movies.delete',
     'records.delete',
+    'profile.destroy'
 ]);
