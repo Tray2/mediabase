@@ -1,32 +1,22 @@
 <form action="{{ route('games.store') }}" method="post">
     @csrf
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title" value="{{ old('title') }}">
-    <label for="release_year">Release year</label>
-    <input type="text" id="release_year" name="release_year" value="{{ old('release_year') }}">
-    <label for="blurb">Blurb</label>
-    <textarea name="blurb" id="blurb" value="{{ old('blurb') }}"></textarea>
-    <label for="platform">Platform</label>
-    <input type="text" list="platforms" id="platform" name="platform_name" value="{{ old('platform_name') }}">
-    <label for="format">Format</label>
-    <input type="text" list="formats" id="format" name="format_name" value="{{ old('format_name') }}" >
-    <label for="genre">Genre</label>
-    <input type="text" list="genres" id="genre" name="genre_name" value="{{ old('genre_name') }}">
-    <datalist id="genres">
-        @foreach($genres as $genre)
-            <option value="{{ $genre->name }}"></option>
-        @endforeach
-    </datalist>
-    <datalist id="formats">
-        @foreach($formats as $format)
-            <option value="{{ $format->name }}"></option>
-        @endforeach
-    </datalist>
-    <datalist id="platforms">
-        @foreach($platforms as $platform)
-            <option value="{{ $platform->name }}"></option>
-        @endforeach
-    </datalist>
-    <input type="submit" value="Submit">
+    <x-text-input-mb field="title"
+                     placeholder="Title..." />
+    <x-text-input-mb field="release_year"
+                     placeholder="YYYY" />
+    <x-textarea-mb field="blurb" />
+    <x-datalist-mb field="platform"
+                           placeholder="Platform..."
+                           listname="platforms"
+                           :data="$platforms" />
+    <x-datalist-mb field="format"
+                   placeholder="Format..."
+                   listname="formats"
+                   :data="$formats"/>
+    <x-datalist-mb field="genre"
+                   placeholder="Genre..."
+                   listname="genres"
+                   :data="$genres"/>
+    <x-submit-mb />
 </form>
 <x-validation_errors></x-validation_errors>

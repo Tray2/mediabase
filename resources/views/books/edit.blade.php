@@ -46,4 +46,4 @@
                     value="{{ $book->publisher }}"/>
     <x-submit-mb />
 </form>
-<x-validation-errors />
+<x-validation_errors />
