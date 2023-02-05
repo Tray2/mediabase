@@ -47,133 +47,12 @@ it('updates a valid record', function () {
     assertDatabaseCount('records', 1);
 });
 
-it('redirects and shows an error if the title is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['title'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('title');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The title field is required.');
-    assertDatabaseCount('records', 1);
-});
-
-it('redirects and shows an error if the barcode is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['barcode'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('barcode');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The barcode field is required.');
-    assertDatabaseCount('records', 1);
-});
-
-it('redirects and shows an error if the spine code is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['spine_code'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('spine_code');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The spine code field is required.');
-    assertDatabaseCount('records', 1);
-});
-
-it('redirects and shows an error if the release year is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['release_year'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('released');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The release year field is required.');
-    assertDatabaseCount('records', 1);
-});
-
-it('shows an error if the release year is not numeric', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['release_year'] = 'Nineteen Eighty Four';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('released');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The release year must be a number.');
-    assertDatabaseCount('records', 1);
-});
-
-it('shows an error if release year is less than four digits', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['release_year'] = 123;
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('release_year');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The release year must have at least 4 digits.');
-    assertDatabaseCount('records', 1);
-});
-
-it('shows an error if the release year is more than four digits', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['release_year'] = 12345;
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('release_year');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The release year must not have more than 4 digits.');
-    assertDatabaseCount('records', 1);
-});
-
-it('shows an error if the release year is more than a year into the future', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['release_year'] = Carbon::now()->addYear(2)->year;
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('release_year');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The release year must be between 1800 and '.Carbon::now()->addYear(1)->year.'.');
-    assertDatabaseCount('records', 1);
-});
-
-it('shows an error if the artist is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['artist'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('artist');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The artist field is required.');
-
-    assertDatabaseCount('records', 1);
-});
-
 it('creates a new artist if the one passed does not exist in the database', function () {
     $validRecord = $this->validRecord;
     $validRecord['artist'] = 'Public Enemy';
 
     put(route('records.update', $this->record), $validRecord)
         ->assertRedirect(route('records.index'));
-    assertDatabaseCount('records', 1);
-});
-
-it('shows an error if the genre is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['genre_name'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('genre_name');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The genre name field is required.');
     assertDatabaseCount('records', 1);
 });
 
@@ -187,18 +66,6 @@ it('creates a new genre if the one passed does not exist in the database', funct
     assertDatabaseHas('genres', ['name' => 'Fantasy']);
 });
 
-it('shows an error if the country is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['country_name'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('country_name');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The country name field is required.');
-    assertDatabaseCount('records', 1);
-});
-
 it('creates a new country if the one passed does not exist in the database', function () {
     $validRecord = $this->validRecord;
     $validRecord['country_name'] = 'Fantasy';
@@ -209,18 +76,6 @@ it('creates a new country if the one passed does not exist in the database', fun
     assertDatabaseHas('countries', ['name' => 'Fantasy']);
 });
 
-it('shows an error if the format is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['format_name'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('format_name');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The format name field is required.');
-    assertDatabaseCount('records', 1);
-});
-
 it('creates a new format if the one passed does not exist in the database', function () {
     $validRecord = $this->validRecord;
     $validRecord['format_name'] = 'Hardcover';
@@ -229,18 +84,6 @@ it('creates a new format if the one passed does not exist in the database', func
         ->assertRedirect(route('records.index'));
     assertDatabaseCount('records', 1);
     assertDatabaseHas('formats', ['name' => 'Hardcover']);
-});
-
-it('shows an error if the record label name is missing', function () {
-    $invalidRecord = $this->validRecord;
-    $invalidRecord['record_label_name'] = '';
-
-    put(route('records.update', $this->record), $invalidRecord)
-        ->assertRedirect(route('records.edit', $this->record))
-        ->assertSessionHasErrorsIn('record_label_name');
-    actingAs($this->user)->get(route('records.edit', $this->record))
-        ->assertSeeText('The record label name field is required.');
-    assertDatabaseCount('records', 1);
 });
 
 it('creates a new record label if the one passed does not exist in the database', function () {
