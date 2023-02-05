@@ -79,10 +79,10 @@ it('has a country_name field', function () {
         ->assertOk()
         ->assertFormExists(function (AssertForm $form) {
             $form->containsLabel([
-                'for' => 'country_name',
+                'for' => 'country',
             ])
                 ->containsInput([
-                    'id' => 'country_name',
+                    'id' => 'country',
                     'name' => 'country_name',
                     'list' => 'countries',
                 ]);
