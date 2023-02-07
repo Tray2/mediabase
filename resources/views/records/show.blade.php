@@ -1,40 +1,44 @@
-{{ $record->artist }}
-{{ $record->title }}
-{{ $record->release_year }}
-{{ $record->format }}
-{{ $record->genre }}
-{{ $record->spine_code }}
-{{ $record->barcode }}
-{{ $record->country }}
-{{ $record->record_label }}
+@extends('layouts.master')
+@section('main')
 
-<h2>Track Listing:</h2>
-<table>
-    <tr>
-        <th>Track</th>
-        @if($record->isVarious())
-            <th>Artist</th>
-        @endif
-        <th>Title</th>
-        <th>Duration</th>
-        <th>Mix</th>
-    </tr>
-    @foreach($tracks as $track)
+    {{ $record->artist }}
+    {{ $record->title }}
+    {{ $record->release_year }}
+    {{ $record->format }}
+    {{ $record->genre }}
+    {{ $record->spine_code }}
+    {{ $record->barcode }}
+    {{ $record->country }}
+    {{ $record->record_label }}
+
+    <h2>Track Listing:</h2>
+    <table>
         <tr>
-            <td>{{ $track->position }}</td>
+            <th>Track</th>
             @if($record->isVarious())
-                <td>{{ $track->artist }}</td>
+                <th>Artist</th>
             @endif
-            <td>{{ $track->title }}</td>
-            <td>{{ $track->duration }}</td>
-            <td>{{ $track->mix }}</td>
+            <th>Title</th>
+            <th>Duration</th>
+            <th>Mix</th>
         </tr>
-    @endforeach
-</table>
-@if($otherRecords->count() > 0)
-    <ul>
-        @foreach($otherRecords as $record)
-            {{ $record->title }}
+        @foreach($tracks as $track)
+            <tr>
+                <td>{{ $track->position }}</td>
+                @if($record->isVarious())
+                    <td>{{ $track->artist }}</td>
+                @endif
+                <td>{{ $track->title }}</td>
+                <td>{{ $track->duration }}</td>
+                <td>{{ $track->mix }}</td>
+            </tr>
         @endforeach
-    </ul>
-@endif
+    </table>
+    @if($otherRecords->count() > 0)
+        <ul>
+            @foreach($otherRecords as $record)
+                {{ $record->title }}
+            @endforeach
+        </ul>
+    @endif
+@endsection

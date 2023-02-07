@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function() {
+   return view('welcome');
+});
+
 routesForModel('books');
 routesForModel('games');
 routesForModel('movies');
