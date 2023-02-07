@@ -5,7 +5,6 @@ use App\Models\Game;
 use App\Models\Movie;
 use App\Models\Record;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
 
@@ -21,7 +20,7 @@ beforeEach(function() {
 
 it('has a menu containing the different media types', function ($route, $media) {
     actingAs($this->user)
-        ->get(route($route, $this->$media))
+        ->get(route($route, $media))
         ->assertOk()
         ->assertSeeText([
             'Books',
@@ -30,22 +29,22 @@ it('has a menu containing the different media types', function ($route, $media) 
             'Records'
             ]);
 })->with([
-    ['books.index', 'book'],
-    ['books.create', 'book'],
-    ['books.show', 'book'],
-    ['books.edit', 'book'],
-    ['games.index', 'game'],
-    ['games.create', 'game'],
-    ['games.show', 'game'],
-    ['games.edit', 'game'],
-    ['movies.index', 'movie'],
-    ['movies.create', 'movie'],
-    ['movies.show', 'movie'],
-    ['movies.edit', 'movie'],
-    ['records.index', 'record'],
-    ['records.create', 'record'],
-    ['records.show', 'record'],
-    ['records.edit', 'record'],
+    ['books.index', 'book' => fn() => $this->book],
+    ['books.create', 'book' => fn() => $this->book],
+    ['books.show', 'book' => fn() => $this->book],
+    ['books.edit', 'book' => fn() => $this->book],
+    ['games.index', 'game' => fn() => $this->game],
+    ['games.create', 'game' => fn() => $this->game],
+    ['games.show', 'game' => fn() => $this->game],
+    ['games.edit', 'game' => fn() => $this->game],
+    ['movies.index', 'movie' => fn() => $this->movie],
+    ['movies.create', 'movie' => fn() => $this->movie],
+    ['movies.show', 'movie' => fn() => $this->movie],
+    ['movies.edit', 'movie' => fn() => $this->movie],
+    ['records.index', 'record' => fn() => $this->record],
+    ['records.create', 'record' => fn() => $this->record],
+    ['records.show', 'record' => fn() => $this->record],
+    ['records.edit', 'record' => fn() => $this->record ],
 ]);
 
 it('shows the log in link for a guest', function () {
