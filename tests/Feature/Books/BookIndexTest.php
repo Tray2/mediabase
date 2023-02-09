@@ -6,6 +6,9 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Series;
+use App\Models\User;
+use Database\Seeders\MediaTypeSeeder;
+use Sinnbeck\DomAssertions\Asserts\AssertElement;
 use function Pest\Laravel\get;
 
 beforeEach(function () {
@@ -180,4 +183,156 @@ it('sorts books with multiple authors by the first author in alphabetical order'
             'Jordan, Robert',
             'Sanderson, Brandon',
         ]);
+});
+
+it('display a link to the books.create route when a user is signed in', function () {
+    actingAs(User::factory()->create())
+        ->get(route('books.index'))
+        ->assertElementExists(function(AssertElement $element) {
+            $element->contains('a', ['href' => route('books.create')]);
+        });
+});
+
+it('does not display a link to the books.create route for a guest', function () {
+    get(route('books.index'))
+        ->assertElementExists(function(AssertElement $element) {
+            $element->doesntContain('a', ['href' => route('books.create')]);
+        });
+});
+
+it('has a link to the books.show route for each title', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $book = Book::factory()->create();
+    get(route('books.index'))
+        ->assertElementExists(function(AssertElement $element) use($book) {
+            $element->contains('a', ['href' => route('books.show', $book->id)]);
+        });
+});
+
+it('has a link to filter on authors', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $book = Book::factory()->create();
+    $author = Author::factory()->create();
+    $book->authors()->attach($author->id);
+    get(route('books.index'))
+        ->assertElementExists(function(AssertElement $element) use($author) {
+            $element->contains('a', ['href' => route('books.index', ['authors' => $author->id])]);
+        });
+});
+
+it('has a link to filter on multiple authors', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $book = Book::factory()->create();
+    $author1 = Author::factory()->create();
+    $author2 = Author::factory()->create();
+
+    $book->authors()->attach([$author1->id, $author2->id]);
+    get(route('books.index'))
+        ->assertElementExists(function(AssertElement $element) use($author1, $author2) {
+            $element->contains('a', ['href' => Str::replace('%2C', ',', route('books.index', ['authors' => $author1->id . ',' . $author2->id]))]);
+        });
+});
+
+it('has a link to filter on published year', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $book = Book::factory()->create();
+    get(route('books.index'))
+        ->assertElementExists(function(AssertElement $element) use($book) {
+            $element
+                ->contains('a', ['href' => route('books.index', ['published' => $book->published_year])]);
+        });
+});
+
+it('has a link to filter on genre', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $book = Book::factory()->create();
+    get(route('books.index'))
+        ->assertElementExists(function(AssertElement $element) use($book) {
+            $element
+                ->contains('a', ['href' => route('books.index', ['genre' => $book->genre->name])]);
+        });
+});
+
+it('has a link to filter on format', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $book = Book::factory()->create();
+    get(route('books.index'))
+        ->assertElementExists(function(AssertElement $element) use($book) {
+            $element
+                ->contains('a', ['href' => route('books.index', ['format' => $book->format->name])]);
+        });
+});
+
+it('filters on the author if the query string contains an author id', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee = Book::factory()->create();
+    $bookNotToSee = Book::factory()->create();
+    $authorToSee = Author::factory()->create();
+    $authorNotToSee = Author::factory()->create();
+
+    $bookToSee->authors()->attach([$authorToSee->id]);
+    $bookNotToSee->authors()->attach([$authorNotToSee->id]);
+    get(route('books.index', ['authors' => $authorToSee->id]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('filters on the authors if the query string contains more than one author id', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee1 = Book::factory()->create();
+    $bookToSee2 = Book::factory()->create();
+    $bookNotToSee = Book::factory()->create();
+    $authorToSee1 = Author::factory()->create();
+    $authorToSee2 = Author::factory()->create();
+    $authorNotToSee = Author::factory()->create();
+
+    $bookToSee1->authors()->attach([$authorToSee1->id]);
+    $bookToSee2->authors()->attach([$authorToSee2->id]);
+    $bookNotToSee->authors()->attach([$authorNotToSee->id]);
+    $route = Str::replace('%2C', ',', route('books.index',
+        ['authors' => $authorToSee1->id . ',' . $authorToSee2->id]));
+    get($route)
+        ->assertOk()
+        ->assertSeeText([$bookToSee1->title, $bookToSee2->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('filters on the published year if the query string contains a year', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee1 = Book::factory()->create(['published_year' => 2002]);
+    $bookNotToSee = Book::factory()->create(['published_year' => 2001]);
+
+    get(route('books.index', ['published' => 2002]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee1->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('filters on the genre if the query string contains a genre', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookMediaId = MediaType::where('name', 'book')->value('id');
+    $genreToSee = Genre::factory()->create(['media_type_id' => $bookMediaId]);
+    $genreNotToSee = Genre::factory()->create(['media_type_id' => $bookMediaId]);
+    $bookToSee1 = Book::factory()->create(['genre_id' => $genreToSee->id]);
+    $bookNotToSee = Book::factory()->create(['genre_id' => $genreNotToSee->id]);
+
+    get(route('books.index', ['genre' => $genreToSee->name]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee1->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('filters on the format if the query string contains a format', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookMediaId = MediaType::where('name', 'book')->value('id');
+    $formatToSee = Format::factory()->create(['media_type_id' => $bookMediaId]);
+    $formatNotToSee = Format::factory()->create(['media_type_id' => $bookMediaId]);
+    $bookToSee1 = Book::factory()->create(['format_id' => $formatToSee->id]);
+    $bookNotToSee = Book::factory()->create(['format_id' => $formatNotToSee->id]);
+
+    get(route('books.index', ['format' => $formatToSee->name]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee1->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
 });
