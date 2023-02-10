@@ -13,22 +13,22 @@ class BooksIndexController extends Controller
         return view('books.index')
             ->with([
                 'books' => BookIndexView::query()
-                    ->when($request->authors, function ($query, $authors) {
+                    ->when($request['authors'], function ($query, $authors) {
                         $query->whereIn('author_id',
                             array_map('intval',
                                 explode(',',
                                     $authors)));
                     })
-                    ->when($request->published, function ($query, $published) {
+                    ->when($request['published'], function ($query, $published) {
                         $query->where('published_year', $published);
                     })
-                    ->when($request->genre, function ($query, $genre) {
+                    ->when($request['genre'], function ($query, $genre) {
                         $query->where('genre', $genre);
                     })
                     ->when($request['format'], function ($query, $format) {
                         $query->where('format', $format);
                     })
-                    ->when($request->search, function ($query, $search) {
+                    ->when($request['search'], function ($query, $search) {
                         $query->where('title', 'LIKE',  "%$search%")
                         ->orWhere('author_name', 'LIKE', "%$search%")
                         ->orWhere('series', 'LIKE', "%$search%");
