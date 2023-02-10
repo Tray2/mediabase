@@ -373,7 +373,6 @@ it('filters on the author when the query string contains a search term', functio
         ->assertOk()
         ->assertSeeText([$bookToSee->title])
         ->assertDontSeeText([$bookNotToSee->title]);
-
 });
 
 it('filters on the series when the query string contains a search term', function () {
@@ -381,6 +380,53 @@ it('filters on the series when the query string contains a search term', functio
     $bookToSee = Book::factory()->create();
     $bookNotToSee = Book::factory()->create();
     get(route('books.index', ['search' => $bookToSee->series->name]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('filters on partial titles', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee = Book::factory()->create(['title' => 'The Dragon Reborn']);
+    $bookNotToSee = Book::factory()->create(['title' => 'Pawn Of Prophecy']);
+
+    get(route('books.index', ['search' => 'Drag']))
+        ->assertOk()
+        ->assertSeeText([$bookToSee->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('has case insensitive search', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee = Book::factory()->create(['title' => 'The Dragon Reborn']);
+    $bookNotToSee = Book::factory()->create(['title' => 'Pawn Of Prophecy']);
+
+    get(route('books.index', ['search' => 'tHe DragOn rebOrn']))
+        ->assertOk()
+        ->assertSeeText([$bookToSee->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('filters on partial authors', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee = Book::factory()->create();
+    $bookNotToSee = Book::factory()->create();
+    $authorToSee = Author::factory()->create(['first_name' => 'Robert', 'last_name' => 'Jordan']);
+    $authorNotToSee = Author::factory()->create();
+
+    $bookToSee->authors()->attach([$authorToSee->id]);
+    $bookNotToSee->authors()->attach([$authorNotToSee->id]);
+    get(route('books.index', ['search' => $authorToSee->first_name]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('filters on partial series', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee = Book::factory()->create(['series_id' => Series::factory()->create(['name' =>'The Wheel Of Time'])]);
+    $bookNotToSee = Book::factory()->create();
+    get(route('books.index', ['search' => 'Wheel']))
         ->assertOk()
         ->assertSeeText([$bookToSee->title])
         ->assertDontSeeText([$bookNotToSee->title]);

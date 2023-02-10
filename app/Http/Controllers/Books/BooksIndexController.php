@@ -29,9 +29,9 @@ class BooksIndexController extends Controller
                         $query->where('format', $format);
                     })
                     ->when($request->search, function ($query, $search) {
-                        $query->where('title', $search)
-                        ->orWhere('author_name', $search)
-                        ->orWhere('series', $search);
+                        $query->where('title', 'LIKE',  "%$search%")
+                        ->orWhere('author_name', 'LIKE', "%$search%")
+                        ->orWhere('series', 'LIKE', "%$search%");
                     })
                     ->orderBy('author_name')
                     ->orderBy('series')
