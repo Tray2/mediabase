@@ -15,9 +15,7 @@ class BooksIndexController extends Controller
                 'books' => BookIndexView::query()
                     ->when($request['authors'], function ($query, $authors) {
                         $query->whereIn('author_id',
-                            array_map('intval',
-                                explode(',',
-                                    $authors)));
+                            $this->numericStringToArray($authors));
                     })
                     ->when($request['published'], function ($query, $published) {
                         $query->where('published_year', $published);
@@ -39,5 +37,12 @@ class BooksIndexController extends Controller
                     ->orderBy('published_year')
                     ->get(),
             ]);
+    }
+
+    protected function numericStringToArray($authors): array
+    {
+        return array_map('intval',
+            explode(',',
+                $authors));
     }
 }
