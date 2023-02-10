@@ -4,6 +4,7 @@
         @auth()
             <a id="add-book" href="{{ route('books.create') }}">Add Book</a>
         @endauth
+            <a href="{{ route('books.index') }}">Show All</a>
         <table>
             <tr>
                 <th>Author:</th>

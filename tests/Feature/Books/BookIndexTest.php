@@ -336,3 +336,52 @@ it('filters on the format if the query string contains a format', function () {
         ->assertSeeText([$bookToSee1->title])
         ->assertDontSeeText([$bookNotToSee->title]);
 });
+
+it('has a link to reset any filters applied', function () {
+    get(route('books.index'))
+        ->assertOk()
+        ->assertElementExists(function(AssertElement $element) {
+            $element
+                ->contains('main > a', [
+                    'href' => route('books.index'),
+                    'text' => 'Show All',
+                ]);
+        });
+});
+
+it('filters on the title when the query string contains a search term', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee = Book::factory()->create();
+    $bookNotToSee = Book::factory()->create();
+
+    get(route('books.index', ['search' => $bookToSee->title]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});
+
+it('filters on the author when the query string contains a search term', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee = Book::factory()->create();
+    $bookNotToSee = Book::factory()->create();
+    $authorToSee = Author::factory()->create();
+    $authorNotToSee = Author::factory()->create();
+
+    $bookToSee->authors()->attach([$authorToSee->id]);
+    $bookNotToSee->authors()->attach([$authorNotToSee->id]);
+    get(route('books.index', ['search' => $authorToSee->last_name . ', ' . $authorToSee->first_name]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+
+});
+
+it('filters on the series when the query string contains a search term', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $bookToSee = Book::factory()->create();
+    $bookNotToSee = Book::factory()->create();
+    get(route('books.index', ['search' => $bookToSee->series->name]))
+        ->assertOk()
+        ->assertSeeText([$bookToSee->title])
+        ->assertDontSeeText([$bookNotToSee->title]);
+});

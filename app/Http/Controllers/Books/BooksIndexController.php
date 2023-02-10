@@ -13,17 +13,25 @@ class BooksIndexController extends Controller
         return view('books.index')
             ->with([
                 'books' => BookIndexView::query()
-                    ->when($request->authors, function ($query) use ($request) {
-                        $query->whereIn('author_id', array_map('intval', explode(',', $request->authors)));
+                    ->when($request->authors, function ($query, $authors) {
+                        $query->whereIn('author_id',
+                            array_map('intval',
+                                explode(',',
+                                    $authors)));
                     })
-                    ->when($request->published, function ($query) use ($request) {
-                        $query->where('published_year', $request->published);
+                    ->when($request->published, function ($query, $published) {
+                        $query->where('published_year', $published);
                     })
-                    ->when($request->genre, function ($query) use ($request) {
-                        $query->where('genre', $request->genre);
+                    ->when($request->genre, function ($query, $genre) {
+                        $query->where('genre', $genre);
                     })
-                    ->when($request->format, function ($query) use ($request) {
-                        $query->where('format', $request->format);
+                    ->when($request['format'], function ($query, $format) {
+                        $query->where('format', $format);
+                    })
+                    ->when($request->search, function ($query, $search) {
+                        $query->where('title', $search)
+                        ->orWhere('author_name', $search)
+                        ->orWhere('series', $search);
                     })
                     ->orderBy('author_name')
                     ->orderBy('series')
