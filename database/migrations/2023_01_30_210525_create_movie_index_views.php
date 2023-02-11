@@ -7,7 +7,8 @@ class CreateMovieIndexViews extends Migration
     public function up(): void
     {
         DB::statement('CREATE OR REPLACE VIEW movie_index_views AS
-            SELECT m.title,
+            SELECT m.id,
+                   m.title,
                    m.release_year,
                    m.runtime,
                    f.name format,
