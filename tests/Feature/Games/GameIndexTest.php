@@ -194,8 +194,8 @@ it('filters on the platform if the query string contains a platform', function (
 it('filters on the genre if the query string contains a genre', function () {
     $this->seed(MediaTypeSeeder::class);
     $gameMediaId = MediaType::where('name', 'game')->value('id');
-    $genreToSee = Genre::factory()->create(['media_type_id' => $gameMediaId]);
-    $genreNotToSee = Genre::factory()->create(['media_type_id' => $gameMediaId]);
+    $genreToSee = Genre::factory()->create(['media_type_id' => $gameMediaId, 'name' => 'First Person Shooter']);
+    $genreNotToSee = Genre::factory()->create(['media_type_id' => $gameMediaId, 'name' => 'Roll Playing Game']);
     $gameToSee1 = Game::factory()->create(['genre_id' => $genreToSee->id]);
     $gameNotToSee = Game::factory()->create(['genre_id' => $genreNotToSee->id]);
 
@@ -218,7 +218,6 @@ it('filters on the format if the query string contains a format', function () {
         ->assertSeeText([$gameToSee1->title])
         ->assertDontSeeText([$gameNotToSee->title]);
 });
-
 
 it('filters on the title when the query string contains a search term', function () {
     $this->seed(MediaTypeSeeder::class);

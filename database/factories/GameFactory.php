@@ -27,7 +27,7 @@ class GameFactory extends Factory
         $this->getMediaTypeId();
 
         return [
-            'title' => $this->faker->word(),
+            'title' => $this->faker->jobTitle(),
             'release_year' => 1991,
             'genre_id' => Genre::factory()->create([
                 'media_type_id' => $this->mediaTypeId,

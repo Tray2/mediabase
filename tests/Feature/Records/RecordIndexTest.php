@@ -5,6 +5,7 @@ use App\Models\Format;
 use App\Models\Genre;
 use App\Models\MediaType;
 use App\Models\Record;
+use App\Models\Track;
 use App\Models\User;
 use Database\Seeders\MediaTypeSeeder;
 use Sinnbeck\DomAssertions\Asserts\AssertElement;
@@ -167,8 +168,8 @@ it('filters on the artist if the query string contains an artist', function () {
     $this->seed(MediaTypeSeeder::class);
     $artistToSee = Artist::factory()->create(['name' => 'Run DMC']);
     $artistNotToSee = Artist::factory()->create(['name' => 'Running Wild']);
-    $recordToSee = Record::factory()->create(['artist_id' => $artistToSee->id]);
-    $recordNotToSee = Record::factory()->create(['artist_id' => $artistNotToSee->id]);
+    $recordToSee = Record::factory()->create(['artist_id' => $artistToSee->id, 'title' => 'King Of Rock']);
+    $recordNotToSee = Record::factory()->create(['artist_id' => $artistNotToSee->id, 'title' => 'Black Hand Inn']);
     get(route('records.index', ['artist' => $artistToSee->id]))
         ->assertOk()
         ->assertSeeText([$recordToSee->title])
@@ -188,8 +189,8 @@ it('filters on the release year if the query string contains a year', function (
 it('filters on the genre if the query string contains a genre', function () {
     $this->seed(MediaTypeSeeder::class);
     $recordMediaId = MediaType::where('name', 'record')->value('id');
-    $genreToSee = Genre::factory()->create(['media_type_id' => $recordMediaId]);
-    $genreNotToSee = Genre::factory()->create(['media_type_id' => $recordMediaId]);
+    $genreToSee = Genre::factory()->create(['media_type_id' => $recordMediaId, 'name' => 'Funk']);
+    $genreNotToSee = Genre::factory()->create(['media_type_id' => $recordMediaId, 'name' => 'Jazz']);
     $recordToSee1 = Record::factory()->create(['genre_id' => $genreToSee->id]);
     $recordNotToSee = Record::factory()->create(['genre_id' => $genreNotToSee->id]);
 
@@ -202,8 +203,8 @@ it('filters on the genre if the query string contains a genre', function () {
 it('filters on the format if the query string contains a format', function () {
     $this->seed(MediaTypeSeeder::class);
     $recordMediaId = MediaType::where('name', 'book')->value('id');
-    $formatToSee = Format::factory()->create(['media_type_id' => $recordMediaId]);
-    $formatNotToSee = Format::factory()->create(['media_type_id' => $recordMediaId]);
+    $formatToSee = Format::factory()->create(['media_type_id' => $recordMediaId, 'name' => 'LP']);
+    $formatNotToSee = Format::factory()->create(['media_type_id' => $recordMediaId, 'name' => 'CD']);
     $recordToSee1 = Record::factory()->create(['format_id' => $formatToSee->id]);
     $recordNotToSee = Record::factory()->create(['format_id' => $formatNotToSee->id]);
 
@@ -216,8 +217,8 @@ it('filters on the format if the query string contains a format', function () {
 
 it('filters on the title when the query string contains a search term', function () {
     $this->seed(MediaTypeSeeder::class);
-    $recordToSee = Record::factory()->create();
-    $recordNotToSee = Record::factory()->create();
+    $recordToSee = Record::factory()->create(['title' => 'Mama Said Knock You Out']);
+    $recordNotToSee = Record::factory()->create(['title' => 'Yo! Bum Rush The Show']);
 
     get(route('records.index', ['search' => $recordToSee->title]))
         ->assertOk()
@@ -242,6 +243,30 @@ it('has case insensitive search', function () {
     $recordNotToSee = Record::factory()->create(['title' => 'Pawn Of Prophecy']);
 
     get(route('records.index', ['search' => 'tHe DragOn rebOrn']))
+        ->assertOk()
+        ->assertSeeText([$recordToSee->title])
+        ->assertDontSeeText([$recordNotToSee->title]);
+});
+
+it('filters on track titles if the query string contains a search term', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $recordToSee = Record::factory()->create(['title' => 'The Dragon Reborn']);
+    $recordNotToSee = Record::factory()->create(['title' => 'Pawn Of Prophecy']);
+    Track::factory()->create(['title' => 'Public Enemy No. 1', 'record_id' => $recordToSee->id ]);
+    Track::factory()->create(['title' => 'Mama Said Knock You Out', 'record_id' => $recordNotToSee->id]);
+    get(route('records.index', ['search' => 'Public Enemy No. 1']))
+        ->assertOk()
+        ->assertSeeText([$recordToSee->title])
+        ->assertDontSeeText([$recordNotToSee->title]);
+});
+
+it('filters on partial track titles', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $recordToSee = Record::factory()->create(['title' => 'The Dragon Reborn']);
+    $recordNotToSee = Record::factory()->create(['title' => 'Pawn Of Prophecy']);
+    Track::factory()->create(['title' => 'Public Enemy No. 1', 'record_id' => $recordToSee->id ]);
+    Track::factory()->create(['title' => 'Mama Said Knock You Out', 'record_id' => $recordNotToSee->id]);
+    get(route('records.index', ['search' => 'Enemy']))
         ->assertOk()
         ->assertSeeText([$recordToSee->title])
         ->assertDontSeeText([$recordNotToSee->title]);
