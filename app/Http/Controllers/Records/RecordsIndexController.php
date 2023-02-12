@@ -13,10 +13,9 @@ class RecordsIndexController extends Controller
     {
         $recordIds = [];
         if(isset($request['search'])) {
-            $recordIds[] = Track::where('title', 'LIKE', "%{$request['search']}%")
-                ->value('record_id');
+            $recordIds = Track::where('title', 'LIKE', "%{$request['search']}%")
+                ->pluck('record_id');
         }
-
         return view('records.index')
             ->with([
                 'records' => RecordIndexView::query()

@@ -260,6 +260,22 @@ it('filters on track titles if the query string contains a search term', functio
         ->assertDontSeeText([$recordNotToSee->title]);
 });
 
+it('filters on track titles if the query string contains a search term when multiple tracks match', function () {
+    $this->seed(MediaTypeSeeder::class);
+    $recordToSeeOne = Record::factory()->create(['title' => 'The Dragon Reborn']);
+    $recordToSeeTwo = Record::factory()->create(['title' => 'The Sword Of Truth']);
+    $recordNotToSee = Record::factory()->create(['title' => 'Pawn Of Prophecy']);
+    Track::factory()->create(['title' => 'Public Enemy No. 1', 'record_id' => $recordToSeeOne->id ]);
+    Track::factory()->create(['title' => 'Sleeping With The Enemy', 'record_id' => $recordToSeeTwo->id ]);
+    Track::factory()->create(['title' => 'Mama Said Knock You Out', 'record_id' => $recordNotToSee->id]);
+
+    get(route('records.index', ['search' => 'Enemy']))
+        ->assertOk()
+        ->assertSeeText([$recordToSeeOne->title])
+        ->assertSeeText([$recordToSeeTwo->title])
+        ->assertDontSeeText([$recordNotToSee->title]);
+});
+
 it('filters on partial track titles', function () {
     $this->seed(MediaTypeSeeder::class);
     $recordToSee = Record::factory()->create(['title' => 'The Dragon Reborn']);
