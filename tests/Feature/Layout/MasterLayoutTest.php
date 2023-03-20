@@ -5,6 +5,7 @@ use App\Models\Game;
 use App\Models\Movie;
 use App\Models\Record;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use function Pest\Laravel\get;
 
@@ -18,7 +19,7 @@ beforeEach(function() {
    $this->record = Record::factory()->create();
 });
 
-it('has a menu containing the different media types', function ($route, $media) {
+it('has a menu containing the different media types', function (string $route, Model $media) {
     actingAs($this->user)
         ->get(route($route, $media))
         ->assertOk()

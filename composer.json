@@ -13,8 +13,8 @@
         "nicebooks/isbn": "^0.3.32"
     },
     "require-dev": {
-        "pestphp/pest": "^1.16",
-        "pestphp/pest-plugin-laravel": "^1.1",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
         "plannr/laravel-fast-refresh-database": "^0.0.3",
         "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.9.1",
@@ -23,8 +23,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "mohammedmanssour/form-request-tester": "^1.1",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
+        "nunomaduro/collision": "^7.0",
         "sinnbeck/laravel-dom-assertions": "^1.0",
         "spatie/laravel-ignition": "^2.0"
     },
