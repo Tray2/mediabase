@@ -170,8 +170,14 @@ it('filters on the genre if the query string contains a genre', function () {
     $movieMediaId = MediaType::where('name', 'movie')->value('id');
     $genreToSee = Genre::factory()->create(['media_type_id' => $movieMediaId]);
     $genreNotToSee = Genre::factory()->create(['media_type_id' => $movieMediaId]);
-    $movieToSee1 = Movie::factory()->create(['genre_id' => $genreToSee->id]);
-    $movieNotToSee = Movie::factory()->create(['genre_id' => $genreNotToSee->id]);
+    $movieToSee1 = Movie::factory()->create([
+        'title' => 'Tremors',
+        'genre_id' => $genreToSee->id
+    ]);
+    $movieNotToSee = Movie::factory()->create([
+        'title' => 'Juice',
+        'genre_id' => $genreNotToSee->id
+    ]);
 
     get(route('movies.index', ['genre' => $genreToSee->name]))
         ->assertOk()
