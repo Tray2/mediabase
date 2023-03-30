@@ -334,11 +334,13 @@ it('has a add author button', function () {
 
 it('loads only formats that are book formats', function () {
     $bookFormat = Format::factory()->create([
+        'name' => 'Pocket',
         'media_type_id' => MediaType::query()
             ->where('name', 'book')
             ->value('id'),
     ]);
     $recordFormat = Format::factory()->create([
+        'name' => 'LP',
         'media_type_id' => MediaType::query()
             ->where('name', 'record')
             ->value('id'),
@@ -360,11 +362,13 @@ it('loads only formats that are book formats', function () {
 
 it('loads only genres that are book genres', function () {
     $bookGenre = Genre::factory()->create([
+        'name' => 'Fantasy',
         'media_type_id' => MediaType::query()
             ->where('name', 'book')
             ->value('id'),
     ]);
     $recordGenre = Genre::factory()->create([
+        'name' => 'Rap',
         'media_type_id' => MediaType::query()
             ->where('name', 'record')
             ->value('id'),
