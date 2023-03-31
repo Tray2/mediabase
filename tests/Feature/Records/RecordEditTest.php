@@ -174,7 +174,7 @@ it('has a record label field', function () {
                     'id' => 'record_label',
                     'name' => 'record_label_name',
                     'list' => 'record_labels',
-                    'value' => $this->record->recordLabel->name,
+                    'value' => e($this->record->recordLabel->name),
                 ]);
         });
 });

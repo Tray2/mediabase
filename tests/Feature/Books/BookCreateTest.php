@@ -390,11 +390,13 @@ it('loads only genres that are book genres', function () {
 
 it('loads only genres that are book genres arrow', function () {
     $bookGenre = Genre::factory()->create([
+        'name' => 'Fantasy',
         'media_type_id' => MediaType::query()
             ->where('name', 'book')
             ->value('id'),
     ]);
     $recordGenre = Genre::factory()->create([
+        'name' => 'Metal',
         'media_type_id' => MediaType::query()
             ->where('name', 'record')
             ->value('id'),
