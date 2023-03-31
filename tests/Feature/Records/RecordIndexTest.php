@@ -178,8 +178,14 @@ it('filters on the artist if the query string contains an artist', function () {
 
 it('filters on the release year if the query string contains a year', function () {
     $this->seed(MediaTypeSeeder::class);
-    $recordToSee = Record::factory()->create(['release_year' => 2002]);
-    $recordNotToSee = Record::factory()->create(['release_year' => 2001]);
+    $recordToSee = Record::factory()->create([
+        'title' => 'Yo! Bum Rush The Show',
+        'release_year' => 2002
+    ]);
+    $recordNotToSee = Record::factory()->create([
+        'title' => 'Juice',
+        'release_year' => 2001
+    ]);
     get(route('records.index', ['released' => 2002]))
         ->assertOk()
         ->assertSeeText([$recordToSee->title])
@@ -191,8 +197,14 @@ it('filters on the genre if the query string contains a genre', function () {
     $recordMediaId = MediaType::where('name', 'record')->value('id');
     $genreToSee = Genre::factory()->create(['media_type_id' => $recordMediaId, 'name' => 'Funk']);
     $genreNotToSee = Genre::factory()->create(['media_type_id' => $recordMediaId, 'name' => 'Jazz']);
-    $recordToSee1 = Record::factory()->create(['genre_id' => $genreToSee->id]);
-    $recordNotToSee = Record::factory()->create(['genre_id' => $genreNotToSee->id]);
+    $recordToSee1 = Record::factory()->create([
+        'title' => 'Yo! Bum Rush The Show',
+        'genre_id' => $genreToSee->id
+    ]);
+    $recordNotToSee = Record::factory()->create([
+        'title' => 'Natty Dread',
+        'genre_id' => $genreNotToSee->id
+    ]);
 
     get(route('records.index', ['genre' => $genreToSee->name]))
         ->assertOk()
@@ -205,8 +217,14 @@ it('filters on the format if the query string contains a format', function () {
     $recordMediaId = MediaType::where('name', 'book')->value('id');
     $formatToSee = Format::factory()->create(['media_type_id' => $recordMediaId, 'name' => 'LP']);
     $formatNotToSee = Format::factory()->create(['media_type_id' => $recordMediaId, 'name' => 'CD']);
-    $recordToSee1 = Record::factory()->create(['format_id' => $formatToSee->id]);
-    $recordNotToSee = Record::factory()->create(['format_id' => $formatNotToSee->id]);
+    $recordToSee1 = Record::factory()->create([
+        'title' => 'Yo! Bum Rush The Show',
+        'format_id' => $formatToSee->id
+    ]);
+    $recordNotToSee = Record::factory()->create([
+        'title' => 'Juice',
+        'format_id' => $formatNotToSee->id
+    ]);
 
     get(route('records.index', ['format' => $formatToSee->name]))
         ->assertOk()

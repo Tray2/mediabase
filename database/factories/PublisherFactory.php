@@ -12,7 +12,7 @@ class PublisherFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => e($this->faker->company()),
+            'name' => $this->faker->company(),
         ];
     }
 }

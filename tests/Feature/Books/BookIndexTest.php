@@ -328,8 +328,14 @@ it('filters on the format if the query string contains a format', function () {
     $bookMediaId = MediaType::where('name', 'book')->value('id');
     $formatToSee = Format::factory()->create(['media_type_id' => $bookMediaId]);
     $formatNotToSee = Format::factory()->create(['media_type_id' => $bookMediaId]);
-    $bookToSee1 = Book::factory()->create(['format_id' => $formatToSee->id]);
-    $bookNotToSee = Book::factory()->create(['format_id' => $formatNotToSee->id]);
+    $bookToSee1 = Book::factory()->create([
+        'title' => 'The Sword Of Truth',
+        'format_id' => $formatToSee->id
+    ]);
+    $bookNotToSee = Book::factory()->create([
+        'title' => 'Plague Town',
+        'format_id' => $formatNotToSee->id
+    ]);
 
     get(route('books.index', ['format' => $formatToSee->name]))
         ->assertOk()

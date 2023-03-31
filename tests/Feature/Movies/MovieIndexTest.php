@@ -190,8 +190,14 @@ it('filters on the format if the query string contains a format', function () {
     $movieMediaId = MediaType::where('name', 'book')->value('id');
     $formatToSee = Format::factory()->create(['media_type_id' => $movieMediaId]);
     $formatNotToSee = Format::factory()->create(['media_type_id' => $movieMediaId]);
-    $movieToSee1 = Movie::factory()->create(['format_id' => $formatToSee->id]);
-    $movieNotToSee = Movie::factory()->create(['format_id' => $formatNotToSee->id]);
+    $movieToSee1 = Movie::factory()->create([
+        'title' => 'Tremors',
+        'format_id' => $formatToSee->id
+    ]);
+    $movieNotToSee = Movie::factory()->create([
+        'title' => 'Jaws',
+        'format_id' => $formatNotToSee->id
+    ]);
 
     get(route('movies.index', ['format' => $formatToSee->name]))
         ->assertOk()
